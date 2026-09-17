@@ -12,12 +12,11 @@ Content-Type: application/json
 
 ###
 // GetPeople
-@id=0
 GET {{Backend_HostAddress}}/api/people
 
 ###
 
-DELETE {{Backend_HostAddress}}/api/people/1002
+DELETE {{Backend_HostAddress}}/api/people/2
 
 ###
 
@@ -31,7 +30,7 @@ Content-Type: application/json
 {
   "id": 4,
     "firstName": "Test",
-  "lastName": "Prkjkjkueba",
+  "lastName": "Prueba",
   "birthDate": "1982-05-13T00:00:00",
   "telephone": "666777888"
 }
