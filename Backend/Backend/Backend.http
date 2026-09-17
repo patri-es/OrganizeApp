@@ -4,7 +4,7 @@
 POST {{Backend_HostAddress}}/api/people
 Content-Type: application/json
 {
-    "FirstName": "Test",
+    "FirstName": "prueba",
     "LastName": "Test",
     "Telephone": "666777888",
     "BirthDate": "1982-05-13T00:00:00.0000000"
@@ -14,5 +14,26 @@ Content-Type: application/json
 // GetPeople
 @id=0
 GET {{Backend_HostAddress}}/api/people
+
+###
+
+DELETE {{Backend_HostAddress}}/api/people/1002
+
+###
+
+GET {{Backend_HostAddress}}/api/people/4
+
+###
+
+PUT {{Backend_HostAddress}}/api/people/4
+Content-Type: application/json
+
+{
+  "id": 4,
+    "firstName": "Test",
+  "lastName": "Prkjkjkueba",
+  "birthDate": "1982-05-13T00:00:00",
+  "telephone": "666777888"
+}
 
 ###
