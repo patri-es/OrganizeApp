@@ -1,6 +1,6 @@
 ﻿namespace Backend.Controllers
 {
-    public class ProductController
+    public class ProductsController
     {
     }
 }
