@@ -1,6 +1,7 @@
 # Backend
 Para crear este proyecto, hemos creado la carpeta con el nombre del proyecto
 
+https://www.youtube.com/watch?v=qcczkv-Hz5c
 ## Requisitos:
 - DotNet 10
 
@@ -81,5 +82,15 @@ Una vez definida la clase AppDbContext y añadida a Program.cs:
 - Este comando creará tantas tablas como entidades hayamos definido, y que se añadieron a los métodos autogenerados con la clase InitialCreate
 - Además creará una tabla llamada "__EFMugrationsHistory" con dos columnas: "MigrationId" (PK) y "ProductVersion" que no permite valores nulos.
 
+## Cors (Cross-Origin Resource Sharing)
+CORS o Uso compartido de recursos entre orígenes. La seguridad de una página web evita que se hagan solicitudes a un dominio diferente del que inició la página, esto se denomina **directiva de mismo origen**.
+
+Habilitando CORS permite explícitamente a un servidor realizar solicitudes de origen cruzado y rechazar otras. Es más seguro y flexible que otras técnicas, como JSONP.
+- Vamos a configurar CORS para diferenciar con dos URLs locales. https://learn.microsoft.com/es-es/aspnet/core/security/cors?view=aspnetcore-10.0
+- Permitirá que tengamos una url para la web y otra para la API (si lo he entendido bien)
+
+- server app: https://localhost:7165
+- client app (js app): https://localhost:7165 => CORS (request data)
 
 ## Versión de nuestra App
+
