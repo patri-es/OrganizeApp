@@ -1,4 +1,4 @@
-# Client - frontend for ProductCrudApp
+# frontend for ProductCrudApp
 
 ## React + Vite
 
