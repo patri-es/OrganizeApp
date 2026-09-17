@@ -1,0 +1,18 @@
+@Backend_HostAddress = https://localhost:7165
+
+// AddPerson
+POST {{Backend_HostAddress}}/api/people
+Content-Type: application/json
+{
+    "FirstName": "Test",
+    "LastName": "Test",
+    "Telephone": "666777888",
+    "BirthDate": "1982-05-13T00:00:00.0000000"
+}
+
+###
+// GetPeople
+@id=0
+GET {{Backend_HostAddress}}/api/people
+
+###
