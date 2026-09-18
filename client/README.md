@@ -159,3 +159,9 @@ React no es listo con las acciones de los form, así que vamos a añadir esta li
 
 ## Conectamos la API al front para tener datos reales!
 - instalamos axios ```npm i axios```
+
+      import axios from "axios" 
+      ....
+
+
+      const BASE_URL = import.meta.env.VITE_BASE_API_URL + '/people';

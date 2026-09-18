@@ -53,14 +53,14 @@ const Person = () => {
     }
 
     // Submit
-    const handleFormSubmit = (person) => {
+    const handleFormSubmit = async (person) => {
         setLoading(true);
         try {
             if (person.id <= 0) {
-                console.log("add");
-                setPeople((previousPerson) => [...previousPerson, person]);
+                const createdPerson = (await axios.post(BASE_URL, person).data);
+                setPeople((previousPerson) => [...previousPerson, createdPerson]);
             } else {
-                console.log("edit");
+                await axios.post(`${BASE_URL}/${person.id}`, person);
                 setPeople((previousPeople) => previousPeople.map(p =>
                     p.id === person.id ? person : p));
             }
@@ -82,12 +82,13 @@ const Person = () => {
     }
             
     // delete
-    const handlePersonDelete = (person) => {
+    const handlePersonDelete = async (person) => {
         if (!confirm(`Seguro que quieres eliminar a la persona: ${person.name} ${person.lastName}?`)) return;
         setLoading(true);
 
         try {
             setPeople((previousPeople) => previousPeople.filter(p => p.id !== person.id));
+            await axios.post(`${BASE_URL}/${person.id}`, person);
             toast.success("Borrado perfect!");
 
         } catch (error) {
