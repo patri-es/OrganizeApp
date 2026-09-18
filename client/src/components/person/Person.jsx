@@ -2,6 +2,7 @@
 import PersonForm from "./PersonForm"
 import PersonList from "./PersonList"
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
 
 
 const Person = () => {
@@ -33,19 +34,25 @@ const Person = () => {
         methods.reset(defaultFormValues);
     }
 
-    // edit
+    //
     const handleFormSubmit = (person) => {
-        if (person.id <= 0) {
-            console.log("add");
-            setPeople((previousPerson) => [...previousPerson, person]);
-        } else {
-            console.log("edit");
-            setPeople((previousPeople) => previousPeople.map(p => p.id === person.id ? person : p));
+        try {
+            if (person.id <= 0) {
+                console.log("add");
+                setPeople((previousPerson) => [...previousPerson, person]);
+            } else {
+                console.log("edit");
+                setPeople((previousPeople) => previousPeople.map(p => p.id === person.id ? person : p));
+            }
+            methods.reset(defaultFormValues);
+            toast.success("Guardado todo!");
+        } catch (error) {
+            toast.error("No Guardado ERROR!");
+
         }
-        methods.reset(defaultFormValues);
     }
         
-    //
+    // edit
     const handlePersonEdit = (person) => {
         if (person.id <= 0) {
             console.log("add");

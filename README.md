@@ -49,6 +49,7 @@ createRoot(document.getElementById('root')).render(
 ### Submit Form
 React no es listo con las acciones de los form, así que vamos a añadir esta librería: 
 - react hook form: https://react-hook-form.com/
+- https://react-hook-form.com/get-started
 - empezamos instalando la librería: ```npm install react-hook-form```
 - En el form para empezar añadimos la librería y un método para utilizarla:
 
@@ -132,9 +133,12 @@ React no es listo con las acciones de los form, así que vamos a añadir esta li
             <RotateCcw />
         </button>
 
-## 
+## Adaptamos los métodos para usarlos desde el componente padre
+... aunque no me funciona del todo, ya iré enterandome. 
 
-```import { useState } from "react"
-
-
-```
+- Instalamos otra librería, React Host Toast con ```npm install react-hot-toast ```
+- parece que sirve para ventanas emergentes muy monas
+- Lo añadimos a App.jsx con  ```import { Toaster } from "react-hot-toast" ``` 
+- agregamos ahí también su componente  <Toaster />
+- En person.jsx agregamos también la referencia para usarlo, con ```import toast from "react-hot-toast" ``` 
+- Añado Try{ }catch (error) {} al método submit. o edit
