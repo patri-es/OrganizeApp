@@ -3,19 +3,34 @@ import PersonForm from "./PersonForm"
 import PersonList from "./PersonList"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
+import axios from "axios"
 
 
 const Person = () => {
     const BASE_URL = import.meta.env.VITE_BASE_API_URL + '/people';
 
-
-    const [people, setPeople] = useState( [
-        { id: 1, name: 'Pepe', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '123456789' },
-        { id: 2, name: 'Ana', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '123455589' },
-        { id: 3, name: 'Lola', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '116556789' }
-    ])
-
+    const [people, setPeople] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [editData, setEditData] = useState(null);
+
+
+    useEffect(() => {
+        try {
+            const loadPeople = async () => {
+                var peopleData = (await axios.get(BASE_URL)).data;
+                setPeople(peopleData);
+            }
+            loadPeople();
+
+        } catch (error) {
+            console.log(error);
+            toast.error("Error has occured!");
+        }
+        finally {
+            setLoading(false);
+        }
+
+    }, []);
 
     useEffect(() => {
         methods.reset(editData);
@@ -32,57 +47,67 @@ const Person = () => {
         defaultValues: defaultFormValues
     });
 
+    // reset
     const handleFormReset = () => {
         methods.reset(defaultFormValues);
     }
 
-    //
+    // Submit
     const handleFormSubmit = (person) => {
+        setLoading(true);
         try {
             if (person.id <= 0) {
                 console.log("add");
                 setPeople((previousPerson) => [...previousPerson, person]);
             } else {
                 console.log("edit");
-                setPeople((previousPeople) => previousPeople.map(p => p.id === person.id ? person : p));
+                setPeople((previousPeople) => previousPeople.map(p =>
+                    p.id === person.id ? person : p));
             }
             methods.reset(defaultFormValues);
             toast.success("Guardado todo!");
-        } catch (error) {
-            toast.error("No Guardado ERROR!");
 
+        } catch (error) {
+            console.log(error);
+            toast.error("No Guardado ERROR!");
+        }
+        finally {
+            setLoading(false);
         }
     }
-        
+
     // edit
     const handlePersonEdit = (person) => {
-        if (person.id <= 0) {
-            console.log("add");
-            setPeople((previousPerson) => [...previousPerson, person]);
-        } else {
-            console.log("edit");
-            setPeople((previousPeople) => previousPeople.map(p => p.id === person.id ? person : p));
-        }
-        methods.reset(defaultFormValues);
+        setEditData(person);
     }
-
-
+            
+    // delete
     const handlePersonDelete = (person) => {
         if (!confirm(`Seguro que quieres eliminar a la persona: ${person.name} ${person.lastName}?`)) return;
+        setLoading(true);
 
-        setPeople((previousPeople) => previousPeople.filter(p=> p.id !== person.id));
+        try {
+            setPeople((previousPeople) => previousPeople.filter(p => p.id !== person.id));
+            toast.success("Borrado perfect!");
 
-        methods.reset(defaultFormValues);
-
-
+        } catch (error) {
+            console.log(error);
+            toast.error("No Borrado ERROR!");
+        }
+        finally {
+            setLoading(false);
+        }
     }
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
            <p>URL: { BASE_URL}</p>
+            <p>
+                {loading && <span>Loading...</span>}
+            </p>
             {/* <div className="text-center ">
             </div> */}
-            <PersonForm methods={methods} onFormReset={handleFormReset} onFormSubmit={handleFormSubmit} />
+            <PersonForm methods={methods} onFormSubmit={handleFormSubmit} onFormReset={handleFormReset} />
             <PersonList peopleList={people} onPersonEdit={handlePersonEdit} onPersonDelete={handlePersonDelete} />
         </div>
     )
