@@ -1,12 +1,28 @@
 ﻿import PersonForm from "./PersonForm"
 import PersonList from "./PersonList"
+import { useForm } from "react-hook-form"
+
 
 const Person = () => {
+    const defaultFormValues = {
+        name: '',
+        lastName: '',
+        birthDate: '',
+        telephone: ''
+    }
+
+    const methods = useForm({
+        defaultValues: defaultFormValues
+    });
+
+    const handleFormReset = () => {
+        methods.reset(defaultFormValues);
+    }
 
     const people = [
         { id: 1, name: 'Pepe', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '123456789' },
-        { id: 1, name: 'Ana', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '123455589' },
-        { id: 1, name: 'Lola', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '116556789' }
+        { id: 2, name: 'Ana', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '123455589' },
+        { id: 3, name: 'Lola', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '116556789' }
     ]
 
     const handlePersonEdit = (person) => {
@@ -21,12 +37,9 @@ const Person = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
-            <div className="text-center ">
-                <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent hover:from-teal-600 hover:to-blue-600 transition-all duration-300 cursor-pointer">
-                    Personas de mi BBDD
-                </h1>
-            </div>
-            <PersonForm />
+            {/* <div className="text-center ">
+            </div> */}
+            <PersonForm methods={methods} onFormReset={ handleFormReset} />
             <PersonList peopleList={people} onPersonEdit={handlePersonEdit} onPersonDelete={handlePersonDelete} />
         </div>
     )
