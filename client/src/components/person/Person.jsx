@@ -19,6 +19,11 @@ const Person = () => {
         methods.reset(defaultFormValues);
     }
 
+    const handleFormSubmit = () => {
+        methods.reset(defaultFormValues);
+    }
+        
+    //
     const people = [
         { id: 1, name: 'Pepe', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '123456789' },
         { id: 2, name: 'Ana', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '123455589' },
@@ -39,7 +44,7 @@ const Person = () => {
         <div className="min-h-screen bg-gray-50 py-8">
             {/* <div className="text-center ">
             </div> */}
-            <PersonForm methods={methods} onFormReset={ handleFormReset} />
+            <PersonForm methods={methods} onFormReset={handleFormReset} onFormSubmit={handleFormSubmit} />
             <PersonList peopleList={people} onPersonEdit={handlePersonEdit} onPersonDelete={handlePersonDelete} />
         </div>
     )
