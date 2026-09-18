@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Save } from 'lucide-react';
 
 const PersonForm = () => {
 
@@ -69,10 +70,12 @@ const PersonForm = () => {
                 </div> 
                     {/* Form Footer */} 
                     <div 
-                        className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+                    className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+
                     <button type="submit"
-                        className="px-6 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-teal-500 hover:from-teal-600 hover:to-blue-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                        Save Person </button> </div> 
+                        className="px-4 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-b from-teal-500 via-teal-600 to-teal-500 hover:from-teal-600 hover:to-blue-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        <Save />
+                    </button> </div> 
                             {/* Decorative gradient line */} 
                             <div
 
