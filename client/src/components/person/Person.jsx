@@ -12,6 +12,18 @@ function Person() {
     const [loading, setLoading] = useState(true);
     const [editData, setEditData] = useState(null);
 
+    const defaultFormValues = {
+        id: 0,
+        name: '',
+        lastName: '',
+        birthDate: '',
+        telephone: ''
+    }
+
+    const methods = useForm({
+        defaultValues: defaultFormValues
+    });
+
     useEffect(() => {
         try {
             const loadPeople = async () => {
@@ -32,18 +44,6 @@ function Person() {
     useEffect(() => {
         methods.reset(editData);
     }, [editData])
-
-    const defaultFormValues = {
-        id:0,
-        name: '',
-        lastName: '',
-        birthDate: '',
-        telephone: ''
-    }
-
-    const methods = useForm({
-        defaultValues: defaultFormValues
-    });
 
     // reset
     const handleFormReset = () => {
