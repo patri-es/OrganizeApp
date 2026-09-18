@@ -12,7 +12,7 @@ const PersonForm = () => {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        serFormData({
+        setFormData({
             [name]: value
         });
     };
