@@ -5,7 +5,6 @@ import About from "./pages/About"
 import NotFound from "./pages/NotFound"
 import { Routes, Route } from "react-router"
 import { Toaster } from "react-hot-toast"
-import { Toaster } from "react-hot-toast"
 
 
 const App = () => {

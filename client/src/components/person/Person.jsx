@@ -6,6 +6,8 @@ import toast from "react-hot-toast"
 
 
 const Person = () => {
+    const BASE_URL = import.meta.env.VITE_BASE_API_URL + '/people';
+
 
     const [people, setPeople] = useState( [
         { id: 1, name: 'Pepe', lastName: 'Nuñez', birthDate: '1982-05-13 00:00:00.0000000', telephone: '123456789' },
@@ -77,6 +79,7 @@ const Person = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
+           <p>URL: { BASE_URL}</p>
             {/* <div className="text-center ">
             </div> */}
             <PersonForm methods={methods} onFormReset={handleFormReset} onFormSubmit={handleFormSubmit} />
