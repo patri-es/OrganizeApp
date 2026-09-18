@@ -2,9 +2,17 @@ import { Edit, Trash2 } from 'lucide-react'
 
 const PersonList = ({ peopleList, onPersonEdit, onPersonDelete }) => {
 
+    if (!peopleList || peopleList.length === 0) {
+        return (
+            <div class="text-center text-gray-500">
+                <p className="text-lg">
+                    No tenemos personas en la lista
+                </p>
+            </div>
+        )
+    }
 
     return (
-
         <div>
             <ul>
                 {
@@ -32,13 +40,13 @@ const PersonList = ({ peopleList, onPersonEdit, onPersonDelete }) => {
                                 <Trash2 className="w-4 h-4 mr-1" />
                                 Delete
                             </button>
+
                         </div>
                     </li>
                         
                     )
                 }
 
-                <li></li>
 
 
             </ul>
