@@ -4,7 +4,7 @@ const PersonList = ({ peopleList, onPersonEdit, onPersonDelete }) => {
 
     if (!peopleList || peopleList.length === 0) {
         return (
-            <div class="text-center text-gray-500">
+            <div className="text-center text-gray-500">
                 <p className="text-lg">
                     No tenemos personas en la lista
                 </p>
@@ -19,7 +19,7 @@ const PersonList = ({ peopleList, onPersonEdit, onPersonDelete }) => {
                     peopleList.map(person => <li key={person.id} 
                         className="">
                         <div>
-                            <span>{ person.name} </span>
+                            <span>{person.firstName} </span>
                             <span>{person.lastName} </span>
                         </div>
                         <div className="flex items-center justify-center space-x-2">
