@@ -25,21 +25,21 @@ const PersonForm = ({ methods, onFormReset, onFormSubmit }) => {
                 <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5"> 
                     {/* Name */}
                     <div>
-                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                        <label htmlFor="firstName" className="block text-sm font-semibold text-gray-700 mb-2">
                             Name
                         </label> 
                         <input type="text" placeholder="Enter name"
-                            {...register("name", {
+                            {...register("firstName", {
                                 required: true,
                                 maxLength: 50
                             })}                            
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
 
-                        {errors.name?.type === 'required' &&
+                        {errors.firstName?.type === 'required' &&
                             <p className="mt-1 text-sm text-red-600 flex items-center">
                                 name is  required
                             </p>}
-                        {errors.name?.type === 'maxLength' &&
+                        {errors.firstName?.type === 'maxLength' &&
                             <p className="mt-1 text-sm text-red-600 flex items-center">
                                 name can not exceed 50 characters
                             </p>}

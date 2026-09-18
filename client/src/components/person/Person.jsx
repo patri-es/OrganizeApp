@@ -5,24 +5,30 @@ import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import axios from "axios"
 
+const BASE_URL = `${import.meta.env.VITE_BASE_API_URL}/people`;
+
+const defaultFormValues = {
+    id: 0,
+    firstName: '',
+    lastName: '',
+    birthDate: '',
+    telephone: ''
+}
+
 function Person() {
-    const BASE_URL = import.meta.env.VITE_BASE_API_URL + '/people';
+    //const BASE_URL = import.meta.env.VITE_BASE_API_URL + '/people';
 
     const [people, setPeople] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editData, setEditData] = useState(null);
 
-    const defaultFormValues = {
-        id: 0,
-        name: '',
-        lastName: '',
-        birthDate: '',
-        telephone: ''
-    }
-
     const methods = useForm({
         defaultValues: defaultFormValues
     });
+
+    useEffect(() => {
+        methods.reset(editData ?? defaultFormValues);
+    }, [editData, methods]);
 
     useEffect(() => {
         try {
@@ -41,9 +47,9 @@ function Person() {
 
     }, []);
 
-    useEffect(() => {
-        methods.reset(editData);
-    }, [editData])
+    // useEffect(() => {
+    //     methods.reset(editData);
+    // }, [editData])
 
     // reset
     const handleFormReset = () => {
@@ -78,7 +84,7 @@ function Person() {
     }
 
     const handlePersonDelete = async (person) => {
-        if (!confirm(`Are you sure to delete a person : ${person.name} ${person.lastName}`)) return;
+        if (!confirm(`Are you sure to delete a person : ${person.firstName} ${person.lastName}`)) return;
         setLoading(true);
         try {
             await axios.delete(`${BASE_URL}/${person.id}`);
