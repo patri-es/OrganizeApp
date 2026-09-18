@@ -131,3 +131,10 @@ React no es listo con las acciones de los form, así que vamos a añadir esta li
             className="ms-3 px-4 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-b from-blue-400 via-blue-600 to-blue-400  hover:from-teal-600 hover:to-blue-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
             <RotateCcw />
         </button>
+
+## 
+
+```import { useState } from "react"
+
+
+```
