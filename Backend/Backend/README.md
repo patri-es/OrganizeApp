@@ -89,8 +89,9 @@ Habilitando CORS permite explícitamente a un servidor realizar solicitudes de o
 - Vamos a configurar CORS para diferenciar con dos URLs locales. https://learn.microsoft.com/es-es/aspnet/core/security/cors?view=aspnetcore-10.0
 - Permitirá que tengamos una url para la web y otra para la API (si lo he entendido bien)
 
-- server app: https://localhost:7165
-- client app (js app): https://localhost:7165 => CORS (request data)
+- server app está escuchando a: https://localhost:7165 o https://localhost:5062
+- client app (js app) está escuchando a: https://localhost:5173 => CORS 
+- Necesito definir 
 
 ## Versión de nuestra App
 
