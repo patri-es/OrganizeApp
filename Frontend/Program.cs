@@ -1,10 +1,10 @@
-﻿
 using System.Diagnostics;
 using System.IO;
 
-var frontendFolder = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Frontend"));
+// Este proyecto lanza el dev server de la app React situada en la misma carpeta del proyecto
+var frontendFolder = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
 
-Console.WriteLine(frontendFolder);
+Console.WriteLine($"Frontend folder: {frontendFolder}");
 
 if (!Directory.Exists(frontendFolder))
 {
@@ -31,6 +31,6 @@ p.ErrorDataReceived += (s, e) => { if (e.Data != null) Console.Error.WriteLine(e
 p.BeginOutputReadLine();
 p.BeginErrorReadLine();
 
-// No bloqueamos la solución: devolvemos 0 y dejamos npm corriendo en la ventana del proyecto.
+// No bloqueamos: dejamos el proceso npm en ejecución y devolvemos 0.
 await Task.Delay(-1);
 return 0;

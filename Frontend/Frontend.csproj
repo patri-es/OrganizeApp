@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+	<OutputType>Exe</OutputType>
+	<TargetFramework>net10.0</TargetFramework>
+	<ImplicitUsings>enable</ImplicitUsings>
+	<Nullable>enable</Nullable>
+	<AssemblyName>Frontend</AssemblyName>
+	<RootNamespace>Frontend</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+	<None Update="Program.cs">
+	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	</None>
+  </ItemGroup>
+  <Target Name="NpmInstall" BeforeTargets="Build;Restore" Condition="Exists('$(MSBuildProjectDirectory)\\package.json')">
+	<Message Text="Running npm install in frontend folder..." Importance="High" />
+	<Exec Command="npm install" WorkingDirectory="$(MSBuildProjectDirectory)" />
+  </Target>
+</Project>
