@@ -12,4 +12,5 @@ public class Product
     public DateTime CreationDate { get; set; } = DateTime.Now;
     public int Category { get; set; } = 0;
     public bool Available { get; set; } = false;
+    public int Stock { get; set; } = 0;
 }
