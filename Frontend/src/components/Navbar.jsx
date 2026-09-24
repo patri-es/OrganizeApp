@@ -59,6 +59,17 @@ const Navbar = () => {
                             >
                                 Person
                             </ NavLink>
+
+                            <NavLink
+                                to='/product'
+
+                                className={({ isActive }) => `px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${isActive
+                                    ? 'bg-gradient-to-t from-teal-600 via-teal-500 to-teal-400 text-white shadow-lg'
+                                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                                    }`}
+                            >
+                                Product
+                            </ NavLink>
                         </div>
                     </nav>
 

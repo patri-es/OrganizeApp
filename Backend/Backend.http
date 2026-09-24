@@ -1,0 +1,9 @@
+﻿@Backend_HostAddress = https://localhost:7165
+
+GET {{Backend_HostAddress}}/api/people
+
+###
+
+GET {{Backend_HostAddress}}/api/products
+
+###

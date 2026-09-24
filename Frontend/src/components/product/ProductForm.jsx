@@ -1,7 +1,122 @@
-const ProductForm = () => {
+import { Save, RotateCcw } from 'lucide-react';
+
+const ProductForm = ({ methods, onFormReset, onFormSubmit }) => {
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = methods;
+
     return (
-        <div>ProductForm</div>
-    )
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <form
+                className="bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden"
+                onSubmit={handleSubmit(onFormSubmit)}>
+                <input type="hidden" {...register("id")}
+                    id="id" name="id" />
+
+                <div className="px-6 py-5 border-b border-gray-100">
+                    <h3 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-teal-600 bg-clip-text text-transparent">
+                        Add Product </h3>
+                    <div className="h-1 w-16 mt-3 rounded-full bg-gradient-to-r from-blue-600 to-teal-500"></div>
+                </div>
+
+                <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-5">
+                    {/* Name */}
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Name
+                        </label>
+                        <input type="text" placeholder="Enter name"
+                            {...register("name", {
+                                required: true,
+                                maxLength: 50
+                            })}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
+
+                        {errors.name?.type === 'required' &&
+                            <p className="mt-1 text-sm text-red-600 flex items-center">
+                                name is  required
+                            </p>}
+                        {errors.name?.type === 'maxLength' &&
+                            <p className="mt-1 text-sm text-red-600 flex items-center">
+                                name can not exceed 50 characters
+                            </p>}
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                        <label htmlFor="description" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Description
+                        </label>
+                        <input type="text" placeholder="Enter last name"
+                            {...register("description", {
+                                required: true,
+                                maxLength: 50
+                            })}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
+
+                        {errors.description?.type === 'required' &&
+                            <p className="mt-1 text-sm text-red-600 flex items-center">
+                                description is  required
+                            </p>}
+
+                        {errors.description?.type === 'maxLength' &&
+                            <p className="mt-1 text-sm text-red-600 flex items-center">
+                                description can not exceed 50 characters
+                            </p>}
+                    </div>
+
+                    {/* creationDate */}
+                    <div>
+                        <label htmlFor="creationDate" className="block text-sm font-semibold text-gray-700 mb-2">
+                            CreationDate
+                        </label>
+                        <input type="date"
+                            {...register("creationDate", {
+                                required: false,
+                                maxLength: 30
+                            })}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
+
+                        {errors.creationDate?.type === 'maxLength' &&
+                            <p className="mt-1 text-sm text-red-600 flex items-center">
+                                creationDate can not exceed 50 characters
+                            </p>}
+                    </div>
+
+                    {/* Category */}
+                    <div>
+                        <label htmlFor="category" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Category
+                        </label>
+                        <input type="tel" placeholder="Enter category"
+                            {...register("category", {
+                                required: false,
+                                maxLength: 12
+                            })}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
+                    </div>
+                </div>
+
+                {/* footer con botones */}
+                <div className="px-6 py-4 bg-gray-50 border-t border-gray-100 flex justify-end">
+
+                    <button type="submit"
+                        className="px-4 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-b from-teal-500 via-teal-600 to-teal-500 hover:from-teal-600 hover:to-blue-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        <Save />
+                    </button>
+                    <button type="button"
+                        onClick={onFormReset}
+                        className="ms-3 px-4 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-b from-blue-400 via-blue-600 to-blue-400  hover:from-teal-600 hover:to-blue-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
+                        <RotateCcw />
+                    </button>
+                </div>
+                {/* <div className="h-1 bg-gradient-to-r from-blue-600 via-blue-500 to-teal-500"></div> */}
+            </form>
+        </div>
+    );
 }
 
 export default ProductForm

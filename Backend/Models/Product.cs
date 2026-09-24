@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Backend.Models;
 
@@ -10,6 +10,7 @@ public class Product
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public DateTime CreationDate { get; set; } = DateTime.Now;
-    public int Category { get; set; } = 0;
-    public bool Available { get; set; } = false;
+    public int Category { get; set; }
+    public bool Available { get; set; } = true;
+    public int Stock { get; set; } = 0;
 }

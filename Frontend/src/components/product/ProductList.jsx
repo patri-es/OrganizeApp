@@ -1,6 +1,57 @@
-const ProductList = () => {
+import { Edit, Trash2 } from 'lucide-react'
+
+const ProductList = ({ productsList, onProductEdit, onProductDelete }) => {
+
+    if (!productsList || productsList.length === 0) {
+        return (
+            <div className="text-center text-gray-500">
+                <p className="text-lg">
+                    No tenemos productas en la lista
+                </p>
+            </div>
+        )
+    }
+
     return (
-        <div>ProductList</div>
+        <div>
+            <ul>
+                {
+                    productsList.map(product => <li key={product.id}
+                        className="">
+                        <div>
+                            <span>{product.name} </span>
+                            <span>{product.description} </span>
+                        </div>
+                        <div className="flex items-center justify-center space-x-2">
+                            <button onClick={() => onProductEdit(product)}
+                                className="inline-flex items-center px-3 py-2 bg-blue-100 text-blue-700 text-sm font-medium rounded-lg hover:bg-blue-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105"
+                                title="Edit product"
+                            >
+                                <Edit className="w-4 h-4 mr-1" />
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => onProductDelete(product)}
+
+
+                                className="inline-flex items-center px-3 py-2 bg-red-100 text-red-700 text-sm font-medium rounded-lg hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105"
+                                title="Delete product"
+                            >
+                                <Trash2 className="w-4 h-4 mr-1" />
+                                Delete
+                            </button>
+
+                        </div>
+                    </li>
+
+                    )
+                }
+
+
+
+            </ul>
+        </div>
+
     )
 }
 

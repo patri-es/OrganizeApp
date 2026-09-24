@@ -5,6 +5,7 @@ import About from "./pages/About"
 import NotFound from "./pages/NotFound"
 import { Routes, Route } from "react-router"
 import { Toaster } from "react-hot-toast"
+import Product from "./components/product/Product"
 
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
                 <Route index element={<Home /> } />
                 <Route path="about" element={<About /> } />
                 <Route path="person" element={<Person /> } />
+                <Route path="product" element={<Product /> } />
                 <Route path="*" element={<NotFound /> } />
             </Routes>
 
