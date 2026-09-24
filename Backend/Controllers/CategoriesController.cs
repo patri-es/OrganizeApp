@@ -1,4 +1,4 @@
-using Backend.Models;
+﻿using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,47 +6,47 @@ namespace Backend.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ProductsController : ControllerBase
+public class CategoriesController : ControllerBase
 {
     #region dbContext
     // agrego el contexto de la bbdd
     private readonly AppDbContext _context;
 
     // constructor que inyectará la AppDbContext:
-    public ProductsController(AppDbContext context)
+    public CategoriesController(AppDbContext context)
     {
         _context = context;
     }
 
-#endregion
+    #endregion
 
-#region EndPoints
+    #region EndPoints
 
-    // POST /api/products
+    // POST /api/categorys
     [HttpPost]
-    public async Task<IActionResult> AddProduct(Product product)
+    public async Task<IActionResult> AddCategory(Category category)
     {
         try
         {
-            _context.Products.Add(product);
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
-            return Ok(product);
+            return Ok(category);
 
-    }
+        }
         catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
-    // GET /api/products
+    // GET /api/categorys
     [HttpGet]
-    public async Task<IActionResult> GetProducts()
+    public async Task<IActionResult> GetCategories()
     {
         try
         {
-            var products = await _context.Products.ToListAsync();
-            return Ok(products); // 200 Ok status code + product object in the body
+            var categorys = await _context.Categories.ToListAsync();
+            return Ok(categorys); // 200 Ok status code + category object in the body
         }
         catch (Exception ex)
         {
@@ -54,19 +54,19 @@ public class ProductsController : ControllerBase
         }
     }
 
-    // GET /api/products/1
+    // GET /api/categorys/1
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetProduct(int id)
+    public async Task<IActionResult> GetCategory(int id)
     {
         try
         {
             if (id == 0) return BadRequest("id no puede ser 0");
 
-        var product = await _context.Products.FindAsync(id);
-            if (product is null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category is null)
                 return NotFound(); // 404 Not Found status code 
 
-        return Ok(product); // 200 Ok status code + product object in the body
+            return Ok(category); // 200 Ok status code + category object in the body
         }
         catch (Exception ex)
         {
@@ -74,21 +74,21 @@ public class ProductsController : ControllerBase
         }
     }
 
-    // PUT /api/products/1
+    // PUT /api/categorys/1
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
+    public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
     {
         try
         {
-            if (id != product.Id)
+            if (id != category.Id)
             {
                 return BadRequest("Id en la url y en el Body no coinciden");
             }
-            if (!await _context.Products.AnyAsync(p => p.Id == id))
+            if (!await _context.Categories.AnyAsync(p => p.Id == id))
             {
                 return NotFound();
             }
-            _context.Products.Update(product);
+            _context.Categories.Update(category);
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -98,19 +98,19 @@ public class ProductsController : ControllerBase
         }
     }
 
-    // Delete /api/products/1
+    // Delete /api/categorys/1
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProduct(int id)
+    public async Task<IActionResult> DeleteCategory(int id)
     {
         try
         {
             if (id == 0) return BadRequest("El id no puede ser 0");
 
-        var product = await _context.Products.FindAsync(id);
-            if (product is null)
-                return NotFound("Error, producto no encontrado"); // 400
+            var category = await _context.Categories.FindAsync(id);
+            if (category is null)
+                return NotFound("Error, categoría no encontrada"); // 400
 
-        _context.Products.Remove(product);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return NoContent();
         }
