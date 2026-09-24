@@ -18,7 +18,7 @@ const defaultFormValues = {
 function Product() {
     //const BASE_URL = import.meta.env.VITE_BASE_API_URL + '/products';
 
-    const [products, setPeople] = useState([]);
+    const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [editData, setEditData] = useState(null);
 
@@ -32,11 +32,11 @@ function Product() {
 
     useEffect(() => {
         try {
-            const loadPeople = async () => {
+            const loadProducts = async () => {
                 var productsData = (await axios.get(BASE_URL)).data;
-                setPeople(productsData);
+                setProducts(productsData);
             }
-            loadPeople();
+            loadProducts();
         } catch (error) {
             console.log(error);
             toast.error("Error has occured!");
@@ -62,11 +62,11 @@ function Product() {
         try {
             if (product.id <= 0) {
                 const createdProduct = (await axios.post(BASE_URL, product)).data;
-                setPeople((previousProduct) => [...previousProduct, createdProduct]);
+                setProducts((previousProduct) => [...previousProduct, createdProduct]);
             }
             else {
                 await axios.put(`${BASE_URL}/${product.id}`, product);
-                setPeople((previousPeople) => previousPeople.map(p => p.id === product.id ? product : p));
+                setProducts((previousProducts) => previousProducts.map(p => p.id === product.id ? product : p));
             }
             methods.reset(defaultFormValues);
             toast.success("Saved successfully!");
@@ -88,7 +88,7 @@ function Product() {
         setLoading(true);
         try {
             await axios.delete(`${BASE_URL}/${product.id}`);
-            setPeople((previousProduct) => previousProduct.filter(p => p.id !== product.id));
+            setProducts((previousProduct) => previousProduct.filter(p => p.id !== product.id));
             toast.success("Deleted successfully!");
         } catch (error) {
             console.log(error);
