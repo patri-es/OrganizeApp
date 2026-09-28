@@ -68,21 +68,21 @@ const CategoryForm = ({ methods, onFormReset, onFormSubmit }) => {
                             </p>}
                     </div>
 
-                    {/* creationDate */}
+                    {/* code */}
                     <div>
-                        <label htmlFor="creationDate" className="block text-sm font-semibold text-gray-700 mb-2">
-                            CreationDate
+                        <label htmlFor="code" className="block text-sm font-semibold text-gray-700 mb-2">
+                            Code
                         </label>
-                        <input type="date"
-                            {...register("creationDate", {
+                        <input type="text"
+                            {...register("code", {
                                 required: false,
                                 maxLength: 30
                             })}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
 
-                        {errors.creationDate?.type === 'maxLength' &&
+                        {errors.code?.type === 'maxLength' &&
                             <p className="mt-1 text-sm text-red-600 flex items-center">
-                                creationDate can not exceed 50 characters
+                                code can not exceed 50 characters
                             </p>}
                     </div>
 
