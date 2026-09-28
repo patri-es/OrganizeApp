@@ -6,6 +6,7 @@ import NotFound from "./pages/NotFound"
 import { Routes, Route } from "react-router"
 import { Toaster } from "react-hot-toast"
 import Product from "./components/product/Product"
+import Category from "./components/categories/Category"
 
 
 const App = () => {
@@ -17,6 +18,7 @@ const App = () => {
                 <Route path="about" element={<About /> } />
                 <Route path="person" element={<Person /> } />
                 <Route path="product" element={<Product /> } />
+                <Route path="category" element={<Category /> } />
                 <Route path="*" element={<NotFound /> } />
             </Routes>
 

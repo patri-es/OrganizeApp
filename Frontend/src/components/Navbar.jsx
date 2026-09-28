@@ -70,6 +70,17 @@ const Navbar = () => {
                             >
                                 Product
                             </ NavLink>
+
+                            <NavLink
+                                to='/category'
+
+                                className={({ isActive }) => `px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 transform hover:scale-105 ${isActive
+                                    ? 'bg-gradient-to-t from-teal-600 via-teal-500 to-teal-400 text-white shadow-lg'
+                                    : 'text-gray-700 hover:text-blue-600 hover:bg-blue-50'
+                                    }`}
+                            >
+                                Category
+                            </ NavLink>
                         </div>
                     </nav>
 
@@ -127,6 +138,26 @@ const Navbar = () => {
                             }`}
                     >
                         Person
+                    </ NavLink>
+
+
+                    <NavLink
+                        to='/product'
+                        className={({ isActive }) => `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${isActive
+                            ? 'bg-gradient-to-r from-blue-500 to-teal-500 text-white shadow-md transform scale-105'
+                            : 'text-gray-700 hover:text-blue-600 hover:bg-white hover:shadow-sm'
+                            }`}
+                    >
+                        Product
+                    </ NavLink>
+                    <NavLink
+                        to='/category'
+                        className={({ isActive }) => `block px-4 py-3 rounded-lg text-base font-medium transition-all duration-200 ${isActive
+                            ? 'bg-gradient-to-r from-blue-500 to-teal-500 text-white shadow-md transform scale-105'
+                            : 'text-gray-700 hover:text-blue-600 hover:bg-white hover:shadow-sm'
+                            }`}
+                    >
+                        Category
                     </ NavLink>
                 </div>
             </div>
