@@ -11,9 +11,10 @@ const defaultFormValues = {
     id: 0,
     name: '',
     description: '',
-    creationDate: '',
-    category: ''
+    creationDate: ''
 }
+    // ,
+    // category: ''
 
 function Product() {
     //const BASE_URL = import.meta.env.VITE_BASE_API_URL + '/products';
