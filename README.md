@@ -86,12 +86,12 @@ Creating WebApp with React and .NET for the backend, usign API with controllers 
 
 
 
-Ejecutar ambos en desarrollo
+### Ejecutar ambos en desarrollo
 - Abre dos terminales:
   - Terminal A: cd Frontend && npm run dev
   - Terminal B: cd Backend/Backend && dotnet run
 
-Actualizar dependencias y análisis
+#### Actualizar dependencias y análisis
 - Frontend:
   - npm update
   - npm audit fix
@@ -103,21 +103,17 @@ Actualizar dependencias y análisis
     - dotnet add package <Paquete> --version <Versión>
   - Ejecuta pruebas estáticas / linters si están configurados
 
-Configuración importante
+### Configuración importante
 - Conexión a base de datos en Backend/Backend/appsettings.json:
   - Actualmente usa LocalDB: "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=OrganizeApp; Integrated Security=True; ..."
   - Cambiar según entorno (usar variables de entorno en producción).
 - CORS: Program.cs permite orígenes desde http://localhost:5173. Ajustar si cambias el puerto o dominio del frontend.
 
-Resolución de problemas comunes
+## Resolución de problemas comunes
 - Error EF: si dotnet ef no está disponible, instala dotnet-ef globalmente.
 - Si la API no responde desde el frontend: comprobar URL y puerto del backend (consola dotnet run) y revisar CORS.
 - Si el frontend no arranca: asegúrate de la versión de Node y de haber ejecutado npm install.
 
-Notas finales
+## Notas finales
 - Hay READMEs específicos en /Frontend y /Backend con detalles locales; revisarlos para instrucciones específicas del subproyecto.
 - Este README es una guía de inicio rápido; adapta cadenas de conexión y variables de entorno para entornos de staging/producción.
-
-Si quieres, puedo:
-- Generar/actualizar el README.md en la raíz con este contenido (lo pego directamente en el archivo).
-- Extraer y añadir comandos exactos de launchSettings.json o el README de Backend/Frontend si quieres mayor precisión.

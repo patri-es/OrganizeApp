@@ -86,7 +86,7 @@ const ProductForm = ({ methods, onFormReset, onFormSubmit }) => {
                             </p>}
                     </div>
 
-                    {/* Category */}
+                    {/* Category 
                     <div>
                         <label htmlFor="category" className="block text-sm font-semibold text-gray-700 mb-2">
                             Category
@@ -97,7 +97,7 @@ const ProductForm = ({ methods, onFormReset, onFormSubmit }) => {
                                 maxLength: 12
                             })}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
-                    </div>
+                    </div>*/}
                 </div>
 
                 {/* footer con botones */}
