@@ -1,4 +1,4 @@
-using Backend.Models;
+﻿using Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,15 +6,15 @@ namespace Backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Tags("People")]
-public class PeopleController : ControllerBase
+[Tags("Categories")]
+public class CategoriesController : ControllerBase
 {
     #region dbContext
     // agrego el contexto de la bbdd
     private readonly AppDbContext _context;
 
     // constructor que inyectará la AppDbContext:
-    public PeopleController(AppDbContext context)
+    public CategoriesController(AppDbContext context)
     {
         _context = context;
     }
@@ -23,17 +23,16 @@ public class PeopleController : ControllerBase
 
     #region EndPoints
 
-    // POST /api/people
+    // POST /api/categories
     [HttpPost]
-    public async Task<IActionResult> AddPerson(Person person)
+    public async Task<IActionResult> AddCategory(Category category)
     {
         try
         {
-            _context.People.Add(person);
+            _context.Categories.Add(category);
             await _context.SaveChangesAsync();
-            return Ok(person); // 200 Ok status code + person object in the body
+            return Ok(category);
 
-            //return CreatedAtRoute("GetPerson", new { id = person.Id }, person);
         }
         catch (Exception ex)
         {
@@ -41,14 +40,14 @@ public class PeopleController : ControllerBase
         }
     }
 
-    // GET /api/people
+    // GET /api/categories
     [HttpGet]
-    public async Task<IActionResult> GetPeople()
+    public async Task<IActionResult> GetCategories()
     {
         try
         {
-            var people = await _context.People.ToListAsync();
-            return Ok(people); // 200 Ok status code + person object in the body
+            var item = await _context.Categories.ToListAsync();
+            return Ok(item); // 200 Ok status code + category object in the body
         }
         catch (Exception ex)
         {
@@ -56,19 +55,19 @@ public class PeopleController : ControllerBase
         }
     }
 
-    // GET /api/people/1
+    // GET /api/categories/1
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetPerson(int id)
+    public async Task<IActionResult> GetCategory(int id)
     {
         try
         {
             if (id == 0) return BadRequest("id no puede ser 0");
 
-            var person = await _context.People.FindAsync(id);
-            if (person is null)
+            var category = await _context.Categories.FindAsync(id);
+            if (category is null)
                 return NotFound(); // 404 Not Found status code 
 
-            return Ok(person); // 200 Ok status code + person object in the body
+            return Ok(category); // 200 Ok status code + category object in the body
         }
         catch (Exception ex)
         {
@@ -76,21 +75,21 @@ public class PeopleController : ControllerBase
         }
     }
 
-    // PUT /api/people/1
+    // PUT /api/categories/1
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdatePerson(int id, [FromBody] Person person)
+    public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
     {
         try
         {
-            if (id != person.Id)
+            if (id != category.Id)
             {
                 return BadRequest("Id en la url y en el Body no coinciden");
             }
-            if (!await _context.People.AnyAsync(p => p.Id == id))
+            if (!await _context.Categories.AnyAsync(p => p.Id == id))
             {
                 return NotFound();
             }
-            _context.People.Update(person);
+            _context.Categories.Update(category);
             await _context.SaveChangesAsync();
             return NoContent();
         }
@@ -100,19 +99,19 @@ public class PeopleController : ControllerBase
         }
     }
 
-    // Delete /api/people/1
+    // Delete /api/categories/1
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeletePerson(int id)
+    public async Task<IActionResult> DeleteCategory(int id)
     {
         try
         {
             if (id == 0) return BadRequest("El id no puede ser 0");
 
-            var person = await _context.People.FindAsync(id);
-            if (person is null)
-                return NotFound("Error, persona no encontrada"); // 400
+            var category = await _context.Categories.FindAsync(id);
+            if (category is null)
+                return NotFound("Error, categoría no encontrada"); // 400
 
-            _context.People.Remove(person);
+            _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return NoContent();
         }

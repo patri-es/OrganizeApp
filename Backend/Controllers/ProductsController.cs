@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
+[Tags("Products")]
 public class ProductsController : ControllerBase
 {
     #region dbContext
@@ -24,7 +25,7 @@ public class ProductsController : ControllerBase
 
     // POST /api/products
     [HttpPost]
-    public async Task<IActionResult> AddProducto(Product product)
+    public async Task<IActionResult> AddProduct(Product product)
     {
         try
         {
@@ -56,7 +57,7 @@ public class ProductsController : ControllerBase
 
     // GET /api/products/1
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetProducto(int id)
+    public async Task<IActionResult> GetProduct(int id)
     {
         try
         {
@@ -76,7 +77,7 @@ public class ProductsController : ControllerBase
 
     // PUT /api/products/1
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProducto(int id, [FromBody] Product product)
+    public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
     {
         try
         {
@@ -100,7 +101,7 @@ public class ProductsController : ControllerBase
 
     // Delete /api/products/1
     [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteProducto(int id)
+    public async Task<IActionResult> DeleteProduct(int id)
     {
         try
         {
@@ -108,7 +109,7 @@ public class ProductsController : ControllerBase
 
         var product = await _context.Products.FindAsync(id);
             if (product is null)
-                return NotFound("Error, producto no encontrada"); // 400
+                return NotFound("Error, producto no encontrado"); // 400
 
         _context.Products.Remove(product);
             await _context.SaveChangesAsync();

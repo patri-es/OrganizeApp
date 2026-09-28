@@ -73,11 +73,18 @@ Creating WebApp with React and .NET for the backend, usign API with controllers 
   - Asegúrate de tener dotnet-ef instalado globalmente si no está disponible:
     - dotnet tool install --global dotnet-ef
   - Aplicar migrations a la base de datos:
-    - dotnet ef database update
+    ```dotnet ef database update```
+
   - Para crear nuevas migrations:
-    - dotnet ef migrations add NombreMigracion
+    ```dotnet ef migrations add NombreMigracion```
+
+  - Para borrar la última migration creada:
+    ```dotnet ef migrations remove```
+
 - Si prefieres ejecutar desde la raíz con ruta de proyecto:
   - dotnet run --project Backend/Backend
+
+
 
 Ejecutar ambos en desarrollo
 - Abre dos terminales:
