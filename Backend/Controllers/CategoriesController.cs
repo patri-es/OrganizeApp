@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
+[Tags("Categories")]
 public class CategoriesController : ControllerBase
 {
     #region dbContext
@@ -22,7 +23,7 @@ public class CategoriesController : ControllerBase
 
     #region EndPoints
 
-    // POST /api/categorys
+    // POST /api/categories
     [HttpPost]
     public async Task<IActionResult> AddCategory(Category category)
     {
@@ -39,14 +40,14 @@ public class CategoriesController : ControllerBase
         }
     }
 
-    // GET /api/categorys
+    // GET /api/categories
     [HttpGet]
     public async Task<IActionResult> GetCategories()
     {
         try
         {
-            var categorys = await _context.Categories.ToListAsync();
-            return Ok(categorys); // 200 Ok status code + category object in the body
+            var item = await _context.Categories.ToListAsync();
+            return Ok(item); // 200 Ok status code + category object in the body
         }
         catch (Exception ex)
         {
@@ -54,7 +55,7 @@ public class CategoriesController : ControllerBase
         }
     }
 
-    // GET /api/categorys/1
+    // GET /api/categories/1
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCategory(int id)
     {
@@ -74,7 +75,7 @@ public class CategoriesController : ControllerBase
         }
     }
 
-    // PUT /api/categorys/1
+    // PUT /api/categories/1
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
     {
@@ -98,7 +99,7 @@ public class CategoriesController : ControllerBase
         }
     }
 
-    // Delete /api/categorys/1
+    // Delete /api/categories/1
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {

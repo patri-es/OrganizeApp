@@ -4,8 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Controllers;
 
-[Route("api/[controller]")]
 [ApiController]
+[Route("api/[controller]")]
+[Tags("Products")]
 public class ProductsController : ControllerBase
 {
     #region dbContext
