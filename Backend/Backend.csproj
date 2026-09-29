@@ -7,13 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Backend-old\**" />
-    <Content Remove="Backend-old\**" />
-    <EmbeddedResource Remove="Backend-old\**" />
-    <None Remove="Backend-old\**" />
-  </ItemGroup>
-
-  <ItemGroup>
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
 	  <PrivateAssets>all</PrivateAssets>
 	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
