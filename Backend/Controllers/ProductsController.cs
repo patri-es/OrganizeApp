@@ -19,10 +19,13 @@ public class ProductsController : ControllerBase
         _context = context;
     }
 
-#endregion
+    #endregion
 
-#region EndPoints
+    #region EndPoints
 
+    /// <summary>
+    /// Crea un nuevo producto. Devuelve 200 con el producto creado.
+    /// </summary>
     // POST /api/products
     [HttpPost]
     public async Task<IActionResult> AddProduct(Product product)
@@ -40,6 +43,9 @@ public class ProductsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Obtiene todos los productos. Devuelve 200 con el listado.
+    /// </summary>
     // GET /api/products
     [HttpGet]
     public async Task<IActionResult> GetProducts()
@@ -55,6 +61,9 @@ public class ProductsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Obtiene un producto por id. Devuelve 200 con el producto o 404 si no existe.
+    /// </summary>
     // GET /api/products/1
     [HttpGet("{id}")]
     public async Task<IActionResult> GetProduct(int id)
@@ -75,6 +84,9 @@ public class ProductsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Actualiza un producto existente. Devuelve 204 si la actualización tuvo éxito.
+    /// </summary>
     // PUT /api/products/1
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateProduct(int id, [FromBody] Product product)
@@ -99,6 +111,9 @@ public class ProductsController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Elimina un producto por su id. Devuelve 204 si se eliminó correctamente.
+    /// </summary>
     // Delete /api/products/1
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteProduct(int id)

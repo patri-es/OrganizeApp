@@ -23,6 +23,9 @@ public class PeopleController : ControllerBase
 
     #region EndPoints
 
+    /// <summary>
+    /// Crea una nueva persona en la base de datos. Devuelve 200 con el objeto creado.
+    /// </summary>
     // POST /api/people
     [HttpPost]
     public async Task<IActionResult> AddPerson(Person person)
@@ -41,6 +44,9 @@ public class PeopleController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Obtiene la lista completa de personas. Devuelve 200 con el listado.
+    /// </summary>
     // GET /api/people
     [HttpGet]
     public async Task<IActionResult> GetPeople()
@@ -56,6 +62,9 @@ public class PeopleController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Obtiene una persona por su id. Devuelve 200 con la persona o 404 si no existe.
+    /// </summary>
     // GET /api/people/1
     [HttpGet("{id}")]
     public async Task<IActionResult> GetPerson(int id)
@@ -76,6 +85,9 @@ public class PeopleController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Actualiza una persona existente. Devuelve 204 si la actualización tuvo éxito.
+    /// </summary>
     // PUT /api/people/1
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdatePerson(int id, [FromBody] Person person)
@@ -100,6 +112,9 @@ public class PeopleController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Elimina una persona por su id. Devuelve 204 si se eliminó correctamente.
+    /// </summary>
     // Delete /api/people/1
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeletePerson(int id)

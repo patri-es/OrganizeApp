@@ -23,6 +23,9 @@ public class CategoriesController : ControllerBase
 
     #region EndPoints
 
+    /// <summary>
+    /// Crea una nueva categoría. Devuelve 200 con la categoría creada.
+    /// </summary>
     // POST /api/categories
     [HttpPost]
     public async Task<IActionResult> AddCategory(Category category)
@@ -40,6 +43,9 @@ public class CategoriesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Obtiene todas las categorías. Devuelve 200 con el listado.
+    /// </summary>
     // GET /api/categories
     [HttpGet]
     public async Task<IActionResult> GetCategories()
@@ -55,6 +61,9 @@ public class CategoriesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Obtiene una categoría por id. Devuelve 200 con la categoría o 404 si no existe.
+    /// </summary>
     // GET /api/categories/1
     [HttpGet("{id}")]
     public async Task<IActionResult> GetCategory(int id)
@@ -75,6 +84,9 @@ public class CategoriesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Actualiza una categoría existente. Devuelve 204 si la actualización tuvo éxito.
+    /// </summary>
     // PUT /api/categories/1
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] Category category)
@@ -99,6 +111,9 @@ public class CategoriesController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Elimina una categoría por su id. Devuelve 204 si se eliminó correctamente.
+    /// </summary>
     // Delete /api/categories/1
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)

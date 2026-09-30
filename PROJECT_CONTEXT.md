@@ -50,6 +50,7 @@ Backend/
 Dependency Injection para la configuración y consumo de `AppDbContext`.
 
 Los Controllers acceden directamente a `AppDbContext`; actualmente no existen capas Service, Repository ni una arquitectura Clean/Onion.
+Esta estructura esta siendo refactorizada para que se organize por capas completamente separadas.
 
 ## Modelo
 
@@ -78,4 +79,5 @@ Persistencia mediante EF Core Code First y migraciones.
 - Tailwind CSS para estilos.
 - Código orientado a mantener patrones homogéneos entre los distintos CRUD.
 
-Al modificar el proyecto, mantener la arquitectura y patrones existentes salvo indicación expresa de cambio arquitectónico. Priorizar la coherencia con el código existente sobre la introducción de patrones o capas que actualmente no forman parte del proyecto.
+Al modificar el proyecto, mantener la arquitectura y patrones existentes salvo indicación expresa de cambio arquitectónico. 
+Priorizar la coherencia con el código existente sobre la introducción de patrones o capas que actualmente no forman parte del proyecto.
