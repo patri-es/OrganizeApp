@@ -2,14 +2,16 @@
 
 namespace Backend.Models;
 
-public class Product
+public class Category
 {
     public int Id { get; set; }
+
     [Required]
-    [MaxLength(50)]
+    [MaxLength(20)]
+    public string Code { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public DateTime CreationDate { get; set; } = DateTime.Now;
-    public int Category { get; set; } = 0;
-    public bool Available { get; set; } = false;
+
+    public ICollection<Product> Products { get; set; } = new List<Product>();
+
 }
