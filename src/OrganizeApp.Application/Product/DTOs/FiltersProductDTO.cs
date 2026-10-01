@@ -1,6 +1,6 @@
 ﻿namespace OrganizeApp.Application.Product.DTOs;
 
-public class ProductFiltersDTO
+public class FiltersProductDTO
 {
     public int? CategoryId { get; set; }
     public bool? HasCategory { get; set; }

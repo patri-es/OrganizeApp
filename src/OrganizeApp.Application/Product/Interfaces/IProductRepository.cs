@@ -5,7 +5,7 @@ using OrganizeApp.Domain.Entities;
 
 public interface IProductRepository
 {
-    Task<List<Product>> GetProductsAsync(ProductFiltersDTO? filters);
+    Task<List<Product>> GetProductsAsync(FiltersProductDTO? filters);
 
     Task<Product?> GetByIdAsync(int productId);
 

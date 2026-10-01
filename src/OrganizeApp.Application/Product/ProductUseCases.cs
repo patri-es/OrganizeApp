@@ -1,8 +1,5 @@
 ﻿using OrganizeApp.Application.Category.DTOs;
 using OrganizeApp.Application.Product.DTOs;
-using OrganizeApp.Domain;
-using OrganizeApp.Domain.Interfaces;
-using System.Xml.Linq;
 
 namespace OrganizeApp.Application.Product;
 
@@ -20,7 +17,7 @@ public class ProductUseCases
     }
 
     // Queries
-    public async Task<List<ProductDTO>> GetProducts(ProductFiltersDTO? filters)
+    public async Task<List<ProductDTO>> GetProducts(FiltersProductDTO? filters)
     {
         var products = await _productRepository.GetProductsAsync(filters);
 
