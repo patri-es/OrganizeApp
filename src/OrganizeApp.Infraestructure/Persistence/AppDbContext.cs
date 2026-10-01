@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using OrganizeApp.Domain.Entities;
 
 namespace OrganizeApp.Infraestructure.Persistence;
 
@@ -9,8 +10,6 @@ public class AppDbContext : DbContext
     {
 
     }
-
-    //public DbSet<Person> People { get; set; }
-    //public DbSet<Product> Products { get; set; }
-    //public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Category> Categories { get; set; }
 }
