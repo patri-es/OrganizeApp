@@ -17,9 +17,28 @@ public class ProductUseCases
     }
 
     // Queries
-    public async Task GetProducts()
+    public async Task<List<ProductDTO>> GetProducts(ProductFiltersDTO? filters)
     {
-        throw new NotImplementedException();
+        var products = await _productRepository.GetProductsAsync(filters);
+
+        return products
+            .Select(product => new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Stock = product.Stock,
+                IsAvailable = product.IsAvailable,
+                Categories = product.Categories
+                    .Select(category => new CategoryDTO
+                    {
+                        Id = category.Id,
+                        Code = category.Code,
+                        Name = category.Name
+                    })
+                    .ToList()
+            })
+            .ToList();
     }
 
     public async Task<ProductDTO?> GetProductById(int productId)
