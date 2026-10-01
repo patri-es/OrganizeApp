@@ -1,6 +1,7 @@
-﻿using OrganizeApp.Application.Product.DTOs;
-using OrganizeApp.Application.Category.DTOs;
+﻿using OrganizeApp.Application.Category.DTOs;
+using OrganizeApp.Application.Product.DTOs;
 using OrganizeApp.Domain;
+using OrganizeApp.Domain.Interfaces;
 using System.Xml.Linq;
 
 namespace OrganizeApp.Application.Product;
@@ -10,10 +11,12 @@ public class ProductUseCases
 
     // Constructor
     private readonly IProductRepository _productRepository;
+    private readonly ICategoryRepository _categoryRepository;
 
-    public ProductUseCases(IProductRepository productRepository)
+    public ProductUseCases(IProductRepository productRepository,ICategoryRepository categoryRepository)
     {
         _productRepository = productRepository;
+        _categoryRepository = categoryRepository;
     }
 
     // Queries
@@ -206,7 +209,14 @@ public class ProductUseCases
         if (product is null)
             throw new Exception("Product not found");
 
-        // TODO get Category by Id.
+        var category = await _categoryRepository.GetByIdAsync(categoryId);
+
+        if (category is null)
+            throw new Exception("Category not found");
+
+        product.AssignCategory(category);
+
+        await _productRepository.SaveChangesAsync();
     }
 
     public async Task RemoveProductCategory(int productId, int categoryId)
@@ -216,8 +226,14 @@ public class ProductUseCases
         if (product is null)
             throw new Exception("Product not found");
 
-        // TODO get Category by Id.
-        // TODO remove relation between Product and Category
+        var category = await _categoryRepository.GetByIdAsync(categoryId);
+
+        if (category is null)
+            throw new Exception("Category not found");
+
+        product.RemoveCategory(category);
+
+        await _productRepository.SaveChangesAsync();
     }
 
 }
