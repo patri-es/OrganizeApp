@@ -16,7 +16,6 @@ public class ProductUseCases
     }
 
     // Queries
-
     public async Task GetProducts()
     {
         throw new NotImplementedException();
@@ -29,7 +28,6 @@ public class ProductUseCases
 
 
     // Creation
-
     public async Task CreateProduct(CreateProductDTO dto)
     {
         var product = new Domain.Entities.Product(
@@ -43,9 +41,19 @@ public class ProductUseCases
         //throw new NotImplementedException();
     }
 
+    // Deletion
+    public async Task DeleteProduct(int productId)
+    {
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        await _productRepository.DeleteAsync(product);
+        await _productRepository.SaveChangesAsync();
+    }
 
     // Edition
-
     public async Task ChangeProductName(int productId, string name)
     {
         var product = await _productRepository.GetByIdAsync(productId);
@@ -99,12 +107,26 @@ public class ProductUseCases
 
     public async Task IncreaseProductStock(int productId, int quantity)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        product.IncreaseStock(quantity);
+
+        await _productRepository.SaveChangesAsync();
     }
 
     public async Task DecreaseProductStock(int productId, int quantity)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        product.DecreaseStock(quantity);
+
+        await _productRepository.SaveChangesAsync();
     }
 
 
@@ -112,12 +134,26 @@ public class ProductUseCases
 
     public async Task ActivateProduct(int productId)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        product.Activate();
+
+        await _productRepository.SaveChangesAsync();
     }
 
     public async Task DeactivateProduct(int productId)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        product.Deactivate();
+
+        await _productRepository.SaveChangesAsync();
     }
 
 
@@ -125,19 +161,23 @@ public class ProductUseCases
 
     public async Task AssignProductCategory(int productId, int categoryId)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        // TODO get Category by Id.
     }
 
     public async Task RemoveProductCategory(int productId, int categoryId)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        // TODO get Category by Id.
+        // TODO remove relation between Product and Category
     }
 
-
-    // Deletion
-
-    public async Task DeleteProduct(int productId)
-    {
-        throw new NotImplementedException();
-    }
 }
