@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Category\Validations\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\OrganizeApp.Domain\OrganizeApp.Domain.csproj" />
   </ItemGroup>
 

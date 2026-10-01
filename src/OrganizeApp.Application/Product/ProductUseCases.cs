@@ -1,5 +1,5 @@
 ﻿using OrganizeApp.Application.Product.DTOs;
-using OrganizeApp.Domain.Entities;
+using OrganizeApp.Domain;
 
 namespace OrganizeApp.Application.Product;
 
@@ -31,7 +31,7 @@ public class ProductUseCases
 
     public async Task CreateProduct(CreateProductDTO dto)
     {
-        var product = new CreateProductDTO(
+        var product = new Domain.Entities.Product(
             dto.Name,
             dto.Description,
             dto.Price,
@@ -39,7 +39,7 @@ public class ProductUseCases
 
         await _productRepository.AddAsync(product);
         await _productRepository.SaveChangesAsync();
-        throw new NotImplementedException();
+        //throw new NotImplementedException();
     }
 
 

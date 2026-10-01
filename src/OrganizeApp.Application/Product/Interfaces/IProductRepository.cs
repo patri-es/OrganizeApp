@@ -1,5 +1,7 @@
 ﻿
 using OrganizeApp.Application.Product.DTOs;
+using OrganizeApp.Domain.Entities;
+
 
 public interface IProductRepository
 {
