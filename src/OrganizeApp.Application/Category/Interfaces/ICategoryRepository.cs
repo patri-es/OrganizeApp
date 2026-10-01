@@ -5,7 +5,7 @@ using OrganizeApp.Domain.Entities;
 
 public interface ICategoryRepository
 {
-    Task<List<Category>> GetCategorysAsync(CategoryDTO? filters);
+    Task<List<Category>> GetCategoriesAsync();
 
     Task<Category?> GetByIdAsync(int categoryId);
 
