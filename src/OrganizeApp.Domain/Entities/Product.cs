@@ -10,5 +10,5 @@ public partial class Product
     public int Stock { get; private set; }
     public DateTime CreationDate { get; private set; }
     public bool IsAvailable { get; private set; }
-    public Category? Category { get; private set; }
+    public ICollection<Category> Categories { get; private set; } = new List<Category>();
 }

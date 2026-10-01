@@ -35,6 +35,7 @@ public partial class Product
         IsAvailable = false;
     }
 
+    // Name
     public void ChangeName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -43,11 +44,13 @@ public partial class Product
         Name = name;
     }
 
+    // Description
     public void ChangeDescription(string? description)
     {
         Description = description;
     }
 
+    // Price
     public void ChangePrice(decimal price)
     {
         if (price < 0)
@@ -56,6 +59,7 @@ public partial class Product
         Price = price;
     }
 
+    // Image
     public void ChangeImage(string imageUrl)
     {
         if (string.IsNullOrWhiteSpace(imageUrl))
@@ -64,6 +68,7 @@ public partial class Product
         ImageUrl = imageUrl;
     }
 
+    // Stock
     public void IncreaseStock(int quantity)
     {
         if (quantity <= 0)
@@ -86,13 +91,16 @@ public partial class Product
             IsAvailable = false;
     }
 
+    // Available
     public void Activate()
     {
         if (Stock == 0)
             throw new ProductDomainException("A product cannot be activated without stock.");
 
-        if (Category is null)
+        if (Categories.Count == 0)
+        {
             throw new ProductDomainException("A product cannot be activated without a category.");
+        }
 
         IsAvailable = true;
     }
@@ -102,14 +110,26 @@ public partial class Product
         IsAvailable = false;
     }
 
+    // Category
     public void AssignCategory(Category category)
     {
-        Category = category;
+        if (Categories.Any(c => c.Id == category.Id))
+            return;
+
+        Categories.Add(category);
     }
 
-    public void RemoveCategory()
+    public void RemoveCategory(Category category)
     {
-        Category = null;
-        IsAvailable = false;
+        var existingCategory = Categories
+            .FirstOrDefault(c => c.Id == category.Id);
+
+        if (existingCategory is null)
+            return;
+
+        Categories.Remove(existingCategory);
+
+        if (Categories.Count == 0)
+            IsAvailable = false;
     }
 }
