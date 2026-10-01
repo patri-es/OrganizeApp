@@ -1,5 +1,6 @@
 ﻿using OrganizeApp.Application.Product.DTOs;
 using OrganizeApp.Domain;
+using System.Xml.Linq;
 
 namespace OrganizeApp.Application.Product;
 
@@ -59,17 +60,38 @@ public class ProductUseCases
 
     public async Task ChangeProductDescription(int productId, string? description)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        product.ChangeDescription(description);
+
+        await _productRepository.SaveChangesAsync();
     }
 
     public async Task ChangeProductPrice(int productId, decimal price)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        product.ChangePrice(price);
+
+        await _productRepository.SaveChangesAsync();
     }
 
     public async Task ChangeProductImage(int productId, string imageUrl)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            throw new Exception("Product not found");
+
+        product.ChangeImage(imageUrl);
+
+        await _productRepository.SaveChangesAsync();
     }
 
 
