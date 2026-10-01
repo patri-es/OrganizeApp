@@ -9,10 +9,8 @@ public interface ICategoryRepository
 
     Task<Category?> GetByIdAsync(int categoryId);
 
-    Task AddAsync(Category category);
-
     Task DeleteAsync(Category category);
 
     Task SaveChangesAsync();
-    Task AddAsync(NewCategoryDTO category);
+    Task AddAsync(CreateCategoryDTO category);
 }

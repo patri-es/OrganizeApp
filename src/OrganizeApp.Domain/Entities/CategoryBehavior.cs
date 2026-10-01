@@ -15,7 +15,7 @@ public partial class Category
     public Category(
         string name,
         string code,
-        string? description,
+        string description,
         string imageUrl)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -46,12 +46,12 @@ public partial class Category
         Code = code;
     }
 
-    public void ChangeDescription(string? description)
+    public void ChangeDescription(string description)
     {
         Description = description;
     }
 
-    public void ChangeImage(string? imageUrl)
+    public void ChangeImage(string imageUrl)
     {
         ImageUrl = imageUrl;
     }
