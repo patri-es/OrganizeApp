@@ -1,14 +1,14 @@
-﻿
-namespace OrganizeApp.Domain.Entities;
+﻿namespace OrganizeApp.Domain.Entities;
 
-public class Product
+public partial class Product
 {
-    public int Id { get; set; }
-    public string Name { get; set; } = string.Empty;
-    public string? Description { get; set; } 
-    public string? Image { get; set; } 
-    public string? Category { get; set; } 
-    public int Price { get; set; } = 0;
-    public int Stock { get; set; } = 0;
-
+    public int Id { get; private set; }
+    public string Name { get; private set; } = string.Empty;
+    public string? Description { get; private set; }
+    public string ImageUrl { get; private set; } = string.Empty;
+    public decimal Price { get; private set; }
+    public int Stock { get; private set; }
+    public DateTime CreationDate { get; private set; }
+    public bool IsAvailable { get; private set; }
+    public Category? Category { get; private set; }
 }
