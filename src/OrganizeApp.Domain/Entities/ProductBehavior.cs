@@ -11,7 +11,7 @@ public partial class Product
     /// <param name="description"></param>
     /// <param name="price"></param>
     /// <param name="imageUrl"></param>
-    /// <exception cref="ProductDomainExceptions"></exception>
+    /// <exception cref="ProductDomainException"></exception>
     public Product(
         string name,
         string? description,
@@ -19,13 +19,13 @@ public partial class Product
         string imageUrl)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ProductDomainExceptions("Product name is required.");
+            throw new ProductDomainException("Product name is required.");
 
         if (price < 0)
-            throw new ProductDomainExceptions("Product price cannot be negative.");
+            throw new ProductDomainException("Product price cannot be negative.");
 
         if (string.IsNullOrWhiteSpace(imageUrl))
-            throw new ProductDomainExceptions("Product image is required.");
+            throw new ProductDomainException("Product image is required.");
 
         Name = name;
         Description = description;
@@ -38,7 +38,7 @@ public partial class Product
     public void ChangeName(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
-            throw new ProductDomainExceptions("Product name is required.");
+            throw new ProductDomainException("Product name is required.");
 
         Name = name;
     }
@@ -51,7 +51,7 @@ public partial class Product
     public void ChangePrice(decimal price)
     {
         if (price < 0)
-            throw new ProductDomainExceptions("Product price cannot be negative.");
+            throw new ProductDomainException("Product price cannot be negative.");
 
         Price = price;
     }
@@ -59,7 +59,7 @@ public partial class Product
     public void ChangeImage(string imageUrl)
     {
         if (string.IsNullOrWhiteSpace(imageUrl))
-            throw new ProductDomainExceptions("Product image is required.");
+            throw new ProductDomainException("Product image is required.");
 
         ImageUrl = imageUrl;
     }
@@ -67,8 +67,7 @@ public partial class Product
     public void IncreaseStock(int quantity)
     {
         if (quantity <= 0)
-            throw new ProductDomainExceptions(
-                "The quantity to increase must be greater than zero.");
+            throw new ProductDomainException("The quantity to increase must be greater than zero.");
 
         Stock += quantity;
     }
@@ -76,12 +75,10 @@ public partial class Product
     public void DecreaseStock(int quantity)
     {
         if (quantity <= 0)
-            throw new ProductDomainExceptions(
-                "The quantity to decrease must be greater than zero.");
+            throw new ProductDomainException("The quantity to decrease must be greater than zero.");
 
         if (quantity > Stock)
-            throw new ProductDomainExceptions(
-                "Stock cannot be reduced below zero.");
+            throw new ProductDomainException("Stock cannot be reduced below zero.");
 
         Stock -= quantity;
 
@@ -92,12 +89,10 @@ public partial class Product
     public void Activate()
     {
         if (Stock == 0)
-            throw new ProductDomainExceptions(
-                "A product cannot be activated without stock.");
+            throw new ProductDomainException("A product cannot be activated without stock.");
 
         if (Category is null)
-            throw new ProductDomainExceptions(
-                "A product cannot be activated without a category.");
+            throw new ProductDomainException("A product cannot be activated without a category.");
 
         IsAvailable = true;
     }
