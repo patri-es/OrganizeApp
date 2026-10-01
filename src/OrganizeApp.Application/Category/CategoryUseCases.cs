@@ -1,6 +1,5 @@
 ﻿using OrganizeApp.Application.Category.DTOs;
 using OrganizeApp.Application.DTOs;
-using OrganizeApp.Application.Product.DTOs;
 
 namespace OrganizeApp.Application.Category;
 
@@ -8,12 +7,10 @@ namespace OrganizeApp.Application.Category;
 public class CategoryUseCases
 {
     // Constructor
-    private readonly IProductRepository _productRepository;
     private readonly ICategoryRepository _categoryRepository;
 
-    public CategoryUseCases(IProductRepository productRepository, ICategoryRepository categoryRepository)
+    public CategoryUseCases(ICategoryRepository categoryRepository)
     {
-        _productRepository = productRepository;
         _categoryRepository = categoryRepository;
     }
 
@@ -86,7 +83,7 @@ public class CategoryUseCases
         await _categoryRepository.SaveChangesAsync();
     }
 
-    public async Task ChangeCategoryDescription(int categoryId, string? description)
+    public async Task ChangeCategoryDescription(int categoryId, string description)
     {
         var category = await _categoryRepository.GetByIdAsync(categoryId);
 
