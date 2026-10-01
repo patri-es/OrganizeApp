@@ -1,4 +1,5 @@
 ﻿using OrganizeApp.Application.Product.DTOs;
+using OrganizeApp.Application.Category.DTOs;
 using OrganizeApp.Domain;
 using System.Xml.Linq;
 
@@ -21,9 +22,29 @@ public class ProductUseCases
         throw new NotImplementedException();
     }
 
-    public async Task GetProductById(int productId)
+    public async Task<ProductDTO?> GetProductById(int productId)
     {
-        throw new NotImplementedException();
+        var product = await _productRepository.GetByIdAsync(productId);
+
+        if (product is null)
+            return null; //new Exception("Product not found");
+
+        return new ProductDTO
+        {
+            Id = product.Id,
+            Name = product.Name,
+            Description = product.Description,
+            Stock = product.Stock,
+            IsAvailable = product.IsAvailable,
+            Categories = product.Categories
+                .Select(category => new CategoryDTO
+                {
+                    Id = category.Id,
+                    Code = category.Code,
+                    Name = category.Name
+                })
+                .ToList()
+        };
     }
 
 
