@@ -1,6 +1,5 @@
 ﻿
 using OrganizeApp.Application.Product.DTOs;
-//using OrganizeApp.Domain.Entities;
 using ProductEntity = OrganizeApp.Domain.Entities.Product;
 
 namespace OrganizeApp.Application.Product.Interfaces;
