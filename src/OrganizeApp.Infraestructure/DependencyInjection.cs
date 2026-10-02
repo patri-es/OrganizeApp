@@ -1,10 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using OrganizeApp.Application.Category.Interfaces;
+using OrganizeApp.Application.Product.Interfaces;
+using OrganizeApp.Infraestructure.Persistence;
+using OrganizeApp.Infraestructure.Persistence.Repositories;
 
-namespace OrganizeApp.Infraestructure
+namespace OrganizeApp.Infraestructure;
+
+public static class DependencyInjection
 {
-    internal class DependencyInjection
-    {
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        IConfiguration configuration)
+    {   // Data Base
+        services.AddDbContext<AppDbContext>(options =>
+            options.UseSqlServer(
+                configuration.GetConnectionString("Default")));
+
+        // Repositories
+        services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+        return services;
     }
 }

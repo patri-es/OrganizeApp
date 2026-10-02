@@ -1,10 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.Extensions.DependencyInjection;
 
-namespace OrganizeApp.Application
+namespace OrganizeApp.Application;
+
+public static class DependencyInjection
 {
-    internal class DependencyInjection
+    public static IServiceCollection AddApplication(
+        this IServiceCollection services)
     {
+        return services;
     }
 }

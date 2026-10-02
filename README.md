@@ -114,6 +114,32 @@ Creating WebApp with React and .NET for the backend, usign API with controllers 
 - Si la API no responde desde el frontend: comprobar URL y puerto del backend (consola dotnet run) y revisar CORS.
 - Si el frontend no arranca: asegúrate de la versión de Node y de haber ejecutado npm install.
 
-## Notas finales
-- Hay READMEs específicos en /Frontend y /Backend con detalles locales; revisarlos para instrucciones específicas del subproyecto.
-- Este README es una guía de inicio rápido; adapta cadenas de conexión y variables de entorno para entornos de staging/producción.
+# Nueva versión:
+## Proyecto refactorizado. 
+Esta es la nueva estructura del proyecto: 
+
+        Domain
+        ├── Product
+        └── Category
+
+        Application
+        ├── DTOs
+        ├── IProductRepository
+        ├── ICategoryRepository
+        └── DependencyInjection
+
+        Infrastructure
+        ├── AppDbContext
+        ├── Configurations
+        │   ├── ProductConfiguration
+        │   ├── CategoryConfiguration
+        │   └── ProductCategoryConfiguration
+        ├── ProductRepository
+        ├── CategoryRepository
+        └── DependencyInjection
+
+        API
+        ├── Program.cs
+        ├── appsettings.json
+        └── DependencyInjection de Application/Infrastructure
+
