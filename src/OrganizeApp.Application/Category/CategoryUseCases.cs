@@ -42,13 +42,13 @@ public class CategoryUseCases(ICategoryRepository categoryRepository)
     // Creation
     public async Task CreateCategory(CreateCategoryDTO dto)
     {
-        _ = new Domain.Entities.Category(
+        var category = new Domain.Entities.Category(
             dto.Name,
             dto.Code,
             dto.Description,
             dto.ImageUrl);
 
-        await _categoryRepository.AddAsync(dto);
+        await _categoryRepository.AddAsync(category);
         await _categoryRepository.SaveChangesAsync();
     }
 
