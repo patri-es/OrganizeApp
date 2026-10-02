@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OrganizeApp.Application\OrganizeApp.Application.csproj" />
     <ProjectReference Include="..\OrganizeApp.Domain\OrganizeApp.Domain.csproj" />
   </ItemGroup>
 
