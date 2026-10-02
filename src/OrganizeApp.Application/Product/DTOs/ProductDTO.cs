@@ -1,4 +1,5 @@
 ﻿using OrganizeApp.Application.Category.DTOs;
+
 namespace OrganizeApp.Application.Product.DTOs;
 
 public class ProductDTO

@@ -1,27 +1,23 @@
 ﻿using OrganizeApp.Application.Category.DTOs;
 using OrganizeApp.Application.Product.DTOs;
+using OrganizeApp.Application.Product.Interfaces;
+using OrganizeApp.Application.Category.Interfaces;
 
 namespace OrganizeApp.Application.Product;
 
-public class ProductUseCases
+public class ProductUseCases(IProductRepository productRepository, ICategoryRepository categoryRepository)
 {
 
     // Constructor
-    private readonly IProductRepository _productRepository;
-    private readonly ICategoryRepository _categoryRepository;
-
-    public ProductUseCases(IProductRepository productRepository,ICategoryRepository categoryRepository)
-    {
-        _productRepository = productRepository;
-        _categoryRepository = categoryRepository;
-    }
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly ICategoryRepository _categoryRepository = categoryRepository;
 
     // Queries
     public async Task<List<ProductDTO>> GetProducts(FiltersProductDTO? filters)
     {
         var products = await _productRepository.GetProductsAsync(filters);
 
-        return products
+        return [.. products
             .Select(product => new ProductDTO
             {
                 Id = product.Id,
@@ -29,16 +25,14 @@ public class ProductUseCases
                 Description = product.Description,
                 Stock = product.Stock,
                 IsAvailable = product.IsAvailable,
-                Categories = product.Categories
+                Categories = [.. product.Categories
                     .Select(category => new CategoryDTO
                     {
                         Id = category.Id,
                         Code = category.Code,
                         Name = category.Name
-                    })
-                    .ToList()
-            })
-            .ToList();
+                    })]
+            })];
     }
 
     public async Task<ProductDTO?> GetProductById(int productId)
@@ -55,14 +49,13 @@ public class ProductUseCases
             Description = product.Description,
             Stock = product.Stock,
             IsAvailable = product.IsAvailable,
-            Categories = product.Categories
+            Categories = [.. product.Categories
                 .Select(category => new CategoryDTO
                 {
                     Id = category.Id,
                     Code = category.Code,
                     Name = category.Name
-                })
-                .ToList()
+                })]
         };
     }
 
@@ -84,11 +77,7 @@ public class ProductUseCases
     // Deletion
     public async Task DeleteProduct(int productId)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         await _productRepository.DeleteAsync(product);
         await _productRepository.SaveChangesAsync();
     }
@@ -96,11 +85,7 @@ public class ProductUseCases
     // Edition
     public async Task ChangeProductName(int productId, string name)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         product.ChangeName(name);
 
         await _productRepository.SaveChangesAsync();
@@ -108,11 +93,7 @@ public class ProductUseCases
 
     public async Task ChangeProductDescription(int productId, string? description)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         product.ChangeDescription(description);
 
         await _productRepository.SaveChangesAsync();
@@ -120,11 +101,7 @@ public class ProductUseCases
 
     public async Task ChangeProductPrice(int productId, decimal price)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         product.ChangePrice(price);
 
         await _productRepository.SaveChangesAsync();
@@ -132,11 +109,7 @@ public class ProductUseCases
 
     public async Task ChangeProductImage(int productId, string imageUrl)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         product.ChangeImage(imageUrl);
 
         await _productRepository.SaveChangesAsync();
@@ -147,11 +120,7 @@ public class ProductUseCases
 
     public async Task IncreaseProductStock(int productId, int quantity)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         product.IncreaseStock(quantity);
 
         await _productRepository.SaveChangesAsync();
@@ -159,11 +128,7 @@ public class ProductUseCases
 
     public async Task DecreaseProductStock(int productId, int quantity)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         product.DecreaseStock(quantity);
 
         await _productRepository.SaveChangesAsync();
@@ -174,11 +139,7 @@ public class ProductUseCases
 
     public async Task ActivateProduct(int productId)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         product.Activate();
 
         await _productRepository.SaveChangesAsync();
@@ -186,11 +147,7 @@ public class ProductUseCases
 
     public async Task DeactivateProduct(int productId)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
         product.Deactivate();
 
         await _productRepository.SaveChangesAsync();
@@ -201,16 +158,8 @@ public class ProductUseCases
 
     public async Task AssignProductCategory(int productId, int categoryId)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
-        var category = await _categoryRepository.GetByIdAsync(categoryId);
-
-        if (category is null)
-            throw new Exception("Category not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+        var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new Exception("Category not found");
         product.AssignCategory(category);
 
         await _productRepository.SaveChangesAsync();
@@ -218,16 +167,8 @@ public class ProductUseCases
 
     public async Task RemoveProductCategory(int productId, int categoryId)
     {
-        var product = await _productRepository.GetByIdAsync(productId);
-
-        if (product is null)
-            throw new Exception("Product not found");
-
-        var category = await _categoryRepository.GetByIdAsync(categoryId);
-
-        if (category is null)
-            throw new Exception("Category not found");
-
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+        var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new Exception("Category not found");
         product.RemoveCategory(category);
 
         await _productRepository.SaveChangesAsync();

@@ -1,18 +1,19 @@
 ﻿
 using OrganizeApp.Application.Product.DTOs;
-using OrganizeApp.Domain.Entities;
+//using OrganizeApp.Domain.Entities;
+using ProductEntity = OrganizeApp.Domain.Entities.Product;
 
+namespace OrganizeApp.Application.Product.Interfaces;
 
 public interface IProductRepository
 {
-    Task<List<Product>> GetProductsAsync(FiltersProductDTO? filters);
+    Task<List<ProductEntity>> GetProductsAsync(FiltersProductDTO? filters);
 
-    Task<Product?> GetByIdAsync(int productId);
+    Task<ProductEntity?> GetByIdAsync(int productId);
 
-    Task AddAsync(Product product);
+    Task AddAsync(ProductEntity product);
 
-    Task DeleteAsync(Product product);
+    Task DeleteAsync(ProductEntity product);
 
     Task SaveChangesAsync();
-    Task AddAsync(CreateProductDTO product);
 }
