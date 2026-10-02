@@ -3,16 +3,11 @@ using OrganizeApp.Application.Category.Interfaces;
 using OrganizeApp.Infraestructure.Persistence;
 using CategoryEntity = OrganizeApp.Domain.Entities.Category;
 
-namespace OrganizeApp.Infrastructure.Persistence.Repositories;
+namespace OrganizeApp.Infraestructure.Persistence.Repositories;
 
-public class CategoryRepository : ICategoryRepository
+public class CategoryRepository(AppDbContext context) : ICategoryRepository
 {
-    private readonly AppDbContext _context;
-
-    public CategoryRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     public async Task<List<CategoryEntity>> GetCategoriesAsync()
     {

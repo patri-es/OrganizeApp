@@ -4,16 +4,11 @@ using OrganizeApp.Application.Product.Interfaces;
 using OrganizeApp.Infraestructure.Persistence;
 using ProductEntity = OrganizeApp.Domain.Entities.Product;
 
-namespace OrganizeApp.Infrastructure.Persistence.Repositories;
+namespace OrganizeApp.Infraestructure.Persistence.Repositories;
 
-public class ProductRepository : IProductRepository
+public class ProductRepository(AppDbContext context) : IProductRepository
 {
-    private readonly AppDbContext _context;
-
-    public ProductRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+    private readonly AppDbContext _context = context;
 
     // Get Products with filters
     public async Task<List<ProductEntity>> GetProductsAsync(
