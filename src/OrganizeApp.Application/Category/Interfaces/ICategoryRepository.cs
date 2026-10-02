@@ -1,16 +1,16 @@
-﻿
-using OrganizeApp.Application.Category.DTOs;
-using OrganizeApp.Application.DTOs;
-using OrganizeApp.Domain.Entities;
+﻿using CategoryEntity = OrganizeApp.Domain.Entities.Category;
+
+namespace OrganizeApp.Application.Category.Interfaces;
 
 public interface ICategoryRepository
 {
-    Task<List<Category>> GetCategoriesAsync();
+    Task<List<CategoryEntity>> GetCategoriesAsync();
 
-    Task<Category?> GetByIdAsync(int categoryId);
+    Task<CategoryEntity?> GetByIdAsync(int categoryId);
 
-    Task DeleteAsync(Category category);
+    Task AddAsync(CategoryEntity category);
+
+    Task DeleteAsync(CategoryEntity category);
 
     Task SaveChangesAsync();
-    Task AddAsync(CreateCategoryDTO category);
 }

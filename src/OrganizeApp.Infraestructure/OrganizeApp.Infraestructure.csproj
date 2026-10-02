@@ -15,12 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Integrations\" />
-    <Folder Include="Persistence\Migrations\" />
-    <Folder Include="Persistence\Configurations\" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\OrganizeApp.Application\OrganizeApp.Application.csproj" />
     <ProjectReference Include="..\OrganizeApp.Domain\OrganizeApp.Domain.csproj" />
   </ItemGroup>
 

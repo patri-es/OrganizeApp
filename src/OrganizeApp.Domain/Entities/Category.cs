@@ -11,5 +11,7 @@ public partial class Category
     public string Description { get; private set; } = string.Empty;
 
     public string ImageUrl { get; private set; } = string.Empty;
+    public DateTime CreationDate { get; private set; }
 
+    public ICollection<Product> Products { get; private set; } = [];
 }
