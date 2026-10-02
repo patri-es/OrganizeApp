@@ -10,7 +10,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     public void Configure(EntityTypeBuilder<Category> builder)
     {
         // Table
-        builder.ToTable("Category");
+        builder.ToTable("Categories");
 
         // Primary Key
         builder.HasKey(c => c.Id);
@@ -32,7 +32,7 @@ public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         // ImageUrl
         builder.Property(c => c.ImageUrl)
-            .IsRequired()
+            .IsRequired(false)
             .HasMaxLength(500);
 
         // CreationDate
