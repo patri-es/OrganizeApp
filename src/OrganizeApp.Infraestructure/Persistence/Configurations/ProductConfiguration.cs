@@ -40,7 +40,8 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         // CreationDate
         builder.Property(p => p.CreationDate)
-            .IsRequired();
+            .IsRequired()
+            .HasDefaultValueSql("GETDATE()");
 
         // IsAvailable
         builder.Property(p => p.IsAvailable)
