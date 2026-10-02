@@ -1,10 +1,46 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Microsoft.EntityFrameworkCore;
+using OrganizeApp.Application.Category.Interfaces;
+using OrganizeApp.Infraestructure.Persistence;
+using CategoryEntity = OrganizeApp.Domain.Entities.Category;
 
-namespace OrganizeApp.Infraestructure.Persistence.Repositories;
+namespace OrganizeApp.Infrastructure.Persistence.Repositories;
 
-//public class CategoryRepository : ICategoryRepository
-//{
-    
-//}
+public class CategoryRepository : ICategoryRepository
+{
+    private readonly AppDbContext _context;
+
+    public CategoryRepository(AppDbContext context)
+    {
+        _context = context;
+    }
+
+    public async Task<List<CategoryEntity>> GetCategoriesAsync()
+    {
+        return await _context.Categories.ToListAsync();
+    }
+
+    public async Task<CategoryEntity?> GetByIdAsync(int categoryId)
+    {
+        return await _context.Categories
+            .FirstOrDefaultAsync(c => c.Id == categoryId);
+    }
+
+    public Task AddAsync(CategoryEntity category)
+    {
+        _context.Categories.Add(category);
+
+        return Task.CompletedTask;
+    }
+
+    public Task DeleteAsync(CategoryEntity category)
+    {
+        _context.Categories.Remove(category);
+
+        return Task.CompletedTask;
+    }
+
+    public async Task SaveChangesAsync()
+    {
+        await _context.SaveChangesAsync(); 
+    }
+}
