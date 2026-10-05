@@ -60,6 +60,15 @@ public class CategoryUseCases(ICategoryRepository categoryRepository)
         await _categoryRepository.SaveChangesAsync();
     }
 
+    // Update 
+    public async Task UpdateCategory(int categoryId, UpdateCategoryDTO dto)
+    {
+        var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new Exception("Category not found");
+
+        category.ChangeName(dto.Name);
+        category.ChangeDescription(dto.Description);
+        category.ChangeImage(dto.ImageUrl);
+    }
     // Edition
     public async Task ChangeCategoryName(int categoryId, string name)
     {
