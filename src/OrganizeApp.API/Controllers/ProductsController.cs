@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrganizeApp.Application.Product;
 using OrganizeApp.Application.Product.DTOs;
-using OrganizeApp.Domain.Entities;
-//using OrganizeApp.Infraestructure.
 
 
 namespace OrganizeApp.API.Controllers;
@@ -22,15 +20,11 @@ public class ProductsController(ProductUseCases productUseCases) : ControllerBas
     public async Task<ActionResult<List<ProductDTO>>> GetProducts([FromQuery] FiltersProductDTO? filters)
     {
         var products = await _productUseCases.GetProducts(filters);
-
-        if (products == null)
-            return NotFound();
-
         return Ok(products);
     }
 
     // Get Product by Id 
-    [HttpGet]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<ProductDTO>> GetProduct(int id) 
     { 
         var product = await _productUseCases.GetProductById(id);
@@ -44,55 +38,60 @@ public class ProductsController(ProductUseCases productUseCases) : ControllerBas
    
     // Add new product
     [HttpPost]
-    public async Task<ActionResult> CreateProduct([FromQuery] CreateProductDTO product)
+    public async Task<ActionResult> CreateProduct([FromBody] CreateProductDTO product)
     {
         await _productUseCases.CreateProduct(product);
-
         return Ok(product);
+        //return CreatedAtAction(nameof(GetProduct), new { id = product.Id }, product);
     }
 
     // Delete Product
-    public async Task<ActionResult> DeleteProduct([FromQuery] int id) 
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> DeleteProduct(int id) 
     {
         await _productUseCases.DeleteProduct(id);
-
-        return Ok();
+        return Ok("Product successfully deleted.");
     }
 
     [HttpPatch]
-    public async Task<ActionResult> UpdateProduct(int id, ProductDTO product) 
+    public async Task<ActionResult> UpdateProduct(int id, [FromBody] UpdateProductDTO product)
     {
-        var produtSaved = await _productUseCases.GetProductById(id);
-        bool productChanged = false;
+        await _productUseCases.UpdateProduct(id, product);
+        return Ok(product);
+    }
 
-        if (produtSaved == null)
-            return NotFound(produtSaved);
+    #endregion
 
-        if (produtSaved.Name != product.Name)
-        {
-            await _productUseCases.ChangeProductName(id, produtSaved.Name);
-            productChanged = true;
-        }
-        if (produtSaved.Description != null && produtSaved.Description != product.Description)
-        {
-            await _productUseCases.ChangeProductDescription(id, produtSaved.Description);
-            productChanged = true;
-        }
-        if (produtSaved.Price != product.Price)
-        {
-            await _productUseCases.ChangeProductPrice(id, produtSaved.Price);
-            productChanged = true;
-        }
-        if (produtSaved.ImageUrl != null && produtSaved.ImageUrl != product.ImageUrl)
-        {
-            await _productUseCases.ChangeProductImage(id, produtSaved.ImageUrl);
-            productChanged = true;
-        }
+    #region category, stock & status
 
-        if (!productChanged)
-            return BadRequest("The product could not be updated.");
+    // Change availability of product
+    [HttpPost("{id:int}/activate")]
+    public async Task<ActionResult> ActivateProduct(int id)
+    {
+        await _productUseCases.ActivateProduct(id);
+        return Ok("Product successfully activated.");
+    }
 
-        return Ok("Product successfully updated.");
+    [HttpPost("{id:int}/deactivate")]
+    public async Task<ActionResult> DeactivateProduct(int id)
+    {
+        await _productUseCases.DeactivateProduct(id);
+        return Ok("Product successfully deactivated.");
+    }
+
+    // Change Stock of product
+    [HttpPost("{id:int}/stock/increase")]
+    public async Task<ActionResult> IncreaseStock(int id, [FromBody] ChangeStockDTO dto)
+    {
+        await _productUseCases.IncreaseProductStock(id, dto.Quantity);
+        return Ok("Product stock successfully increased.");
+    }
+
+    [HttpPost("{id:int}/stock/decrease")]
+    public async Task<ActionResult> DecreaseStock(int id, [FromBody] ChangeStockDTO dto)
+    {
+        await _productUseCases.DecreaseProductStock(id, dto.Quantity);
+        return Ok("Product stock successfully decreased.");
     }
 
     #endregion
