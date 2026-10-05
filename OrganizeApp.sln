@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 18
+VisualStudioVersion = 18.0.0.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontend", "Frontend\Frontend.csproj", "{D4C3B2A1-2222-3333-4444-000000000002}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{35BB4ADE-AF1B-4CC5-A29F-175C11F1A8C4}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizeApp.Domain", "src\OrganizeApp.Domain\OrganizeApp.Domain.csproj", "{D3265F0B-24FE-4F84-8342-F8E2CE28EC15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizeApp.Application", "src\OrganizeApp.Application\OrganizeApp.Application.csproj", "{4BBFE153-EE3E-48A1-9F21-01A95B5F3A66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizeApp.Infraestructure", "src\OrganizeApp.Infraestructure\OrganizeApp.Infraestructure.csproj", "{A994AE2A-7278-41E9-91C5-79DD1BC01D08}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizeApp.API", "src\OrganizeApp.API\OrganizeApp.API.csproj", "{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D4C3B2A1-2222-3333-4444-000000000002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C3B2A1-2222-3333-4444-000000000002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C3B2A1-2222-3333-4444-000000000002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C3B2A1-2222-3333-4444-000000000002}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3265F0B-24FE-4F84-8342-F8E2CE28EC15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3265F0B-24FE-4F84-8342-F8E2CE28EC15}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3265F0B-24FE-4F84-8342-F8E2CE28EC15}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3265F0B-24FE-4F84-8342-F8E2CE28EC15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BBFE153-EE3E-48A1-9F21-01A95B5F3A66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BBFE153-EE3E-48A1-9F21-01A95B5F3A66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BBFE153-EE3E-48A1-9F21-01A95B5F3A66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BBFE153-EE3E-48A1-9F21-01A95B5F3A66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A994AE2A-7278-41E9-91C5-79DD1BC01D08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A994AE2A-7278-41E9-91C5-79DD1BC01D08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A994AE2A-7278-41E9-91C5-79DD1BC01D08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A994AE2A-7278-41E9-91C5-79DD1BC01D08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ED4719A5-5CC7-4750-AAA0-C7000056FD02}
+	EndGlobalSection
+EndGlobal
