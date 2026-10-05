@@ -94,6 +94,20 @@ public class ProductsController(ProductUseCases productUseCases) : ControllerBas
         return Ok("Product stock successfully decreased.");
     }
 
+    [HttpPost("{productId:int}/categories/{categoryId:int}")]
+    public async Task<ActionResult> AsignProductCategory(int productId, int categoryId)
+    {
+        await _productUseCases.AssignProductCategory(productId, categoryId);
+        return Ok("Category successfully assigned to product.");
+    }
+
+    [HttpDelete("{productId:int}/categories/{categoryId:int}")]
+    public async Task<ActionResult> RemoveProductCategory(int productId, int categoryId)
+    {
+        await _productUseCases.RemoveProductCategory(productId, categoryId);
+        return Ok("Category successfully removed to product.");
+    }
+
     #endregion
 
 }

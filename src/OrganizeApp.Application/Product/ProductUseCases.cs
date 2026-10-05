@@ -82,7 +82,7 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
         await _productRepository.SaveChangesAsync();
     }
 
-    // Update all
+    // Update with Domain specifics methods
     public async Task UpdateProduct(int productId, UpdateProductDTO dto)
     {
         var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
@@ -95,38 +95,38 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
         await _productRepository.SaveChangesAsync();
     }
 
-    // Edition
-    public async Task ChangeProductName(int productId, string name)
-    {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        product.ChangeName(name);
+    //// Edition
+    //public async Task ChangeProductName(int productId, string name)
+    //{
+    //    var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+    //    product.ChangeName(name);
 
-        await _productRepository.SaveChangesAsync();
-    }
+    //    await _productRepository.SaveChangesAsync();
+    //}
 
-    public async Task ChangeProductDescription(int productId, string? description)
-    {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        product.ChangeDescription(description);
+    //public async Task ChangeProductDescription(int productId, string? description)
+    //{
+    //    var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+    //    product.ChangeDescription(description);
 
-        await _productRepository.SaveChangesAsync();
-    }
+    //    await _productRepository.SaveChangesAsync();
+    //}
 
-    public async Task ChangeProductPrice(int productId, decimal price)
-    {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        product.ChangePrice(price);
+    //public async Task ChangeProductPrice(int productId, decimal price)
+    //{
+    //    var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+    //    product.ChangePrice(price);
 
-        await _productRepository.SaveChangesAsync();
-    }
+    //    await _productRepository.SaveChangesAsync();
+    //}
 
-    public async Task ChangeProductImage(int productId, string imageUrl)
-    {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        product.ChangeImage(imageUrl);
+    //public async Task ChangeProductImage(int productId, string? imageUrl)
+    //{
+    //    var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+    //    product.ChangeImage(imageUrl);
 
-        await _productRepository.SaveChangesAsync();
-    }
+    //    await _productRepository.SaveChangesAsync();
+    //}
 
 
     // Stock

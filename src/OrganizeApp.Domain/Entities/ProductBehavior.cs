@@ -16,7 +16,7 @@ public partial class Product
         string name,
         string? description,
         decimal price,
-        string imageUrl)
+        string? imageUrl)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new ProductDomainException("Product name is required.");
@@ -62,9 +62,6 @@ public partial class Product
     // Image
     public void ChangeImage(string? imageUrl)
     {
-        if (string.IsNullOrWhiteSpace(imageUrl))
-            throw new ProductDomainException("Product image is required.");
-
         ImageUrl = imageUrl;
     }
 
