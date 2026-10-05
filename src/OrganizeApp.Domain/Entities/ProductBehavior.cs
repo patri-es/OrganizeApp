@@ -60,13 +60,18 @@ public partial class Product
     }
 
     // Image
-    public void ChangeImage(string imageUrl)
+    public void ChangeImage(string? imageUrl)
     {
         if (string.IsNullOrWhiteSpace(imageUrl))
             throw new ProductDomainException("Product image is required.");
 
         ImageUrl = imageUrl;
     }
+
+    //public void UpdateProduct(Product product)
+    //{
+    //}
+
 
     // Stock
     public void IncreaseStock(int quantity)
@@ -94,7 +99,7 @@ public partial class Product
     // Available
     public void Activate()
     {
-        if (Stock == 0)
+        if (Stock <= 0)
             throw new ProductDomainException("A product cannot be activated without stock.");
 
         if (Categories.Count == 0)

@@ -82,6 +82,19 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
         await _productRepository.SaveChangesAsync();
     }
 
+    // Update all
+    public async Task UpdateProduct(int productId, UpdateProductDTO dto)
+    {
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+
+        product.ChangeName(dto.Name);
+        product.ChangeDescription(dto.Description);
+        product.ChangePrice(dto.Price);
+        product.ChangeImage(dto.ImageUrl);
+
+        await _productRepository.SaveChangesAsync();
+    }
+
     // Edition
     public async Task ChangeProductName(int productId, string name)
     {
