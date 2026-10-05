@@ -1,7 +1,8 @@
 ﻿using OrganizeApp.Application.Category.DTOs;
+using OrganizeApp.Application.Category.Interfaces;
+using OrganizeApp.Application.Exceptions;
 using OrganizeApp.Application.Product.DTOs;
 using OrganizeApp.Application.Product.Interfaces;
-using OrganizeApp.Application.Category.Interfaces;
 
 namespace OrganizeApp.Application.Product;
 
@@ -82,45 +83,58 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
         await _productRepository.SaveChangesAsync();
     }
 
-    // Edition
-    public async Task ChangeProductName(int productId, string name)
+    // Update with Domain specifics methods
+    public async Task UpdateProduct(int productId, UpdateProductDTO dto)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        product.ChangeName(name);
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
+
+        product.ChangeName(dto.Name);
+        product.ChangeDescription(dto.Description);
+        product.ChangePrice(dto.Price);
+        product.ChangeImage(dto.ImageUrl);
 
         await _productRepository.SaveChangesAsync();
     }
 
-    public async Task ChangeProductDescription(int productId, string? description)
-    {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        product.ChangeDescription(description);
+    //// Edition
+    //public async Task ChangeProductName(int productId, string name)
+    //{
+    //    var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+    //    product.ChangeName(name);
 
-        await _productRepository.SaveChangesAsync();
-    }
+    //    await _productRepository.SaveChangesAsync();
+    //}
 
-    public async Task ChangeProductPrice(int productId, decimal price)
-    {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        product.ChangePrice(price);
+    //public async Task ChangeProductDescription(int productId, string? description)
+    //{
+    //    var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+    //    product.ChangeDescription(description);
 
-        await _productRepository.SaveChangesAsync();
-    }
+    //    await _productRepository.SaveChangesAsync();
+    //}
 
-    public async Task ChangeProductImage(int productId, string imageUrl)
-    {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        product.ChangeImage(imageUrl);
+    //public async Task ChangeProductPrice(int productId, decimal price)
+    //{
+    //    var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+    //    product.ChangePrice(price);
 
-        await _productRepository.SaveChangesAsync();
-    }
+    //    await _productRepository.SaveChangesAsync();
+    //}
+
+    //public async Task ChangeProductImage(int productId, string? imageUrl)
+    //{
+    //    var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+    //    product.ChangeImage(imageUrl);
+
+    //    await _productRepository.SaveChangesAsync();
+    //}
 
 
     // Stock
 
     public async Task IncreaseProductStock(int productId, int quantity)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
         product.IncreaseStock(quantity);
 
         await _productRepository.SaveChangesAsync();
@@ -128,7 +142,7 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
 
     public async Task DecreaseProductStock(int productId, int quantity)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
         product.DecreaseStock(quantity);
 
         await _productRepository.SaveChangesAsync();
@@ -139,7 +153,7 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
 
     public async Task ActivateProduct(int productId)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
         product.Activate();
 
         await _productRepository.SaveChangesAsync();
@@ -147,7 +161,7 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
 
     public async Task DeactivateProduct(int productId)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
         product.Deactivate();
 
         await _productRepository.SaveChangesAsync();
@@ -158,8 +172,8 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
 
     public async Task AssignProductCategory(int productId, int categoryId)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new Exception("Category not found");
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
+        var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new NotFoundException("Category not found");
         product.AssignCategory(category);
 
         await _productRepository.SaveChangesAsync();

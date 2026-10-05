@@ -114,6 +114,57 @@ Creating WebApp with React and .NET for the backend, usign API with controllers 
 - Si la API no responde desde el frontend: comprobar URL y puerto del backend (consola dotnet run) y revisar CORS.
 - Si el frontend no arranca: asegúrate de la versión de Node y de haber ejecutado npm install.
 
-## Notas finales
-- Hay READMEs específicos en /Frontend y /Backend con detalles locales; revisarlos para instrucciones específicas del subproyecto.
-- Este README es una guía de inicio rápido; adapta cadenas de conexión y variables de entorno para entornos de staging/producción.
+# Nueva versión:
+## Proyecto refactorizado. 
+Esta es la nueva estructura del proyecto: 
+
+        Domain
+        ├── Product
+        └── Category
+
+        Application
+        ├── Product
+        │   ├── ProductUseCases.cs
+        │   └── ProductValidation.cs
+        │   ├── DTOs
+        │   │   ├── ProductDTO.cs
+        │   │   ├── CreateProductDTO.cs
+        │   │   └── FiltersProductDTO.cs
+        │   ├── Interfaces
+        │   │   └── IProductRepository.cs
+        ├── Category
+        │   ├── CategoryUseCases.cs
+        │   ├── DTOs
+        │   │   ├── CategoryDTO.cs
+        │   │   ├── CreateCategoryDTO.cs
+        │   ├── Interfaces
+        │   │   └── ICategoryRepository.cs
+
+        Infrastructure
+        ├── AppDbContext.cs
+        ├── Configurations
+        │   ├── ProductConfiguration.cs
+        │   ├── CategoryConfiguration.cs
+        │   └── ProductCategoryConfiguration.cs
+        ├── Repositories
+        │   ├── ProductRepository.cs
+        │   └── CategoryRepository.cs
+        └── DependencyInjection.cs
+
+        API
+        ├── Program.cs
+        ├── appsettings.json
+        └── DependencyInjection de Application/Infrastructure
+
+
+
+
+        OrganizeApp/
+        ├── src/   
+        |   ├── OrganizeApp.sln
+        |   ├── OrganizeApp.Domain/
+        |   ├── OrganizeApp.Application/
+        |   ├── OrganizeApp.Infraestructure/
+        |   └── OrganizeApp.API/
+        ├── OrganizeApp.Frontend/
+        └── OrganizeApp.Backend/
