@@ -12,10 +12,12 @@ public class ProductsController(ProductUseCases productUseCases) : ControllerBas
 {
     // 
     private readonly ProductUseCases _productUseCases = productUseCases;
-    
-    #region endPoints
 
-    // Get product list filter by Category, status and stock
+    #region endPoints
+    /// <summary>
+    /// Get product list filter by Category, status and stock
+    /// </summary>
+    // POST /api/products
     [HttpGet]
     public async Task<ActionResult<List<ProductDTO>>> GetProducts([FromQuery] FiltersProductDTO? filters)
     {
@@ -24,6 +26,7 @@ public class ProductsController(ProductUseCases productUseCases) : ControllerBas
     }
 
     // Get Product by Id 
+    // POST /api/products/id
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProductDTO>> GetProduct(int id) 
     { 

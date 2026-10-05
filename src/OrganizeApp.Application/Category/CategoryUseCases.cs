@@ -1,5 +1,4 @@
 ﻿using OrganizeApp.Application.Category.DTOs;
-using OrganizeApp.Application.DTOs;
 using OrganizeApp.Application.Category.Interfaces;
 
 namespace OrganizeApp.Application.Category;

@@ -1,4 +1,4 @@
-﻿namespace OrganizeApp.Application.DTOs;
+﻿namespace OrganizeApp.Application.Category.DTOs;
 
 public class CreateCategoryDTO
 {
