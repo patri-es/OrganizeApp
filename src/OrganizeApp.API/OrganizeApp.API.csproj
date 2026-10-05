@@ -15,8 +15,4 @@
     <ProjectReference Include="..\OrganizeApp.Infraestructure\OrganizeApp.Infraestructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
