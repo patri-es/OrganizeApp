@@ -123,23 +123,48 @@ Esta es la nueva estructura del proyecto:
         └── Category
 
         Application
-        ├── DTOs
-        ├── IProductRepository
-        ├── ICategoryRepository
-        └── DependencyInjection
+        ├── Product
+        │   ├── ProductUseCases.cs
+        │   └── ProductValidation.cs
+        │   ├── DTOs
+        │   │   ├── ProductDTO.cs
+        │   │   ├── CreateProductDTO.cs
+        │   │   └── FiltersProductDTO.cs
+        │   ├── Interfaces
+        │   │   └── IProductRepository.cs
+        ├── Category
+        │   ├── CategoryUseCases.cs
+        │   ├── DTOs
+        │   │   ├── CategoryDTO.cs
+        │   │   ├── CreateCategoryDTO.cs
+        │   ├── Interfaces
+        │   │   └── ICategoryRepository.cs
 
         Infrastructure
-        ├── AppDbContext
+        ├── AppDbContext.cs
         ├── Configurations
-        │   ├── ProductConfiguration
-        │   ├── CategoryConfiguration
-        │   └── ProductCategoryConfiguration
-        ├── ProductRepository
-        ├── CategoryRepository
-        └── DependencyInjection
+        │   ├── ProductConfiguration.cs
+        │   ├── CategoryConfiguration.cs
+        │   └── ProductCategoryConfiguration.cs
+        ├── Repositories
+        │   ├── ProductRepository.cs
+        │   └── CategoryRepository.cs
+        └── DependencyInjection.cs
 
         API
         ├── Program.cs
         ├── appsettings.json
         └── DependencyInjection de Application/Infrastructure
 
+
+
+
+        OrganizeApp/
+        ├── src/   
+        |   ├── OrganizeApp.sln
+        |   ├── OrganizeApp.Domain/
+        |   ├── OrganizeApp.Application/
+        |   ├── OrganizeApp.Infraestructure/
+        |   └── OrganizeApp.API/
+        ├── OrganizeApp.Frontend/
+        └── OrganizeApp.Backend/
