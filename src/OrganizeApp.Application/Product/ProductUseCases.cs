@@ -6,12 +6,18 @@ using OrganizeApp.Application.Product.Interfaces;
 
 namespace OrganizeApp.Application.Product;
 
-public class ProductUseCases(IProductRepository productRepository, ICategoryRepository categoryRepository)
+public class ProductUseCases(IProductRepository productRepository, ICategoryRepository categoryRepository) : IProductUseCases
 {
 
     // Constructor
     private readonly IProductRepository _productRepository = productRepository;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
+
+    //public ProductUseCases(IProductRepository productRepository, ICategoryRepository categoryRepository)
+    //{
+    //    _productRepository = productRepository;
+    //    _categoryRepository = categoryRepository;
+    //}
 
     // Queries
     public async Task<List<ProductDTO>> GetProducts(FiltersProductDTO? filters)
@@ -169,7 +175,6 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
 
 
     // Categories
-
     public async Task AssignProductCategory(int productId, int categoryId)
     {
         var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");

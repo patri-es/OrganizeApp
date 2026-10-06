@@ -5,7 +5,7 @@ using OrganizeApp.Application.Exceptions;
 namespace OrganizeApp.Application.Category;
 
 
-public class CategoryUseCases(ICategoryRepository categoryRepository)
+public class CategoryUseCases(ICategoryRepository categoryRepository) : ICategoryUseCases
 {
     // Constructor
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
