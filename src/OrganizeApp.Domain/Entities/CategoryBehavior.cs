@@ -21,7 +21,7 @@ public partial class Category
         if (string.IsNullOrWhiteSpace(name))
             throw new CategoryDomainException("Category name is required.");
 
-        if (string.IsNullOrWhiteSpace(Code))
+        if (string.IsNullOrWhiteSpace(code))
             throw new CategoryDomainException("Category Code is required.");
 
         Name = name;
