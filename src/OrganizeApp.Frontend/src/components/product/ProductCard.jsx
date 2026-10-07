@@ -47,7 +47,7 @@ function ProductCard({ product }) {
                 {/* Precio */}
                 <div className="mt-4">
                     <span className="text-2xl font-medium text-gray-900">
-                        {product.price.toFixed(2)} €
+                        {(product.price ?? 0).toFixed(2)} €
                     </span>
                 </div>
 
@@ -62,6 +62,13 @@ function ProductCard({ product }) {
                             Agotado
                         </span>
                     )}
+                </div>
+
+                {/* Disponibilidad */}
+                <div className="mt-1 text-sm">
+                    <span className={product.isAvailable ? 'text-green-600' : 'text-gray-400'}>
+                        {product.isAvailable ? 'Disponible' : 'No disponible'}
+                    </span>
                 </div>
             </div>
         </article>
