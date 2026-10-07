@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeApp.Domain.Entities;
 
-namespace OrganizeApp.Infraestructure.Persistence.Configurations;
+namespace OrganizeApp.Infrastructure.Persistence.Configurations;
 
 public class ProductCategoryConfiguration
 {

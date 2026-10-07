@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeApp.Application.Category.Interfaces;
-using OrganizeApp.Infraestructure.Persistence;
+using OrganizeApp.Infrastructure.Persistence;
 using CategoryEntity = OrganizeApp.Domain.Entities.Category;
 
-namespace OrganizeApp.Infraestructure.Persistence.Repositories;
+namespace OrganizeApp.Infrastructure.Persistence.Repositories;
 
 public class CategoryRepository(AppDbContext context) : ICategoryRepository
 {

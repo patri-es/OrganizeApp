@@ -3,10 +3,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OrganizeApp.Application.Category.Interfaces;
 using OrganizeApp.Application.Product.Interfaces;
-using OrganizeApp.Infraestructure.Persistence;
-using OrganizeApp.Infraestructure.Persistence.Repositories;
+using OrganizeApp.Infrastructure.Persistence;
+using OrganizeApp.Infrastructure.Persistence.Repositories;
 
-namespace OrganizeApp.Infraestructure;
+namespace OrganizeApp.Infrastructure;
 
 public static class DependencyInjection
 {

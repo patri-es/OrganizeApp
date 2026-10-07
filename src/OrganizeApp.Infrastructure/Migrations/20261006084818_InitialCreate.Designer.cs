@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using OrganizeApp.Infraestructure.Persistence;
+using OrganizeApp.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace OrganizeApp.Infraestructure.Migrations
+namespace OrganizeApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     [Migration("20261006084818_InitialCreate")]

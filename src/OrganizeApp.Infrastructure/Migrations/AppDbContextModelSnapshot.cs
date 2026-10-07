@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using OrganizeApp.Infraestructure.Persistence;
+using OrganizeApp.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace OrganizeApp.Infraestructure.Migrations
+namespace OrganizeApp.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot

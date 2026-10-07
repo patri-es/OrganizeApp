@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OrganizeApp.Domain.Entities;
 
 
-namespace OrganizeApp.Infraestructure.Persistence.Configurations;
+namespace OrganizeApp.Infrastructure.Persistence.Configurations;
 
 public class CategoryConfiguration : IEntityTypeConfiguration<Category>
 {

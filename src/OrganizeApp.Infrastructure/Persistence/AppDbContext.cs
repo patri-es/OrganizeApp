@@ -1,8 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using OrganizeApp.Domain.Entities;
-using OrganizeApp.Infraestructure.Persistence.Configurations;
+using OrganizeApp.Infrastructure.Persistence.Configurations;
 
-namespace OrganizeApp.Infraestructure.Persistence;
+namespace OrganizeApp.Infrastructure.Persistence;
 
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {

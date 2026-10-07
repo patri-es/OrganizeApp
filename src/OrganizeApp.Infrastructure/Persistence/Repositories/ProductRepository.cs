@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeApp.Application.Product.DTOs;
 using OrganizeApp.Application.Product.Interfaces;
-using OrganizeApp.Infraestructure.Persistence;
+using OrganizeApp.Infrastructure.Persistence;
 using ProductEntity = OrganizeApp.Domain.Entities.Product;
 
-namespace OrganizeApp.Infraestructure.Persistence.Repositories;
+namespace OrganizeApp.Infrastructure.Persistence.Repositories;
 
 public class ProductRepository(AppDbContext context) : IProductRepository
 {
