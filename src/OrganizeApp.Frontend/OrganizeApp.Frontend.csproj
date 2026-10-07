@@ -4,8 +4,8 @@
 	<TargetFramework>net10.0</TargetFramework>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
-	<AssemblyName>Frontend</AssemblyName>
-	<RootNamespace>Frontend</RootNamespace>
+	<AssemblyName>OrganizeApp.Frontend</AssemblyName>
+	<RootNamespace>OrganizeApp.Frontend</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
 	<None Update="Program.cs">
