@@ -1,97 +1,116 @@
 # Organize App
-Versión actual del proyecto: API backend en .NET 10 organizada en capas (Domain, Application, Infrastructure) y una capa API que expone los casos de uso. El frontend existe en un directorio separado y se ejecuta con herramientas Node (Vite/React), pero en este README se describe lo mínimo necesario sobre la parte frontend.
 
-## Resumen breve
-- Backend dividido en capas: Domain, Application (casos de uso, DTOs, validaciones, interfaces) e Infrastructure (DbContext, configuraciones EF Core, repositorios y registro de dependencias).
-- API: proyecto ASP.NET Core que publica los endpoints REST y configura las dependencias de Application e Infrastructure.
-- Proyecto orientado a productos y categorías con DTOs, repositorios y casos de uso independientes.
+OrganizeApp es una aplicación para gestionar productos y categorías. La solución contiene una API REST en .NET 10 y una SPA en React que consume sus endpoints.
 
-### Requisitos previos
-- .NET SDK 10
-- (Para la parte opcional del frontend) Node.js >= 18 y npm
-- SQL Server / LocalDB o cualquier base de datos configurada en appsettings.json
-- dotnet-ef: dotnet tool install --global dotnet-ef
-- Node.js (recomendado ≥ 18)
-- npm
+## Arquitectura
 
-### Instalación y ejecución
-Desde la raíz del repositorio (C:\Users\tpmancilla\source\repos\OrganizeApp):
+- **OrganizeApp.Domain**: entidades y reglas del dominio.
+- **OrganizeApp.Application**: casos de uso, DTOs, validaciones e interfaces.
+- **OrganizeApp.Infrastructure**: persistencia con Entity Framework Core, configuraciones, repositorios y migraciones.
+- **OrganizeApp.API**: aplicación ASP.NET Core, controladores, configuración, excepciones y OpenAPI.
+- **OrganizeApp.Frontend**: SPA React servida y compilada con Vite.
 
-1) Restaurar y compilar la solución
-- dotnet restore
-- dotnet build
+La solución es `OrganizeApp.sln` y está en la raíz del repositorio. Los cinco proyectos se encuentran bajo `src/`.
 
-2) Ejecutar la API (desde la raíz)
-- dotnet run --project src/OrganizeApp.API/OrganizeApp.API.csproj
-  - El comando iniciará la API y mostrará la URL (Kestrel). Usar esa URL para consumir los endpoints.
+## Requisitos previos
 
-3) (Opcional) Aplicar migrations EF Core
-- Si el proyecto usa EF Core migrations en el paquete de Infrastructure:
-  - dotnet tool restore
-  - dotnet ef database update --project src/OrganizeApp.Infrastructure/OrganizeApp.Infrastructure.csproj --startup-project src/OrganizeApp.API/OrganizeApp.API.csproj
+- .NET SDK 10.
+- Node.js LTS y npm.
+- SQL Server, LocalDB u otra base de datos compatible configurada en la API.
+- `dotnet-ef` para aplicar migraciones, si no se utiliza una instalación local o restaurada mediante herramientas .NET.
 
-### Notas sobre variables de entorno
-- La cadena de conexión y otras opciones de entorno se encuentran en src/OrganizeApp.API/appsettings.json y appsettings.Development.json. Para entornos de producción/salida preferible usar variables de entorno o secretos del entorno.
+## Instalación y ejecución
 
-## Frontend (mínimo)
-- El frontend está en el directorio OrganizeApp.Frontend (o OrganizeApp.Frontend/). Para el desarrollo típico:
-  - cd OrganizeApp.Frontend
-  - npm install
-  - npm run dev
+Todos los comandos siguientes se ejecutan desde la raíz del repositorio (`C:\Users\tpmancilla\source\repos\OrganizeApp`).
 
-#### Tecnologías y librerías destacadas
-  - React 19, Vite, Tailwind CSS
-  - axios (peticiones HTTP), react-router-dom, react-hook-form, react-hot-toast, lucide-react
-  - eslint (calidad de código)
- 
-- El README y documentación específica del frontend se mantienen en su propio directorio y se actualizará por separado.
+### Backend
 
-### Estructura de archivos (visión general actual)
+```powershell
+dotnet restore
+dotnet build
+dotnet run --project src/OrganizeApp.API/OrganizeApp.API.csproj
+```
 
-    src/
-    ├── OrganizeApp.sln
-    ├── OrganizeApp.Domain/
-    │   ├── Product/
-    │   │   └── (entidades, value objects)
-    │   └── Category/
-    │       └── (entidades)
+La API está disponible en `http://localhost:5295`. El perfil HTTPS también utiliza `https://localhost:7049`.
+
+Para aplicar las migraciones, `OrganizeApp.Infrastructure` es el proyecto de migraciones y `OrganizeApp.API` es el proyecto de inicio:
+
+```powershell
+dotnet ef database update --project src/OrganizeApp.Infrastructure/OrganizeApp.Infrastructure.csproj --startup-project src/OrganizeApp.API/OrganizeApp.API.csproj
+```
+
+La cadena de conexión y las opciones de la API se configuran en `src/OrganizeApp.API/appsettings.json` y `appsettings.Development.json`. En entornos de despliegue deben utilizarse variables de entorno o secretos.
+
+### Frontend
+
+El frontend forma parte de la solución, pero sus dependencias y scripts se gestionan con npm:
+
+```powershell
+cd src/OrganizeApp.Frontend
+npm ci
+npm run dev
+```
+
+Por defecto, Vite sirve la aplicación en `http://localhost:5173`. La URL de la API se configura en `src/OrganizeApp.Frontend/.env.local`:
+
+```env
+VITE_BASE_API_URL=http://localhost:5295
+```
+
+Esta variable indica el destino de las peticiones; el CORS de la API autoriza por separado el origen `http://localhost:5173`. No se debe versionar `.env.local`.
+
+Scripts disponibles:
+
+- `npm run dev`: inicia el servidor de desarrollo.
+- `npm run build`: genera la compilación de producción en `dist`.
+- `npm run preview`: sirve la compilación generada.
+- `npm run lint`: ejecuta ESLint.
+
+## Estructura del repositorio
+
+```text
+OrganizeApp/
+├── .github/
+│   └── copilot-instructions.md
+├── OrganizeApp.sln
+├── README.md
+└── src/
+    ├── OrganizeApp.API/
+    │   ├── Controllers/
+    │   ├── Exceptions/
+    │   ├── Properties/
+    │   ├── Program.cs
+    │   └── appsettings.json
     ├── OrganizeApp.Application/
+    │   ├── Category/
+    │   ├── Exceptions/
     │   ├── Product/
-    │   │   ├── ProductUseCases.cs
-    │   │   ├── ProductValidation.cs
-    │   │   ├── DTOs/
-    │   │   │   ├── ProductDTO.cs
-    │   │   │   ├── CreateProductDTO.cs
-    │   │   │   └── FiltersProductDTO.cs
-    │   │   └── Interfaces/
-    │   │       └── IProductRepository.cs
-    │   └── Category/
-    │       ├── CategoryUseCases.cs
-    │       ├── DTOs/
-    │       │   ├── CategoryDTO.cs
-    │       │   └── CreateCategoryDTO.cs
-    │       └── Interfaces/
-    │           └── ICategoryRepository.cs
-    ├── OrganizeApp.Infrastructure/
-    │   ├── AppDbContext.cs
-    │   ├── Configurations/
-    │   │   ├── ProductConfiguration.cs
-    │   │   ├── CategoryConfiguration.cs
-    │   │   └── ProductCategoryConfiguration.cs
-    │   ├── Repositories/
-    │   │   ├── ProductRepository.cs
-    │   │   └── CategoryRepository.cs
     │   └── DependencyInjection.cs
-    └── OrganizeApp.API/
-        ├── Program.cs
-        ├── appsettings.json
-        ├── Controllers/
-        │   ├── ProductsController.cs
-        │   └── CategoriesController.cs
-        └── DependencyInjection.cs  (registra Application e Infrastructure)
+    ├── OrganizeApp.Domain/
+    │   ├── Entities/
+    │   └── Exceptions/
+    ├── OrganizeApp.Infrastructure/
+    │   ├── Migrations/
+    │   ├── Persistence/
+    │   │   ├── Configurations/
+    │   │   └── Repositories/
+    │   └── DependencyInjection.cs
+    └── OrganizeApp.Frontend/
+        ├── public/
+        ├── src/
+        │   ├── assets/
+        │   ├── components/
+        │   └── pages/
+        ├── package.json
+        ├── package-lock.json
+        └── vite.config.js
+```
 
+La documentación específica del frontend está en `src/OrganizeApp.Frontend/README.md`.
 
-## Buenas prácticas y recomendaciones
-- Usar el proyecto solución (src/OrganizeApp.sln) para abrir/compilar en Visual Studio.
-- Gestionar la cadena de conexión mediante variables de entorno en despliegues.
-- Ejecutar las migraciones EF Core desde los proyectos correctos (Infrastructure como proyecto de migraciones y API como startup-project).
+## Buenas prácticas
+
+- Abrir `OrganizeApp.sln` para trabajar con la solución completa en Visual Studio.
+- Mantener la lógica de negocio en Application y Domain; los controladores deben permanecer delgados.
+- Mantener las migraciones de Entity Framework Core en Infrastructure.
+- Gestionar cadenas de conexión y secretos mediante configuración segura en los entornos de despliegue.

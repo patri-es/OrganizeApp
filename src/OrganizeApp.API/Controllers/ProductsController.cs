@@ -18,7 +18,7 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
     /// <summary>
     /// Get product list filter by Category, status and stock
     /// </summary>
-    // POST /api/products
+    // GET /api/products
     [HttpGet]
     public async Task<ActionResult<List<ProductDTO>>> GetProducts([FromQuery] FiltersProductDTO? filters)
     {
@@ -27,7 +27,7 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
     }
 
     // Get Product by Id 
-    // POST /api/products/id
+    // GET /api/products/id
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ProductDTO>> GetProduct(int id) 
     { 
@@ -39,8 +39,9 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
 
         return Ok(product);
     }
-   
+
     // Add new product
+    // POST /api/products
     [HttpPost]
     public async Task<ActionResult> CreateProduct([FromBody] CreateProductDTO product)
     {
@@ -50,6 +51,7 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
     }
 
     // Delete Product
+    // DELETE /api/products/id
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> DeleteProduct(int id) 
     {
@@ -57,7 +59,9 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
         return Ok("Product successfully deleted.");
     }
 
-    [HttpPatch]
+    // Update Product
+    // PATCH /api/products/id
+    [HttpPatch("{id:int}")]
     public async Task<ActionResult> UpdateProduct(int id, [FromBody] UpdateProductDTO product)
     {
         await _productUseCases.UpdateProduct(id, product);
@@ -69,6 +73,7 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
     #region category, stock & status
 
     // Change availability of product
+    // POST /api/products/id/activate
     [HttpPost("{id:int}/activate")]
     public async Task<ActionResult> ActivateProduct(int id)
     {
@@ -76,6 +81,7 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
         return Ok("Product successfully activated.");
     }
 
+    // POST /api/products/id/deactivate
     [HttpPost("{id:int}/deactivate")]
     public async Task<ActionResult> DeactivateProduct(int id)
     {
@@ -84,6 +90,7 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
     }
 
     // Change Stock of product
+    // POST /api/products/id/stock/increase
     [HttpPost("{id:int}/stock/increase")]
     public async Task<ActionResult> IncreaseStock(int id, [FromBody] ChangeStockDTO dto)
     {
@@ -91,6 +98,7 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
         return Ok("Product stock successfully increased.");
     }
 
+    // POST /api/products/id/stock/decrease
     [HttpPost("{id:int}/stock/decrease")]
     public async Task<ActionResult> DecreaseStock(int id, [FromBody] ChangeStockDTO dto)
     {
@@ -98,6 +106,8 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
         return Ok("Product stock successfully decreased.");
     }
 
+    // Change categories of product
+    // POST /api/products/id/categories/id
     [HttpPost("{productId:int}/categories/{categoryId:int}")]
     public async Task<ActionResult> AsignProductCategory(int productId, int categoryId)
     {
@@ -105,6 +115,7 @@ public class ProductsController(IProductUseCases productUseCases) : ControllerBa
         return Ok("Category successfully assigned to product.");
     }
 
+    // DELETE /api/products/id/categories/id
     [HttpDelete("{productId:int}/categories/{categoryId:int}")]
     public async Task<ActionResult> RemoveProductCategory(int productId, int categoryId)
     {
