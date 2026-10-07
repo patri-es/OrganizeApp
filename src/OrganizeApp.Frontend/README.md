@@ -1,167 +1,97 @@
-# frontend for ProductCrudApp
+# OrganizeApp.Frontend
 
-## React + Vite
+Frontend de **OrganizeApp**, una aplicación web de una sola página (SPA) para gestionar los recursos de la aplicación mediante la API de OrganizeApp.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Requisitos
 
-Currently, two official plugins are available:
+- Node.js en una versión LTS reciente, que incluye `npm`.
+- .NET SDK 10, necesario para ejecutar la API que proporciona los datos al frontend.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Instalación
 
-## React Compiler
+Desde la raíz del repositorio:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-
-## Install Tailwind Css
-- isntalo tailwindcss para los estilos
-- lucide react para los iconos.
-
-	npm install tailwindcss @tailwindcss/vite
-	npm install lucide-react
-
-- después añadimos en el index.css la linea ```@import "tailwindcss";```
-
-## Router para React
-instalamos con la siguiente linea: 
-```
-npm i react-router-dom
-``` 
-Tenemos 3 formas de utilizar router: 
-1. Declarative (la más básica)
-2. Data (añade más features)
-3. Framework (mas y mas)
-
-Usaremos la declarativa. Instalando el paquete, sólo faltará añadir el componente en main.jsx
-
-```
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router'
-import './index.css'
-import App from './App.jsx'
-
-createRoot(document.getElementById('root')).render(
-    <StrictMode>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter> 
-  </StrictMode>
-)
-
+```bash
+cd src/OrganizeApp.Frontend
+npm ci
 ```
 
-- Preparamos componentes para probar, con datos ficticios primero.
-- Tenemos un Form para agregar personas y una lista que muestra las personas que hay. 
-- Añadimos una nueva librería para conectar nuestro form con nuestra API
+`npm ci` utiliza el archivo `package-lock.json` para instalar versiones reproducibles. Si el archivo de bloqueo no está disponible o se han modificado las dependencias, puede utilizarse `npm install`.
 
-### Submit Form
-React no es listo con las acciones de los form, así que vamos a añadir esta librería: 
-- react hook form: https://react-hook-form.com/
-- https://react-hook-form.com/get-started
-- empezamos instalando la librería: ```npm install react-hook-form```
-- En el form para empezar añadimos la librería y un método para utilizarla:
+## Configuración de la API
 
-        import { useForm } from "react-hook-form"
-        ....
-       const {
-            register,
-            handleSubmit,
-            formState: { errors },
-          } = useForm()
+El frontend necesita que la API de OrganizeApp esté ejecutándose para cargar y modificar datos. La URL base se obtiene mediante la variable de entorno `VITE_BASE_API_URL`. Esta variable no configura el CORS: indica al frontend dónde debe realizar las peticiones HTTP, mientras que el CORS de la API autoriza el origen del frontend (`http://localhost:5173`).
 
+En el desarrollo local, crea un archivo `.env.local` dentro de esta carpeta con la URL HTTP definida por el perfil de desarrollo de la API:
 
-- Preparo el formulario registrando el nombre y las características de cada campo:
+```env
+VITE_BASE_API_URL=http://localhost:5295
+```
 
-      <input type="text"
-            {...register("name", {
-                required: true,
-                maxLength: 50
-            })}
+La URL del ejemplo no es diferente de la utilizada por la API; es la dirección base de la API local. El archivo `.env.local` es necesario con la implementación actual, porque los componentes utilizan directamente `import.meta.env.VITE_BASE_API_URL`.
 
-- Definimos los errores 
+La API puede iniciarse desde la raíz del repositorio con:
 
-        {errors.name?.type === 'required' && <p className="mt-1 text-sm text-red-600 flex items-center">
-            name is  required
-        </p>}
+```bash
+dotnet run --project src/OrganizeApp.API
+```
 
-        {errors.name?.type === 'maxLength' && <p className="mt-1 text-sm text-red-600 flex items-center">
-            name can not exceed 50 characters
-        </p>}
+Si se utiliza otro perfil o puerto, ajusta el valor de `VITE_BASE_API_URL` y reinicia el servidor de Vite. La API también dispone de un perfil HTTPS (`https://localhost:7049`); en ese caso, actualiza la variable y asegúrate de que el certificado de desarrollo de .NET sea de confianza.
 
-- Añado otro método para los valores por defecto: 
+## Ejecución
 
-        const defaultFormValues = {
-            name: '',
-            lastName: '',
-            birthDate: '',
-            telephone: ''
-        }
+Para iniciar el servidor de desarrollo:
 
-- Pasamos todo al componente padre que es Person (de donde venían los datos)
-    - la librería, los métodos para usarla y el de default.
-    - ya no hace falta en el form, los borramos de ahí, y cambiams el registro:
-        
-            const {
-                register,
-                handleSubmit,
-                formState: { errors },
-            } = methods;
+```bash
+npm run dev
+```
 
-- Tenemos un método para guardar y otro para edit que lo único que hacen es pintar los datos en la consola por ahora
+Vite abre el navegador automáticamente. Por defecto, la aplicación queda disponible en `http://localhost:5173`.
 
-        const onFormSubmit = (data) => {
-            console.log(data);
-        }
-- Los métodos en Person.jsx quedarían así (por ahora):
+## Scripts disponibles
 
-        const defaultFormValues = {
-            name: '',
-            lastName: '',
-            birthDate: '',
-            telephone: ''
-        }
+| Comando | Descripción |
+| --- | --- |
+| `npm run dev` | Inicia el servidor de desarrollo con recarga en caliente. |
+| `npm run build` | Genera la compilación de producción en `dist`. |
+| `npm run preview` | Sirve localmente la compilación generada. |
+| `npm run lint` | Analiza el código con ESLint. |
 
-        const methods = useForm({
-            defaultValues: defaultFormValues
-        });
+## Tecnologías principales
 
+- **React 19** y **React DOM** para la interfaz de usuario.
+- **Vite** como servidor de desarrollo y herramienta de compilación.
+- **React Router DOM** para la navegación de la SPA.
+- **Tailwind CSS** para los estilos, integrado mediante el plugin de Vite.
+- **Axios** para las peticiones HTTP a la API.
+- **React Hook Form** para la gestión de formularios.
+- **React Hot Toast** para las notificaciones y **Lucide React** para los iconos.
+- **ESLint** para el análisis estático del código.
 
-- Añado un método para el botón reset en el Person también: 
+Las dependencias y sus versiones se encuentran definidas en `package.json`; no es necesario instalarlas individualmente.
 
-        const handleFormReset = () => {
-            methods.reset(defaultFormValues);
-        }
+## Estructura
 
-    en el form este botón quedaría así:
+El código de la aplicación se encuentra en `src/`. Las páginas, componentes y estilos están organizados por funcionalidad. La aplicación utiliza React Router y actualmente incluye vistas para inicio, información, personas, productos y categorías.
 
-        <button
-            type="button"
-            onClick={onFormReset}
-            className="ms-3 px-4 py-2.5 rounded-full text-sm font-semibold text-white bg-gradient-to-b from-blue-400 via-blue-600 to-blue-400  hover:from-teal-600 hover:to-blue-600 shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-            <RotateCcw />
-        </button>
-
-## Adaptamos los métodos para usarlos desde el componente padre
-... aunque no me funciona del todo, ya iré enterandome. 
-
-- Instalamos otra librería, React Host Toast con ```npm install react-hot-toast ```
-- parece que sirve para ventanas emergentes muy monas
-- Lo añadimos a App.jsx con  ```import { Toaster } from "react-hot-toast" ``` 
-- agregamos ahí también su componente  <Toaster />
-- En person.jsx agregamos también la referencia para usarlo, con ```import toast from "react-hot-toast" ``` 
-- Añado Try{ }catch (error) {} al método submit. o edit
-
-
-## Conectamos la API al front para tener datos reales!
-- instalamos axios ```npm i axios```
-
-      import axios from "axios" 
-      ....
-
-
-      const BASE_URL = import.meta.env.VITE_BASE_API_URL + '/people';
+```text
+OrganizeApp.Frontend/
+├── public/                    # Recursos estáticos públicos
+├── src/
+│   ├── assets/                # Recursos gráficos
+│   ├── components/            # Componentes reutilizables y de gestión
+│   │   ├── categories/
+│   │   ├── person/
+│   │   └── product/
+│   ├── pages/                 # Vistas principales de la aplicación
+│   │   ├── About.jsx
+│   │   ├── Home.jsx
+│   │   └── NotFound.jsx
+│   ├── App.jsx                # Componente raíz y rutas
+│   ├── index.css              # Estilos globales y Tailwind CSS
+│   └── main.jsx               # Punto de entrada
+├── .env.local                 # Configuración local de la API (no versionar)
+├── package.json               # Scripts y dependencias
+├── package-lock.json          # Versiones bloqueadas de npm
+└── vite.config.js             # Configuración de Vite, React y Tailwind
+```
