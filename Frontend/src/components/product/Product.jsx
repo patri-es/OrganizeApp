@@ -1,6 +1,7 @@
 ﻿import { useEffect, useState } from "react"
 import ProductForm from "./ProductForm"
 import ProductList from "./ProductList"
+//import ProductCard from "./ProductCard"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import axios from "axios"
@@ -11,7 +12,9 @@ const defaultFormValues = {
     id: 0,
     name: '',
     description: '',
-    creationDate: ''
+    imageUrl: '',
+    price: '', 
+    stock: ''
 }
     // ,
     // category: ''
@@ -113,7 +116,16 @@ function Product() {
                 <ProductForm methods={methods} onFormSubmit={handleFormSubmit} onFormReset={handleFormReset} />
                 <ProductList productsList={products} onProductEdit={handleProductEdit} onProductDelete={handleProductDelete} />
             </div>
+            {/* <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+                {products.map((product) => (
+                    <ProductCard
+                        key={product.id}
+                        product={product}
+                    />
+                ))}
+            </div> */}
         </div>
+        
     )
 }
 

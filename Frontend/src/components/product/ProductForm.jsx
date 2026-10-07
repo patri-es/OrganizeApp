@@ -31,7 +31,7 @@ const ProductForm = ({ methods, onFormReset, onFormSubmit }) => {
                         <input type="text" placeholder="Enter name"
                             {...register("name", {
                                 required: true,
-                                maxLength: 50
+                                maxLength: 100
                             })}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
 
@@ -53,7 +53,7 @@ const ProductForm = ({ methods, onFormReset, onFormSubmit }) => {
                         <input type="text" placeholder="Enter last name"
                             {...register("description", {
                                 required: true,
-                                maxLength: 50
+                                maxLength: 500
                             })}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
 
@@ -68,36 +68,48 @@ const ProductForm = ({ methods, onFormReset, onFormSubmit }) => {
                             </p>}
                     </div>
 
-                    {/* creationDate */}
+                    {/* imageUrl */}
                     <div>
-                        <label htmlFor="creationDate" className="block text-sm font-semibold text-gray-700 mb-2">
-                            CreationDate
+                        <label htmlFor="imageUrl" className="block text-sm font-semibold text-gray-700 mb-2">
+                            imageUrl
                         </label>
-                        <input type="date"
-                            {...register("creationDate", {
+                        <input type="text"
+                            {...register("imageUrl", {
                                 required: false,
-                                maxLength: 30
+                                maxLength: 500
                             })}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
 
-                        {errors.creationDate?.type === 'maxLength' &&
+                        {errors.imageUrl?.type === 'maxLength' &&
                             <p className="mt-1 text-sm text-red-600 flex items-center">
-                                creationDate can not exceed 50 characters
+                                imageUrl can not exceed 50 characters
                             </p>}
                     </div>
 
-                    {/* Category 
+                    {/* Price  */}
                     <div>
-                        <label htmlFor="category" className="block text-sm font-semibold text-gray-700 mb-2">
-                            Category
+                        <label htmlFor="price" className="block text-sm font-semibold text-gray-700 mb-2">
+                            price
                         </label>
-                        <input type="tel" placeholder="Enter category"
-                            {...register("category", {
+                        <input type="number" placeholder="Enter price"
+                            {...register("price", {
                                 required: false,
                                 maxLength: 12
                             })}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
-                    </div>*/}
+                    </div>
+                    {/* Stock  */}
+                    <div>
+                        <label htmlFor="stock" className="block text-sm font-semibold text-gray-700 mb-2">
+                            stock
+                        </label>
+                        <input type="number" placeholder="Enter stock"
+                            {...register("stock", {
+                                required: false,
+                                maxLength: 12
+                            })}
+                            className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
+                    </div>
                 </div>
 
                 {/* footer con botones */}
