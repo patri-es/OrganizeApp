@@ -18,6 +18,12 @@ npm ci
 
 `npm ci` utiliza el archivo `package-lock.json` para instalar versiones reproducibles. Si el archivo de bloqueo no está disponible o se han modificado las dependencias, puede utilizarse `npm install`.
 
+### Limpieza de caché y reinstalación
+Si es necesario reiniciar la caché por completo, lo mejor es: 
+1. Borrar la carpeta `node_modules` 
+2. ejecutar los comandos `npm install`, esto volverá a instalar todos los paquetes necesarios
+3. a continuación `npm run dev`, ejecutará la aplicación 
+
 ## Configuración de la API
 
 El frontend necesita que la API de OrganizeApp esté ejecutándose para cargar y modificar datos. La URL base se obtiene mediante la variable de entorno `VITE_BASE_API_URL`. Esta variable no configura el CORS: indica al frontend dónde debe realizar las peticiones HTTP, mientras que el CORS de la API autoriza el origen del frontend (`http://localhost:5173`).
