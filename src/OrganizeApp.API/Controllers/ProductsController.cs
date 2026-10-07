@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrganizeApp.Application.Product;
 using OrganizeApp.Application.Product.DTOs;
+using OrganizeApp.Application.Product.Interfaces;
 
 
 namespace OrganizeApp.API.Controllers;
@@ -8,10 +9,10 @@ namespace OrganizeApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Tags("Products")]
-public class ProductsController(ProductUseCases productUseCases) : ControllerBase
+public class ProductsController(IProductUseCases productUseCases) : ControllerBase
 {
-    // 
-    private readonly ProductUseCases _productUseCases = productUseCases;
+    // DI interface UseCases
+    private readonly IProductUseCases _productUseCases = productUseCases;
 
     #region endPoints
     /// <summary>
