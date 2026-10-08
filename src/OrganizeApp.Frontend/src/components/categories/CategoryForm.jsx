@@ -53,7 +53,7 @@ const CategoryForm = ({ methods, onFormReset, onFormSubmit }) => {
                         <input type="text" placeholder="Enter last name"
                             {...register("description", {
                                 required: true,
-                                maxLength: 50
+                                maxLength: 500
                             })}
                             className="w-full px-4 py-3 rounded-lg border border-gray-200 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200" />
 
@@ -64,7 +64,7 @@ const CategoryForm = ({ methods, onFormReset, onFormSubmit }) => {
 
                         {errors.description?.type === 'maxLength' &&
                             <p className="mt-1 text-sm text-red-600 flex items-center">
-                                description can not exceed 50 characters
+                                description can not exceed 500 characters
                             </p>}
                     </div>
 

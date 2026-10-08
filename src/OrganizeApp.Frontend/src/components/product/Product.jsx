@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, useCallback } from "react"
+﻿import { useEffect, useState } from "react" // useCallback
 import ProductForm from "./ProductForm"
 import ProductList from "./ProductList"
 import { useForm } from "react-hook-form"
@@ -32,8 +32,7 @@ function Product() {
         methods.reset(editData ?? defaultFormValues);
     }, [editData, methods]);
 
-    const loadProducts = useCallback(async () => {
-        setLoading(true);
+    const loadProducts = async () => {
         try {
             const productsData = (await axios.get(BASE_URL)).data;
             setProducts(productsData);
@@ -41,14 +40,43 @@ function Product() {
             console.log(error);
             toast.error("Error loading products!");
         }
-        finally {
-            setLoading(false);
-        }
-    }, []);
+    };
+    // const loadProducts = useCallback(async () => {
+    //     setLoading(true);
+    //     try {
+    //         const productsData = (await axios.get(BASE_URL)).data;
+    //         setProducts(productsData);
+    //     } catch (error) {
+    //         console.log(error);
+    //         toast.error("Error loading products!");
+    //     }
+    //     finally {
+    //         setLoading(false);
+    //     }
+    // }, []);
+
+    // useEffect(() => {
+    //     loadProducts();
+    // }, [loadProducts]);
 
     useEffect(() => {
-        loadProducts();
-    }, [loadProducts]);
+        const loadInitialProducts = async () => {
+            setLoading(true);
+
+            try {
+                const productsData = (await axios.get(BASE_URL)).data;
+                setProducts(productsData);
+            } catch (error) {
+                console.log(error);
+                toast.error("Error loading products!");
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+
+        loadInitialProducts();
+    }, []);
 
     useEffect(() => {
         const loadCategories = async () => {
