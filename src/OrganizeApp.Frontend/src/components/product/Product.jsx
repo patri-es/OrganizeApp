@@ -1,15 +1,22 @@
-﻿import ProductForm from "./ProductForm"
+﻿import { useCallback, useEffect, useState } from "react"
+import ProductForm from "./ProductForm"
 import ProductList from "./ProductList"
-import toast from "react-hot-toast"
-import axios from "axios"
-import { useEffect, useState } from "react" // useCallback
 import { useForm } from "react-hook-form"
+import toast from "react-hot-toast"
+import {
+    getProducts,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+    increaseStock,
+    decreaseStock,
+    activateProduct,
+    deactivateProduct,
+    assignCategory,
+    removeCategory
+} from "../../services/productService"
+import { getCategories } from "../../services/categoryService"
 import { getErrorMessage } from "../../utils/errorHelper"
-// C:\Users\tpmancilla\source\repos\OrganizeApp\src\OrganizeApp.Frontend\src\utils\errorHelper.js
-//                                                                      /src/utils/errorHelper.js
-// C:\Users\tpmancilla\source\repos\OrganizeApp\src\OrganizeApp.Frontend\src\components\product\Product.jsx
-const BASE_URL = `${import.meta.env.VITE_BASE_API_URL}/products`;
-const CATEGORIES_URL = `${import.meta.env.VITE_BASE_API_URL}/categories`;
 
 // CreateProductDTO/UpdateProductDTO: solo name, description, imageUrl y price.
 // El stock empieza en 0 y se gestiona con los endpoints increase/decrease.
@@ -35,64 +42,46 @@ function Product() {
         methods.reset(editData ?? defaultFormValues);
     }, [editData, methods]);
 
-    const loadProducts = async () => {
+    const loadProducts = useCallback(async () => {
         try {
-            const productsData = (await axios.get(BASE_URL)).data;
-            setProducts(productsData);
+            const { data } = await getProducts();
+            setProducts(data);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(getErrorMessage(error));
         }
-    };
-    // const loadProducts = useCallback(async () => {
-    //     setLoading(true);
-    //     try {
-    //         const productsData = (await axios.get(BASE_URL)).data;
-    //         setProducts(productsData);
-    //     } catch (error) {
-    //         console.log(error);
-    //         toast.error("Error loading products!");
-    //     }
-    //     finally {
-    //         setLoading(false);
-    //     }
-    // }, []);
+    }, []);
 
-    // useEffect(() => {
-    //     loadProducts();
-    // }, [loadProducts]);
 
     useEffect(() => {
         const loadInitialProducts = async () => {
             setLoading(true);
 
             try {
-                const productsData = (await axios.get(BASE_URL)).data;
-                setProducts(productsData);
-            } catch (error) {
-                console.log(error);
-                toast.error(getErrorMessage(error));
-            }
-            finally {
+                await loadProducts();
+            } finally {
                 setLoading(false);
             }
         };
 
         loadInitialProducts();
-    }, []);
+    }, [loadProducts]);
+
 
     useEffect(() => {
         const loadCategories = async () => {
             try {
-                const categoriesData = (await axios.get(CATEGORIES_URL)).data;
-                setCategories(categoriesData);
+                const { data } = await getCategories();
+                setCategories(data);
             } catch (error) {
-                console.log(error);
+                console.error(error);
                 toast.error(getErrorMessage(error));
             }
         };
+
         loadCategories();
     }, []);
+
 
     // reset
     const handleFormReset = () => {
@@ -102,30 +91,35 @@ function Product() {
 
     const handleFormSubmit = async (product) => {
         setLoading(true);
-        // El backend no acepta id ni stock en create/update
+
         const payload = {
             name: product.name,
             description: product.description || null,
             imageUrl: product.imageUrl,
             price: Number(product.price)
         };
+
         try {
             if (product.id <= 0) {
-                // POST /api/products — devuelve el DTO enviado (sin id real),
-                // por eso recargamos la lista desde el servidor
-                await axios.post(BASE_URL, payload);
+                await createProduct(payload);
                 await loadProducts();
             }
             else {
-                // PATCH /api/products/{id}
-                await axios.patch(`${BASE_URL}/${product.id}`, payload);
+                await updateProduct(product.id, payload);
+
                 setProducts((previousProducts) =>
-                    previousProducts.map(p => p.id === product.id ? { ...p, ...payload } : p));
+                    previousProducts.map(p =>
+                        p.id === product.id
+                            ? { ...p, ...payload }
+                            : p
+                    )
+                );
             }
+
             handleFormReset();
             toast.success("Saved successfully!");
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(getErrorMessage(error));
         }
         finally {
@@ -137,15 +131,24 @@ function Product() {
         setEditData(product);
     }
 
+    // DELETE  /api/products/{id}
     const handleProductDelete = async (product) => {
-        if (!confirm(`Are you sure to delete a product : ${product.name} ${product.description ?? ''}`)) return;
+        if (!confirm(`Are you sure to delete a product : ${product.name} ${product.description ?? ''}`)) {
+            return;
+        }
+
         setLoading(true);
+
         try {
-            await axios.delete(`${BASE_URL}/${product.id}`);
-            setProducts((previousProducts) => previousProducts.filter(p => p.id !== product.id));
+            await deleteProduct(product.id);
+
+            setProducts((previousProducts) =>
+                previousProducts.filter(p => p.id !== product.id)
+            );
+
             toast.success("Deleted successfully!");
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(getErrorMessage(error));
         }
         finally {
@@ -156,12 +159,21 @@ function Product() {
     // POST /api/products/{id}/stock/increase | /decrease  (body: { quantity })
     const handleStockChange = async (productId, quantity, action) => {
         setLoading(true);
+
         try {
-            await axios.post(`${BASE_URL}/${productId}/stock/${action}`, { quantity });
+            if (action === "increase") {
+                await increaseStock(productId, quantity);
+            } else {
+                await decreaseStock(productId, quantity);
+            }
+
             await loadProducts();
-            toast.success(`Stock successfully ${action === 'increase' ? 'increased' : 'decreased'}!`);
+
+            toast.success(
+                `Stock successfully ${action === "increase" ? "increased" : "decreased"}!`
+            );
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(getErrorMessage(error));
         }
         finally {
@@ -172,14 +184,29 @@ function Product() {
     // POST /api/products/{id}/activate | /deactivate
     const handleToggleAvailability = async (product) => {
         setLoading(true);
-        const action = product.isAvailable ? 'deactivate' : 'activate';
+
+        const action = product.isAvailable
+            ? "deactivate"
+            : "activate";
+
         try {
-            await axios.post(`${BASE_URL}/${product.id}/${action}`);
+            if (action === "activate") {
+                await activateProduct(product.id);
+            } else {
+                await deactivateProduct(product.id);
+            }
+
             setProducts((previousProducts) =>
-                previousProducts.map(p => p.id === product.id ? { ...p, isAvailable: !product.isAvailable } : p));
+                previousProducts.map(p =>
+                    p.id === product.id
+                        ? { ...p, isAvailable: !product.isAvailable }
+                        : p
+                )
+            );
+
             toast.success(`Product successfully ${action}d!`);
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(getErrorMessage(error));
         }
         finally {
@@ -190,12 +217,14 @@ function Product() {
     // POST /api/products/{productId}/categories/{categoryId}
     const handleAssignCategory = async (productId, categoryId) => {
         setLoading(true);
+
         try {
-            await axios.post(`${BASE_URL}/${productId}/categories/${categoryId}`);
+            await assignCategory(productId, categoryId);
             await loadProducts();
+
             toast.success("Category successfully assigned!");
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(getErrorMessage(error));
         }
         finally {
@@ -206,12 +235,14 @@ function Product() {
     // DELETE /api/products/{productId}/categories/{categoryId}
     const handleRemoveCategory = async (productId, categoryId) => {
         setLoading(true);
+
         try {
-            await axios.delete(`${BASE_URL}/${productId}/categories/${categoryId}`);
+            await removeCategory(productId, categoryId);
             await loadProducts();
+
             toast.success("Category successfully removed!");
         } catch (error) {
-            console.log(error);
+            console.error(error);
             toast.error(getErrorMessage(error));
         }
         finally {

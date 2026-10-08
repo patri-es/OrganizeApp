@@ -8,9 +8,6 @@
 	<RootNamespace>OrganizeApp.Frontend</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="src\services\categoryService.js" />
-  </ItemGroup>
-  <ItemGroup>
 	<None Update="Program.cs">
 	  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	</None>

@@ -112,3 +112,11 @@ La documentación específica del frontend está en `src/OrganizeApp.Frontend/RE
 - Mantener la lógica de negocio en Application y Domain; los controladores deben permanecer delgados.
 - Mantener las migraciones de Entity Framework Core en Infrastructure.
 - Gestionar cadenas de conexión y secretos mediante configuración segura en los entornos de despliegue.
+
+
+## Futuras implementaciones:
+1. Autenticación 
+2. Cart (Carrito)
+3. Order (pedido)
+4. ClientSettings (página de usuario)
+5. OrderSettings (página de gestion de pedidos)
