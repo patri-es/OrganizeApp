@@ -88,7 +88,7 @@ OrganizeApp.Frontend/
 │   ├── components/            # Componentes reutilizables y de gestión
 │   │   ├── categories/
 │   │   ├── person/
-│   │   └── product/
+│   │   └── product/Product.jsx, ProductForm.jsx, ProductCard.jsx, ProductList.jsx
 │   ├── pages/                 # Vistas principales de la aplicación
 │   │   ├── About.jsx
 │   │   ├── Home.jsx

@@ -54,7 +54,7 @@ npm run dev
 Por defecto, Vite sirve la aplicación en `http://localhost:5173`. La URL de la API se configura en `src/OrganizeApp.Frontend/.env.local`:
 
 ```env
-VITE_BASE_API_URL=http://localhost:5295
+VITE_BASE_API_URL=https://localhost:7049/api
 ```
 
 Esta variable indica el destino de las peticiones; el CORS de la API autoriza por separado el origen `http://localhost:5173`. No se debe versionar `.env.local`.
@@ -70,8 +70,6 @@ Scripts disponibles:
 
 ```text
 OrganizeApp/
-├── .github/
-│   └── copilot-instructions.md
 ├── OrganizeApp.sln
 ├── README.md
 └── src/
