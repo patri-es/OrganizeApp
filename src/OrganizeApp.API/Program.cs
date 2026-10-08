@@ -1,6 +1,6 @@
 using OrganizeApp.API.Exceptions;
 using OrganizeApp.Application;
-using OrganizeApp.Infraestructure;
+using OrganizeApp.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

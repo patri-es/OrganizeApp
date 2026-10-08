@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OrganizeApp.Application.Category;
+using OrganizeApp.Application.Category.Interfaces;
 using OrganizeApp.Application.Category.DTOs;
 
 namespace OrganizeApp.API.Controllers;
@@ -7,10 +8,10 @@ namespace OrganizeApp.API.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Tags("Categories")]
-public class CategoriesController(CategoryUseCases categoryUseCases) : ControllerBase
+public class CategoriesController(ICategoryUseCases categoryUseCases) : ControllerBase
 {
     #region uses cases
-    private readonly CategoryUseCases _categoryUseCases = categoryUseCases;
+    private readonly ICategoryUseCases _categoryUseCases = categoryUseCases;
 
     #endregion
 
