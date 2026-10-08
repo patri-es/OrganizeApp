@@ -13,12 +13,6 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
     private readonly IProductRepository _productRepository = productRepository;
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
 
-    //public ProductUseCases(IProductRepository productRepository, ICategoryRepository categoryRepository)
-    //{
-    //    _productRepository = productRepository;
-    //    _categoryRepository = categoryRepository;
-    //}
-
     // Queries
     public async Task<List<ProductDTO>> GetProducts(FiltersProductDTO? filters)
     {
@@ -159,7 +153,11 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
 
     public async Task ActivateProduct(int productId)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
+        // Carga el producto incluyendo sus categorías asociadas
+        var product = await _productRepository.GetByIdWithCategoriesAsync(productId, default)
+            ?? throw new NotFoundException("Product not found");
+
+        // Ahora product.Categories no estará vacío y pasará la validación de dominio
         product.Activate();
 
         await _productRepository.SaveChangesAsync();

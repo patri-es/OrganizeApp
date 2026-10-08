@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeApp.Application.Product.DTOs;
 using OrganizeApp.Application.Product.Interfaces;
+using OrganizeApp.Domain.Entities;
 using OrganizeApp.Infrastructure.Persistence;
 using ProductEntity = OrganizeApp.Domain.Entities.Product;
 
@@ -57,6 +58,13 @@ public class ProductRepository(AppDbContext context) : IProductRepository
     {
         return await _context.Products
             .FirstOrDefaultAsync(p => p.Id == productId);
+    }
+
+    public async Task<ProductEntity?> GetByIdWithCategoriesAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await _context.Products
+            .Include(p => p.Categories) // Carga las categorías asociadas a través de la tabla intermedia
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
     }
 
     public async Task AddAsync(ProductEntity product)
