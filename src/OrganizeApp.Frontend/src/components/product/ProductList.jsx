@@ -25,7 +25,7 @@ const ProductList = ({
         )
     }
 
-    const getStockQuantity = (productId) => stockQuantities[productId] ?? 1;
+    const getStockQuantity = (productId) => stockQuantities[productId] ?? 0;
 
     const setStockQuantity = (productId, value) => {
         setStockQuantities(prev => ({ ...prev, [productId]: value }));
@@ -93,14 +93,14 @@ const ProductList = ({
                             <div className="flex items-center space-x-2">
                                 <span className="text-sm font-semibold text-gray-600">Stock:</span>
                                 <input
-                                    type="number" min="1"
+                                    type="number" min="0"
                                     value={getStockQuantity(product.id)}
                                     onChange={(e) => setStockQuantity(product.id, Number(e.target.value))}
                                     className="w-20 px-2 py-1.5 rounded-lg border border-gray-200 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
                                 />
                                 <button
                                     onClick={() => onStockChange(product.id, getStockQuantity(product.id), 'increase')}
-                                    disabled={getStockQuantity(product.id) <= 0}
+                                    disabled={getStockQuantity(product.id) < 0}
                                     className="inline-flex items-center px-3 py-2 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
                                     title="Increase stock">
                                     <Plus className="w-4 h-4 mr-1" />
@@ -108,7 +108,7 @@ const ProductList = ({
                                 </button>
                                 <button
                                     onClick={() => onStockChange(product.id, getStockQuantity(product.id), 'decrease')}
-                                    disabled={getStockQuantity(product.id) <= 0 || getStockQuantity(product.id) > product.stock}
+                                    disabled={getStockQuantity(product.id) == 0 || getStockQuantity(product.id) > product.stock}
                                     className="inline-flex items-center px-3 py-2 bg-orange-100 text-orange-700 text-sm font-medium rounded-lg hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
                                     title="Decrease stock">
                                     <Minus className="w-4 h-4 mr-1" />
@@ -117,42 +117,61 @@ const ProductList = ({
                             </div>
 
                             {/* Categorías: POST/DELETE /{productId}/categories/{categoryId} */}
-                            <div className="flex flex-wrap items-center gap-2">
-                                <span className="text-sm font-semibold text-gray-600">Categories:</span>
-                                {product.categories?.map(category => (
-                                    <span key={category.id}
-                                        className="inline-flex items-center rounded-full bg-teal-50 px-3 py-1 text-xs font-medium text-teal-700">
-                                        <Tag className="w-3 h-3 mr-1" />
-                                        {category.name}
-                                        <button
-                                            onClick={() => onRemoveCategory(product.id, category.id)}
-                                            className="ml-1 text-teal-500 hover:text-red-600 transition-colors"
-                                            title={`Remove category ${category.name}`}>
-                                            <X className="w-3 h-3" />
-                                        </button>
+                            <div className="flex items-center justify-between">
+                                {/* Lista de Categorías asociadas al producto */}
+                                <div className="flex flex-wrap items-center gap-2">
+                                    {product.categories?.map(category => (
+                                        <span
+                                            key={category.id}
+                                            className="inline-flex items-center rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700"
+                                        >
+                                            <Tag className="w-3 h-3 mr-1" />
+                                            {category.name}
+
+                                            <button
+                                                onClick={() => onRemoveCategory(product.id, category.id)}
+                                                className="ml-1 text-purple-500 hover:text-red-600 transition-colors"
+                                                title={`Deassign category ${category.name}`}
+                                            >
+                                                <X className="w-3 h-3" />
+                                            </button>
+                                        </span>
+                                    ))}
+
+                                </div>
+
+                                {/* Añadir categoría */}
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <span className="text-sm font-semibold text-gray-600">
+                                        Categories:
                                     </span>
-                                ))}
-                                <select
-                                    value={getSelectedCategory(product.id)}
-                                    onChange={(e) => setSelectedCategory(product.id, e.target.value)}
-                                    className="px-2 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
-                                    <option value="">Select category...</option>
-                                    {categories
-                                        .filter(c => !product.categories?.some(pc => pc.id === c.id))
-                                        .map(category => (
-                                            <option key={category.id} value={category.id}>
-                                                {category.name}
-                                            </option>
-                                        ))}
-                                </select>
-                                <button
-                                    onClick={() => handleAssign(product.id)}
-                                    disabled={!getSelectedCategory(product.id)}
-                                    className="inline-flex items-center px-3 py-2 bg-purple-100 text-purple-700 text-sm font-medium rounded-lg hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
-                                    title="Assign category">
-                                    <Plus className="w-4 h-4 mr-1" />
-                                    Assign
-                                </button>
+
+                                    <select
+                                        value={getSelectedCategory(product.id)}
+                                        onChange={(e) => setSelectedCategory(product.id, e.target.value)}
+                                        className="px-2 py-1.5 rounded-lg border border-gray-200 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                    >
+                                        <option value="">Select category...</option>
+
+                                        {categories
+                                            .filter(c => !product.categories?.some(pc => pc.id === c.id))
+                                            .map(category => (
+                                                <option key={category.id} value={category.id}>
+                                                    {category.name}
+                                                </option>
+                                            ))}
+                                    </select>
+
+                                    <button
+                                        onClick={() => handleAssign(product.id)}
+                                        disabled={!getSelectedCategory(product.id)}
+                                        className="inline-flex items-center px-3 py-2 bg-purple-100 text-purple-700 text-sm font-medium rounded-lg hover:bg-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
+                                        title="Assign category"
+                                    >
+                                        <Plus className="w-4 h-4 mr-1" />
+                                        Assign
+                                    </button>
+                                </div>
                             </div>
                         </li>
                     ))

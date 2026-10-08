@@ -15,7 +15,9 @@ public class ProductRepository(AppDbContext context) : IProductRepository
     public async Task<List<ProductEntity>> GetProductsAsync(
     FiltersProductDTO? filters)
     {
-        IQueryable<ProductEntity> query = _context.Products;
+        IQueryable<ProductEntity> query = _context.Products
+        .Include(p => p.Categories)
+        .AsQueryable();
 
         if (filters is not null)
         {
@@ -57,6 +59,7 @@ public class ProductRepository(AppDbContext context) : IProductRepository
     public async Task<ProductEntity?> GetByIdAsync(int productId)
     {
         return await _context.Products
+            .Include(p => p.Categories)
             .FirstOrDefaultAsync(p => p.Id == productId);
     }
 
