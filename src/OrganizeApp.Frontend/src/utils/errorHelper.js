@@ -1,3 +1,9 @@
+// export function getErrorMessage(error, fallbackMessage = "An unexpected error occurred.") {
+//     return error.response?.data?.detail
+//         ?? error.message
+//         ?? fallbackMessage;
+// }
+
 // Helper para extraer el mensaje de excepción devuelto por .NET (ProblemDetails)
 export const getErrorMessage = (error) => {
     if (error.response && error.response.data) {
@@ -22,3 +28,6 @@ export const getErrorMessage = (error) => {
 
     return error.message || "Ocurrió un error inesperado al procesar la solicitud.";
 };
+
+
+
