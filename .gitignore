@@ -5,6 +5,8 @@
 
 # dotenv files
 .env
+.env.*
+!.env.example
 
 # User-specific files
 *.rsuser
@@ -504,6 +506,9 @@ dist-ssr
 *.suo
 *.ntvs*
 *.njsproj
-*.sln
 *.sw?
 
+/.github/
+/.github/*
+/.github/PROJECT_CONTEXT.md
+/src/OrganizeApp.API/OrganizeApp.API.http

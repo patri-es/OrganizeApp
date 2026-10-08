@@ -1,119 +1,116 @@
 # Organize App
-Creating WebApp with React and .NET for the backend, usign API with controllers and EF to manage the SQL Server Data Base.
 
-## Resumen
-- Aplicación tipo SPA (Frontend) + API REST (Backend) para gestión de productos/personas.
-- Frontend: React + Vite + Tailwind. Backend: ASP.NET Core (target .NET 10) con Entity Framework Core y SQL Server (LocalDB).
+OrganizeApp es una aplicación para gestionar productos y categorías. La solución contiene una API REST en .NET 10 y una SPA en React que consume sus endpoints.
 
 ## Arquitectura
-- Cliente SPA (React) <-> API REST (ASP.NET Core)  
-- El frontend consume la API del backend (CORS configurado para http://localhost:5173).
-- Persistencia: EF Core con migrations (carpeta Migrations). Cadena por defecto apunta a LocalDB (appsettings.json).
 
-### Estructura principal de carpetas
-- /Frontend
-  - package.json — scripts: dev, build, preview, lint
-  - src/ — código React (main.jsx, App.jsx, componentes, páginas)
-  - vite.config.js, index.html, src/index.css (Tailwind)
-  - README.md (documentación del frontend)
-- /Backend
-  - Backend.csproj
-  - Program.cs — arranque de la API y configuración (CORS, DbContext)
-  - Controllers/ — ProductsController.cs, PeopleController.cs
-  - Models/ — AppDbContext.cs, Product.cs, Person.cs
-  - Migrations/ — migrations EF Core (InitialCreate ...)
-  - appsettings.json / appsettings.Development.json
-  - README.md (documentación del backend)
-- OrganizeApp.sln — solución .NET en la raíz
+- **OrganizeApp.Domain**: entidades y reglas del dominio.
+- **OrganizeApp.Application**: casos de uso, DTOs, validaciones e interfaces.
+- **OrganizeApp.Infrastructure**: persistencia con Entity Framework Core, configuraciones, repositorios y migraciones.
+- **OrganizeApp.API**: aplicación ASP.NET Core, controladores, configuración, excepciones y OpenAPI.
+- **OrganizeApp.Frontend**: SPA React servida y compilada con Vite.
 
-### Tecnologías y librerías destacadas
-- Frontend:
-  - React 19, Vite, Tailwind CSS
-  - axios (peticiones HTTP), react-router-dom, react-hook-form, react-hot-toast, lucide-react
-  - eslint (calidad de código)
-- Backend:
-  - .NET 10, ASP.NET Core Web API
-  - Entity Framework Core (migrations)
-  - SQL Server LocalDB (cadena por defecto en appsettings.json)
-- Herramientas:
-  - Node.js + npm, .NET SDK (10.x), dotnet-ef (CLI para EF Core)
+La solución es `OrganizeApp.sln` y está en la raíz del repositorio. Los cinco proyectos se encuentran bajo `src/`.
 
-### Requisitos previos
-- Node.js (recomendado ≥ 18)
-- npm
-- .NET SDK 10
-- SQL Server Express / LocalDB (si usas la cadena por defecto)
-- (Opcional) dotnet-ef: dotnet tool install --global dotnet-ef
+## Requisitos previos
 
-## Instalación y ejecución (desde la raíz del repositorio)
+- .NET SDK 10.
+- Node.js LTS y npm.
+- SQL Server, LocalDB u otra base de datos compatible configurada en la API.
+- `dotnet-ef` para aplicar migraciones, si no se utiliza una instalación local o restaurada mediante herramientas .NET.
 
-### 1) Frontend
-- Instalar dependencias:
-  - cd Frontend
-  - npm install
-- Desarrollo (servidor con hot-reload):
-  - npm run dev
-  - Vite por defecto usa el puerto 5173 (el backend permite CORS desde http://localhost:5173).
-- Build para producción:
-  - npm run build
-- Probar build localmente (preview):
-  - npm run preview
-- Linter:
-  - npm run lint
+## Instalación y ejecución
 
-### 2) Backend
-- Restaurar y compilar:
-  - cd Backend/Backend
-  - dotnet restore
-  - dotnet build
-- Ejecutar API:
-  - dotnet run
-  - El comando mostrará la URL asignada por Kestrel (puedes usar la que aparezca en consola).
-- Inicializar / aplicar migrations (desde Backend/Backend):
-  - Asegúrate de tener dotnet-ef instalado globalmente si no está disponible:
-    - dotnet tool install --global dotnet-ef
-  - Aplicar migrations a la base de datos:
-    ```dotnet ef database update```
+Todos los comandos siguientes se ejecutan desde la raíz del repositorio (`C:\Users\tpmancilla\source\repos\OrganizeApp`).
 
-  - Para crear nuevas migrations:
-    ```dotnet ef migrations add NombreMigracion```
+### Backend
 
-  - Para borrar la última migration creada:
-    ```dotnet ef migrations remove```
+```powershell
+dotnet restore
+dotnet build
+dotnet run --project src/OrganizeApp.API/OrganizeApp.API.csproj
+```
 
-- Si prefieres ejecutar desde la raíz con ruta de proyecto:
-  - dotnet run --project Backend/Backend
+La API está disponible en `http://localhost:5295`. El perfil HTTPS también utiliza `https://localhost:7049`.
 
+Para aplicar las migraciones, `OrganizeApp.Infrastructure` es el proyecto de migraciones y `OrganizeApp.API` es el proyecto de inicio:
 
+```powershell
+dotnet ef database update --project src/OrganizeApp.Infrastructure/OrganizeApp.Infrastructure.csproj --startup-project src/OrganizeApp.API/OrganizeApp.API.csproj
+```
 
-### Ejecutar ambos en desarrollo
-- Abre dos terminales:
-  - Terminal A: cd Frontend && npm run dev
-  - Terminal B: cd Backend/Backend && dotnet run
+La cadena de conexión y las opciones de la API se configuran en `src/OrganizeApp.API/appsettings.json` y `appsettings.Development.json`. En entornos de despliegue deben utilizarse variables de entorno o secretos.
 
-#### Actualizar dependencias y análisis
-- Frontend:
-  - npm update
-  - npm audit fix
-  - Re-ejecutar npm install si hace falta
-- Backend:
-  - dotnet restore
-  - Para actualizar paquetes NuGet usa:
-    - dotnet list package --outdated
-    - dotnet add package <Paquete> --version <Versión>
-  - Ejecuta pruebas estáticas / linters si están configurados
+### Frontend
 
-### Configuración importante
-- Conexión a base de datos en Backend/Backend/appsettings.json:
-  - Actualmente usa LocalDB: "Data Source=(localdb)\\MSSQLLocalDB; Initial Catalog=OrganizeApp; Integrated Security=True; ..."
-  - Cambiar según entorno (usar variables de entorno en producción).
-- CORS: Program.cs permite orígenes desde http://localhost:5173. Ajustar si cambias el puerto o dominio del frontend.
+El frontend forma parte de la solución, pero sus dependencias y scripts se gestionan con npm:
 
-## Resolución de problemas comunes
-- Error EF: si dotnet ef no está disponible, instala dotnet-ef globalmente.
-- Si la API no responde desde el frontend: comprobar URL y puerto del backend (consola dotnet run) y revisar CORS.
-- Si el frontend no arranca: asegúrate de la versión de Node y de haber ejecutado npm install.
+```powershell
+cd src/OrganizeApp.Frontend
+npm ci
+npm run dev
+```
 
-## Notas finales
-- Hay READMEs específicos en /Frontend y /Backend con detalles locales; revisarlos para instrucciones específicas del subproyecto.
-- Este README es una guía de inicio rápido; adapta cadenas de conexión y variables de entorno para entornos de staging/producción.
+Por defecto, Vite sirve la aplicación en `http://localhost:5173`. La URL de la API se configura en `src/OrganizeApp.Frontend/.env.local`:
+
+```env
+VITE_BASE_API_URL=http://localhost:5295
+```
+
+Esta variable indica el destino de las peticiones; el CORS de la API autoriza por separado el origen `http://localhost:5173`. No se debe versionar `.env.local`.
+
+Scripts disponibles:
+
+- `npm run dev`: inicia el servidor de desarrollo.
+- `npm run build`: genera la compilación de producción en `dist`.
+- `npm run preview`: sirve la compilación generada.
+- `npm run lint`: ejecuta ESLint.
+
+## Estructura del repositorio
+
+```text
+OrganizeApp/
+├── .github/
+│   └── copilot-instructions.md
+├── OrganizeApp.sln
+├── README.md
+└── src/
+    ├── OrganizeApp.API/
+    │   ├── Controllers/
+    │   ├── Exceptions/
+    │   ├── Properties/
+    │   ├── Program.cs
+    │   └── appsettings.json
+    ├── OrganizeApp.Application/
+    │   ├── Category/
+    │   ├── Exceptions/
+    │   ├── Product/
+    │   └── DependencyInjection.cs
+    ├── OrganizeApp.Domain/
+    │   ├── Entities/
+    │   └── Exceptions/
+    ├── OrganizeApp.Infrastructure/
+    │   ├── Migrations/
+    │   ├── Persistence/
+    │   │   ├── Configurations/
+    │   │   └── Repositories/
+    │   └── DependencyInjection.cs
+    └── OrganizeApp.Frontend/
+        ├── public/
+        ├── src/
+        │   ├── assets/
+        │   ├── components/
+        │   └── pages/
+        ├── package.json
+        ├── package-lock.json
+        └── vite.config.js
+```
+
+La documentación específica del frontend está en `src/OrganizeApp.Frontend/README.md`.
+
+## Buenas prácticas
+
+- Abrir `OrganizeApp.sln` para trabajar con la solución completa en Visual Studio.
+- Mantener la lógica de negocio en Application y Domain; los controladores deben permanecer delgados.
+- Mantener las migraciones de Entity Framework Core en Infrastructure.
+- Gestionar cadenas de conexión y secretos mediante configuración segura en los entornos de despliegue.
