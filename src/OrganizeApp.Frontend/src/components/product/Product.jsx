@@ -4,6 +4,7 @@ import ProductList from "./ProductList"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import axios from "axios"
+import getErrorMessage from "../../utils/errorHelper"
 
 const BASE_URL = `${import.meta.env.VITE_BASE_API_URL}/products`;
 const CATEGORIES_URL = `${import.meta.env.VITE_BASE_API_URL}/categories`;
@@ -38,7 +39,8 @@ function Product() {
             setProducts(productsData);
         } catch (error) {
             console.log(error);
-            toast.error("Error loading products!");
+            let txt = getErrorMessage(error);
+            toast.error(txt);
         }
     };
     // const loadProducts = useCallback(async () => {
@@ -68,7 +70,8 @@ function Product() {
                 setProducts(productsData);
             } catch (error) {
                 console.log(error);
-                toast.error("Error loading products!");
+                let txt = getErrorMessage(error);
+                toast.error(txt);
             }
             finally {
                 setLoading(false);
@@ -85,7 +88,9 @@ function Product() {
                 setCategories(categoriesData);
             } catch (error) {
                 console.log(error);
-                toast.error("Error loading categories!");
+                //toast.error("Error loading categories!");
+                let txt =  getErrorMessage(error); 
+                toast.error(txt);
             }
         };
         loadCategories();
@@ -123,7 +128,8 @@ function Product() {
             toast.success("Saved successfully!");
         } catch (error) {
             console.log(error);
-            toast.error("Error saving product!");
+            let txt = getErrorMessage(error);
+            toast.error(txt);
         }
         finally {
             setLoading(false);
@@ -143,7 +149,8 @@ function Product() {
             toast.success("Deleted successfully!");
         } catch (error) {
             console.log(error);
-            toast.error("Error on deleting!");
+            let txt = getErrorMessage(error);
+            toast.error(txt);
         }
         finally {
             setLoading(false);
@@ -159,7 +166,8 @@ function Product() {
             toast.success(`Stock successfully ${action === 'increase' ? 'increased' : 'decreased'}!`);
         } catch (error) {
             console.log(error);
-            toast.error(error.response?.data ?? "Error changing stock!");
+            let txt = getErrorMessage(error);
+            toast.error(txt);
         }
         finally {
             setLoading(false);
@@ -177,7 +185,8 @@ function Product() {
             toast.success(`Product successfully ${action}d!`);
         } catch (error) {
             console.log(error);
-            toast.error(error.response?.data ?? `Error on ${action}!`);
+            let txt = getErrorMessage(error);
+            toast.error(txt);
         }
         finally {
             setLoading(false);
@@ -193,7 +202,8 @@ function Product() {
             toast.success("Category successfully assigned!");
         } catch (error) {
             console.log(error);
-            toast.error(error.response?.data ?? "Error assigning category!");
+            let txt = getErrorMessage(error);
+            toast.error(txt);
         }
         finally {
             setLoading(false);
@@ -209,7 +219,8 @@ function Product() {
             toast.success("Category successfully removed!");
         } catch (error) {
             console.log(error);
-            toast.error(error.response?.data ?? "Error removing category!");
+            let txt = getErrorMessage(error);
+            toast.error(txt);
         }
         finally {
             setLoading(false);
