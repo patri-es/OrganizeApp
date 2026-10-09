@@ -15,6 +15,8 @@ function Home() {
                     categories,
                     filters,
                     onFiltersChange,
+                    sortPrice,
+                    onSortPriceChange,
                     loading
                 }) => (
                     <>
@@ -23,6 +25,8 @@ function Home() {
                                 categories={categories}
                                 filters={filters}
                                 onFiltersChange={onFiltersChange}
+                                sortPrice={sortPrice}
+                                onSortPriceChange={onSortPriceChange}
                                 layout="horizontal"
                             />
                         </div>

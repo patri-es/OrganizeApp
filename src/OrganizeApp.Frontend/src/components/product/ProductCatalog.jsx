@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 
 import { getProducts } from "../../services/productService";
@@ -6,7 +6,7 @@ import { getCategories } from "../../services/categoryService";
 import { getErrorMessage } from "../../utils/errorHelper";
 
 const initialFilters = {
-    categoryId: "",
+    categoryIds: [],
     onlyAvailable: false,
     onlyInStock: false
 };
@@ -15,9 +15,10 @@ function ProductCatalog({ children }) {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [filters, setFilters] = useState(initialFilters);
+    const [sortPrice, setSortPrice] = useState("");
     const [loading, setLoading] = useState(true);
 
-    // Cargar las categorías disponibles.
+    // Cargar categorías.
     useEffect(() => {
         const loadCategories = async () => {
             try {
@@ -40,8 +41,8 @@ function ProductCatalog({ children }) {
             try {
                 const params = {};
 
-                if (filters.categoryId !== "") {
-                    params.CategoryId = Number(filters.categoryId);
+                if (filters.categoryIds.length > 0) {
+                    params.CategoryIds = filters.categoryIds;
                 }
 
                 if (filters.onlyAvailable) {
@@ -65,12 +66,26 @@ function ProductCatalog({ children }) {
         loadProducts();
     }, [filters]);
 
-    // Entregar los datos y los controles a la página que lo utiliza.
+    // Ordenar los productos sin modificar la lista original.
+    const sortedProducts = useMemo(() => {
+        if (!sortPrice) {
+            return products;
+        }
+
+        return [...products].sort((a, b) =>
+            sortPrice === "asc"
+                ? a.price - b.price
+                : b.price - a.price
+        );
+    }, [products, sortPrice]);
+
     return children({
-        products,
+        products: sortedProducts,
         categories,
         filters,
         onFiltersChange: setFilters,
+        sortPrice,
+        onSortPriceChange: setSortPrice,
         loading
     });
 }

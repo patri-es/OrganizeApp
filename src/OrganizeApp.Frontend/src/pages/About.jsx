@@ -15,6 +15,8 @@ function About() {
                     categories,
                     filters,
                     onFiltersChange,
+                    sortPrice,
+                    onSortPriceChange,
                     loading
                 }) => (
                     <div className="flex flex-col gap-8 md:flex-row">
@@ -24,6 +26,8 @@ function About() {
                                 categories={categories}
                                 filters={filters}
                                 onFiltersChange={onFiltersChange}
+                                sortPrice={sortPrice}
+                                onSortPriceChange={onSortPriceChange}
                                 layout="sidebar"
                             />
                         </aside>
