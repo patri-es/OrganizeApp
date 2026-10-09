@@ -2,22 +2,37 @@ function ProductFilters({
     categories = [],
     filters,
     onFiltersChange,
+    sortPrice,
+    onSortPriceChange,
     layout = "horizontal"
 }) {
     const isSidebar = layout === "sidebar";
 
     const containerClasses = isSidebar
         ? "flex flex-col gap-5"
-        : "flex flex-wrap items-center gap-6";
+        : "flex flex-wrap items-end gap-6";
 
     const categoryClasses = isSidebar
         ? "w-full"
-        : "w-full sm:w-56";
+        : "w-full sm:w-64";
 
-    const handleCategoryChange = (e) => {
+    const addCategory = (e) => {
+        const categoryId = Number(e.target.value);
+
+        if (!categoryId || filters.categoryIds.includes(categoryId)) {
+            return;
+        }
+
         onFiltersChange({
             ...filters,
-            categoryId: e.target.value
+            categoryIds: [...filters.categoryIds, categoryId]
+        });
+    };
+
+    const removeCategory = (categoryId) => {
+        onFiltersChange({
+            ...filters,
+            categoryIds: filters.categoryIds.filter(id => id !== categoryId)
         });
     };
 
@@ -37,41 +52,74 @@ function ProductFilters({
 
     const handleReset = () => {
         onFiltersChange({
-            categoryId: "",
+            categoryIds: [],
             onlyAvailable: false,
             onlyInStock: false
         });
+
+        onSortPriceChange("");
     };
+
+    const selectedCategories = categories.filter(category =>
+        filters.categoryIds.includes(category.id)
+    );
+
+    const availableCategories = categories.filter(category =>
+        !filters.categoryIds.includes(category.id)
+    );
 
     return (
         <div className="w-full rounded-lg border border-gray-200 bg-white p-4 shadow-sm">
             <div className={containerClasses}>
-                {/* Categoría */}
+                {/* Categorías */}
                 <div className={categoryClasses}>
                     <label
                         htmlFor="product-category-filter"
                         className="mb-1 block text-sm font-medium text-gray-700"
                     >
-                        Categoría
+                        Categorías
                     </label>
 
                     <select
                         id="product-category-filter"
-                        value={filters.categoryId}
-                        onChange={handleCategoryChange}
+                        value=""
+                        onChange={addCategory}
                         className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
                     >
-                        <option value="">Todas las categorías</option>
+                        <option value="" disabled>
+                            Seleccionar categoría...
+                        </option>
 
-                        {categories.map(category => (
-                            <option
-                                key={category.id}
-                                value={category.id}
-                            >
+                        {availableCategories.map(category => (
+                            <option key={category.id} value={category.id}>
                                 {category.name}
                             </option>
                         ))}
                     </select>
+
+                    {/* Categorías seleccionadas */}
+                    {selectedCategories.length > 0 && (
+                        <div className="mt-3 flex flex-wrap gap-2">
+                            {selectedCategories.map(category => (
+                                <span
+                                    key={category.id}
+                                    className="inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-700"
+                                >
+                                    {category.name}
+
+                                    <button
+                                        type="button"
+                                        onClick={() => removeCategory(category.id)}
+                                        className="ml-1 text-purple-500 transition-colors hover:text-red-600"
+                                        title={`Quitar categoría ${category.name}`}
+                                        aria-label={`Quitar categoría ${category.name}`}
+                                    >
+                                        ×
+                                    </button>
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 {/* Disponibilidad */}
@@ -96,7 +144,28 @@ function ProductFilters({
                     Solo con stock
                 </label>
 
-                {/* Restablecer */}
+                {/* Ordenación por precio */}
+                <div className={categoryClasses}>
+                    <label
+                        htmlFor="product-price-sort"
+                        className="mb-1 block text-sm font-medium text-gray-700"
+                    >
+                        Ordenar por precio
+                    </label>
+
+                    <select
+                        id="product-price-sort"
+                        value={sortPrice}
+                        onChange={(e) => onSortPriceChange(e.target.value)}
+                        className="w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 focus:border-teal-500 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    >
+                        <option value="">Orden predeterminado</option>
+                        <option value="asc">Precio: menor a mayor</option>
+                        <option value="desc">Precio: mayor a menor</option>
+                    </select>
+                </div>
+
+                {/* Limpiar filtros */}
                 <button
                     type="button"
                     onClick={handleReset}
