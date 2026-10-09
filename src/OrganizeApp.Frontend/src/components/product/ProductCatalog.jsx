@@ -5,16 +5,13 @@ import { getProducts } from "../../services/productService";
 import { getCategories } from "../../services/categoryService";
 import { getErrorMessage } from "../../utils/errorHelper";
 
-import ProductFilters from "./ProductFilters";
-import ProductGrid from "./ProductGrid";
-
 const initialFilters = {
     categoryId: "",
     onlyAvailable: false,
     onlyInStock: false
 };
 
-function ProductCatalog({ filterLayout = "horizontal" }) {
+function ProductCatalog({ children }) {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
     const [filters, setFilters] = useState(initialFilters);
@@ -35,7 +32,7 @@ function ProductCatalog({ filterLayout = "horizontal" }) {
         loadCategories();
     }, []);
 
-    // Cargar los productos cada vez que cambien los filtros.
+    // Cargar productos cuando cambien los filtros.
     useEffect(() => {
         const loadProducts = async () => {
             setLoading(true);
@@ -68,21 +65,14 @@ function ProductCatalog({ filterLayout = "horizontal" }) {
         loadProducts();
     }, [filters]);
 
-    return (
-        <section className="w-full space-y-6">
-            <ProductFilters
-                categories={categories}
-                filters={filters}
-                onFiltersChange={setFilters}
-                layout={filterLayout}
-            />
-
-            <ProductGrid
-                products={products}
-                loading={loading}
-            />
-        </section>
-    );
+    // Entregar los datos y los controles a la página que lo utiliza.
+    return children({
+        products,
+        categories,
+        filters,
+        onFiltersChange: setFilters,
+        loading
+    });
 }
 
 export default ProductCatalog;

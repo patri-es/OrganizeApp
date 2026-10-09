@@ -25,6 +25,7 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
                 Name = product.Name,
                 Description = product.Description,
                 ImageUrl = product.ImageUrl,
+                Price = product.Price,
                 Stock = product.Stock,
                 IsAvailable = product.IsAvailable,
                 Categories = [.. product.Categories
@@ -50,6 +51,7 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
             Name = product.Name,
             Description = product.Description,
             ImageUrl = product.ImageUrl,
+            Price = product.Price,
             Stock = product.Stock,
             IsAvailable = product.IsAvailable,
             Categories = [.. product.Categories

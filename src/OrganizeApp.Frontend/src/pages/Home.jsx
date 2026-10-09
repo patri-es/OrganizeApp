@@ -1,4 +1,6 @@
-import ProductCatalog from "../components/product/ProductCatalog"
+import ProductCatalog from "../components/product/ProductCatalog";
+import ProductFilters from "../components/product/ProductFilters";
+import ProductGrid from "../components/product/ProductGrid";
 
 function Home() {
     return (
@@ -7,9 +9,35 @@ function Home() {
                 Nuestros productos
             </h1>
 
-            <ProductCatalog filterLayout="horizontal" />
+            <ProductCatalog>
+                {({
+                    products,
+                    categories,
+                    filters,
+                    onFiltersChange,
+                    loading
+                }) => (
+                    <>
+                        <div className="mb-6">
+                            <ProductFilters
+                                categories={categories}
+                                filters={filters}
+                                onFiltersChange={onFiltersChange}
+                                layout="horizontal"
+                            />
+                        </div>
+
+                        <div className="w-full">
+                            <ProductGrid
+                                products={products}
+                                loading={loading}
+                            />
+                        </div>
+                    </>
+                )}
+            </ProductCatalog>
         </main>
-    )
+    );
 }
 
-export default Home
+export default Home;
