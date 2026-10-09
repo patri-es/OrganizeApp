@@ -7,7 +7,7 @@ function Home() {
                 Nuestros productos
             </h1>
 
-            <ProductCatalog />
+            <ProductCatalog filterLayout="horizontal" />
         </main>
     )
 }
