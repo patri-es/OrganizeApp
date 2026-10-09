@@ -1,13 +1,6 @@
-//import ProductCard from "../components/product/ProductCard"
-
 const Home = () => {
     return (
-        <div>Hola mundo!
-        
-        
-            
-        
-        </div>
+        <div>Hola mundo!</div>
     )
 }
 

@@ -89,32 +89,6 @@ const ProductList = ({
                                 </div>
                             </div>
 
-                            {/* Control de stock: POST /{id}/stock/increase|decrease */}
-                            <div className="flex items-center space-x-2">
-                                <span className="text-sm font-semibold text-gray-600">Stock:</span>
-                                <input
-                                    type="number" min="0"
-                                    value={getStockQuantity(product.id)}
-                                    onChange={(e) => setStockQuantity(product.id, Number(e.target.value))}
-                                    className="w-20 px-2 py-1.5 rounded-lg border border-gray-200 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
-                                />
-                                <button
-                                    onClick={() => onStockChange(product.id, getStockQuantity(product.id), 'increase')}
-                                    disabled={getStockQuantity(product.id) < 0}
-                                    className="inline-flex items-center px-3 py-2 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
-                                    title="Increase stock">
-                                    <Plus className="w-4 h-4 mr-1" />
-                                    Add
-                                </button>
-                                <button
-                                    onClick={() => onStockChange(product.id, getStockQuantity(product.id), 'decrease')}
-                                    disabled={getStockQuantity(product.id) == 0 || getStockQuantity(product.id) > product.stock}
-                                    className="inline-flex items-center px-3 py-2 bg-orange-100 text-orange-700 text-sm font-medium rounded-lg hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
-                                    title="Decrease stock">
-                                    <Minus className="w-4 h-4 mr-1" />
-                                    Remove
-                                </button>
-                            </div>
 
                             {/* Categorías: POST/DELETE /{productId}/categories/{categoryId} */}
                             <div className="flex items-center justify-between">
@@ -172,6 +146,32 @@ const ProductList = ({
                                         Assign
                                     </button>
                                 </div>
+                            </div>
+                            {/* Control de stock: POST /{id}/stock/increase|decrease */}
+                            <div className="flex items-center space-x-2 ms-0">
+                                <span className="text-sm font-semibold text-gray-600">Stock:</span>
+                                <input
+                                    type="number" min="0"
+                                    value={getStockQuantity(product.id)}
+                                    onChange={(e) => setStockQuantity(product.id, Number(e.target.value))}
+                                    className="w-20 px-2 py-1.5 rounded-lg border border-gray-200 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-teal-500"
+                                />
+                                <button
+                                    onClick={() => onStockChange(product.id, getStockQuantity(product.id), 'increase')}
+                                    disabled={getStockQuantity(product.id) < 0}
+                                    className="inline-flex items-center px-3 py-2 bg-green-100 text-green-700 text-sm font-medium rounded-lg hover:bg-green-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
+                                    title="Increase stock">
+                                    <Plus className="w-4 h-4 mr-1" />
+                                    Add
+                                </button>
+                                <button
+                                    onClick={() => onStockChange(product.id, getStockQuantity(product.id), 'decrease')}
+                                    disabled={getStockQuantity(product.id) == 0 || getStockQuantity(product.id) > product.stock}
+                                    className="inline-flex items-center px-3 py-2 bg-orange-100 text-orange-700 text-sm font-medium rounded-lg hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-1 transition-all duration-200 transform hover:scale-105 disabled:opacity-50"
+                                    title="Decrease stock">
+                                    <Minus className="w-4 h-4 mr-1" />
+                                    Remove
+                                </button>
                             </div>
                         </li>
                     ))
