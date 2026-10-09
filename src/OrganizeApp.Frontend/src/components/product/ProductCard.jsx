@@ -1,4 +1,8 @@
 function ProductCard({ product }) {
+    if (!product) {
+        return null;
+    }
+
     return (
         <article className="flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-shadow hover:shadow-md">
             {/* Imagen */}
@@ -7,6 +11,7 @@ function ProductCard({ product }) {
                     <img
                         src={product.imageUrl}
                         alt={product.name}
+                        loading="lazy"
                         className="h-full w-full object-contain p-4"
                     />
                 ) : (
@@ -45,7 +50,7 @@ function ProductCard({ product }) {
                 )}
 
                 {/* Precio */}
-                <div className="mt-4">
+                <div className="mt-auto pt-4">
                     <span className="text-2xl font-medium text-gray-900">
                         {(product.price ?? 0).toFixed(2)} €
                     </span>
@@ -64,15 +69,21 @@ function ProductCard({ product }) {
                     )}
                 </div>
 
-                {/* Disponibilidad */}
+                {/* Disponibilidad comercial */}
                 <div className="mt-1 text-sm">
-                    <span className={product.isAvailable ? 'text-green-600' : 'text-gray-400'}>
+                    <span
+                        className={
+                            product.isAvailable
+                                ? 'text-green-600'
+                                : 'text-gray-400'
+                        }
+                    >
                         {product.isAvailable ? 'Disponible' : 'No disponible'}
                     </span>
                 </div>
             </div>
         </article>
-    )
+    );
 }
 
-export default ProductCard
+export default ProductCard;
