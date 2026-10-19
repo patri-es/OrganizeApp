@@ -2,7 +2,7 @@
 
 public class FiltersProductDTO
 {
-    public int? CategoryId { get; set; }
+    public List<int> CategoryIds { get; set; } = [];
     public bool? HasCategory { get; set; }
     public bool? IsAvailable { get; set; }
     public int? MinStock { get; set; }
