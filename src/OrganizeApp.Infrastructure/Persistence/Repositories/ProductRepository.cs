@@ -21,10 +21,11 @@ public class ProductRepository(AppDbContext context) : IProductRepository
 
         if (filters is not null)
         {
-            if (filters.CategoryId.HasValue)
+            if (filters.CategoryIds is { Count: > 0 })
             {
-                query = query.Where(p =>
-                    p.Categories.Any(c => c.Id == filters.CategoryId.Value));
+                query = query.Where(product =>
+                    product.Categories.Any(category =>
+                        filters.CategoryIds.Contains(category.Id)));
             }
 
             if (filters.HasCategory.HasValue)
