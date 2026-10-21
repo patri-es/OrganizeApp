@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizeApp.Infrastructure"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizeApp.API", "src\OrganizeApp.API\OrganizeApp.API.csproj", "{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrganizeApp.UnitTests", "test\OrganizeApp.UnitTests\OrganizeApp.UnitTests.csproj", "{EA9375AF-1335-4467-8631-BC64616A5D3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A65FB79-E25B-4CD2-B027-2171F75FC9C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA9375AF-1335-4467-8631-BC64616A5D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA9375AF-1335-4467-8631-BC64616A5D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA9375AF-1335-4467-8631-BC64616A5D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA9375AF-1335-4467-8631-BC64616A5D3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
