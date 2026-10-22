@@ -1,13 +1,12 @@
 ﻿
-using OrganizeApp.Domain.Entities;
-using OrganizeApp.Domain.Exceptions;
-//using Xunit;
+using Xunit;
 
 namespace OrganizeApp.UnitTests.Products;
 
 public class ProductTests
 {
-    public void Test1()
+    [Fact]
+    public void ProductId()
     {
 
     }
