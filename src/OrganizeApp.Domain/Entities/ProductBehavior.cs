@@ -5,7 +5,7 @@ namespace OrganizeApp.Domain.Entities;
 public partial class Product
 {
     /// <summary>
-    /// Constructor of Category
+    /// Constructor of Product
     /// </summary>
     /// <param name="name"></param>
     /// <param name="description"></param>
@@ -64,10 +64,6 @@ public partial class Product
     {
         ImageUrl = imageUrl;
     }
-
-    //public void UpdateProduct(Product product)
-    //{
-    //}
 
 
     // Stock
