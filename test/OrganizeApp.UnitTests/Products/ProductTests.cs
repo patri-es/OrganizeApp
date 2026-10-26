@@ -44,17 +44,6 @@ public class ProductTests
             () => new Product(name!, "Descripción de Teclado", 25m, "/images/teclado.jpg"));
     }
 
-    [Theory] 
-    [InlineData(null)] 
-    [InlineData("")]
-    [InlineData("  ")]
-    public void Constructor_WithInvalidImageUrl_ThrowsProductDomainException(string? url)
-    {
-        // Act & Assert
-        Assert.Throws<ProductDomainException>(
-            () => new Product("Teclado", "Descripción de Teclado", 25m, url!));
-    }
-
     // Rechaza un precio negativo
     [Theory]
     [InlineData(-1)]
@@ -92,6 +81,22 @@ public class ProductTests
 
         // Assert
         Assert.Null(product.Description);
+    }
+
+    [Fact]
+    public void Constructor_WithNullImageUrl_CreatesProduct()
+    {
+        // Arrange
+        var name = "Teclado";
+        var description = "Descripción de Teclado";
+        var price = 25m;
+        string? imageUrl = null;
+
+        // Act
+        var product = new Product(name, description, price, imageUrl);
+
+        // Assert
+        Assert.Null(product.ImageUrl);
     }
 
     #endregion
@@ -143,7 +148,27 @@ public class ProductTests
         Assert.Equal(originalName, product.Name);
     }
 
+    [Theory]
+    [InlineData(-1)]
+    [InlineData(-0.05)]
+    [InlineData(-10)]
+    public void ChangePrice_WithNegativeValue_ThrowsProductDomainException(decimal price)
+    {
+        // Arrange
+        var originalPrice = 10m;
 
+        var product = new Product(
+            "Teclado",
+            "Descripción de Teclado",
+            originalPrice,
+            "/images/teclado.jpg");
+
+        // Act & Assert 
+        Assert.Throws<ProductDomainException>(
+            () => product.ChangePrice(price));
+
+        Assert.Equal(originalPrice, product.Price);
+    }
 
     #endregion
 
