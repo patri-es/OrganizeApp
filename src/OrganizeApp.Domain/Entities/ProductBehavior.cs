@@ -28,16 +28,16 @@ public partial class Product
             throw new ProductDomainException("Product name is required.");
         
         if (name.Length > MaxNameLength)
-            throw new ProductDomainException($"Product name cannot exceed {MaxNameLength} chararcters.");
+            throw new ProductDomainException($"Product name cannot exceed {MaxNameLength} characters.");
 
         if (description?.Length > MaxDescriptionLength)
-            throw new ProductDomainException($"Product description cannot exceed {MaxDescriptionLength} chararcters.");
+            throw new ProductDomainException($"Product description cannot exceed {MaxDescriptionLength} characters.");
+
+        if (imageUrl?.Length > MaxImageUrlLength)
+            throw new ProductDomainException($"Product imageUrl cannot exceed {MaxImageUrlLength} characters.");
 
         if (price < 0)
             throw new ProductDomainException("Product price cannot be negative.");
-
-        if (imageUrl?.Length > MaxImageUrlLength)
-            throw new ProductDomainException($"Product imageUrl cannot exceed {MaxImageUrlLength} chararcters.");
 
         // new product:
         Name = name;
