@@ -53,8 +53,8 @@ A. Constructor y valores iniciales
 - [x] P1 — Permite una descripción null.
 - [x] P1 — Permite un precio igual a 0.
 B. Cambios de nombre, descripción, precio e imagen
-- [ ] P0 — ChangeName actualiza un nombre válido.
-- [ ] P0 — ChangeName rechaza un nombre vacío o en blanco.
+- [x] P0 — ChangeName actualiza un nombre válido.
+- [x] P0 — ChangeName rechaza un nombre vacío o en blanco.
 - [ ] P0 — ChangePrice actualiza un precio válido.
 - [ ] P0 — ChangePrice rechaza un precio negativo.
 - [ ] P1 — ChangeDescription permite establecer o cambiar una descripción, incluida null.

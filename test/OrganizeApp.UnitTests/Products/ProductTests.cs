@@ -96,4 +96,55 @@ public class ProductTests
 
     #endregion
 
+    #region Test of Edit Product
+
+    [Theory]
+    [InlineData("Test")]
+    [InlineData("Test with spaces")]
+    [InlineData("Test@with_symbols")]
+    [InlineData("15897")]
+    public void ChangeName_WithValidName_UpdatesProductName(string newName)
+    {
+        // Arrange
+        var product = new Product(
+            "Teclado",
+            "Descripción de Teclado",
+            25m,
+            "/images/teclado.jpg");
+
+        // Act
+        product.ChangeName(newName);
+
+        // Assert
+        Assert.Equal(newName, product.Name);
+    }
+
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("  ")]
+    public void ChangeName_WithInvalidName_ThrowsProductDomainException(string? name)
+    {
+        // Arrange (creo producto válido para la prueba)
+        var originalName = "Teclado";
+
+        var product = new Product(
+            originalName,
+            "Descripción de Teclado",
+            25m,
+            "/images/teclado.jpg");
+
+        // Act & Assert (pasamos parámetro name con los valores InlineData, debe ir a la excepción de Dominio)
+        Assert.Throws<ProductDomainException>(
+            () => product.ChangeName(name!));
+
+        // Assert
+        Assert.Equal(originalName, product.Name);
+    }
+
+
+
+    #endregion
+
 }
