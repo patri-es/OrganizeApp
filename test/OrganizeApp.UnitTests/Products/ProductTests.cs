@@ -8,10 +8,9 @@ public class ProductTests
 {
 
     #region Test of Constructor (by create Product)
-    // test para el constructor
-    // verifica que el constructor conserva los datos proporcionados y establece correctamente los valores iniciales
     // Crea un producto válido con sus datos correctos. Inicializa Stock a 0 e IsAvailable a false.
-    [Fact] // ejecuta la prueba una vez con unos datos concretos
+    // verifica que el constructor conserva los datos proporcionados y establece correctamente los valores iniciales
+    [Fact] 
     public void Constructor_WithValidData_CreatesProductWithInitialValues()
     {
         // Arrange (arreglar/acordar)
@@ -32,6 +31,7 @@ public class ProductTests
         Assert.False(product.IsAvailable);
     }
 
+    // NAME
     // Rechaza un nombre null, vacío o compuesto solo por espacios (3 casos con InlineData)
     [Theory] // ejecuta la misma prueba para diferentes conjuntos de datos indicados en los InlineData
     [InlineData(null)] // InlineData (cambia el valor recibido en el parámetro, en este caso "name")
@@ -44,6 +44,30 @@ public class ProductTests
             () => new Product(name!, "Descripción de Teclado", 25m, "/images/teclado.jpg"));
     }
 
+    // comprueba que se aceptan valores de máxima longitud
+    [Fact]
+    public void Constructor_WithNameAtMaximumLength_CreatesProduct()
+    {
+        // Arrange
+        var name = new string('A', 100);
+        // Act
+        var product = new Product(name, null, 25m, null);
+        // Assert
+        Assert.Equal(100, product.Name.Length);
+    }
+
+    // comprueba que se rechazan valores superiores a la máxima longitud
+    [Fact]
+    public void Constructor_WithNameExceedingMaximumLength_ThrowsProductDomainException()
+    {
+        // Arrange
+        var name = new string('A', 101);
+        // Act & Assert
+        Assert.Throws<ProductDomainException>(
+            () => new Product(name, null, 25m, null));
+    }
+
+    // PRICE
     // Rechaza un precio negativo
     [Theory]
     [InlineData(-1)]
@@ -56,6 +80,7 @@ public class ProductTests
             () => new Product("Teclado", "Descripción de Teclado", price, "/images/teclado.jpg"));
     }
 
+    // Comprueba que permite valor de precio a 0
     [Fact]
     public void Constructor_WithZeroPrice_CreatesProduct()
     {
@@ -66,43 +91,105 @@ public class ProductTests
         Assert.Equal(0m, product.Price);
     }
 
-
-    [Fact]
-    public void Constructor_WithNullDescription_CreatesProduct()
+    // DESCRIPTION
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("  ")]
+    public void Constructor_WithOptionalDescription_CreatesProduct(string? description)
     {
-        // Arrange
-        var name = "Teclado";
-        string? description = null;
-        var price = 25m;
-        var imageUrl = "/images/teclado.jpg";
-
         // Act
-        var product = new Product(name, description, price, imageUrl);
+        var product = new Product("Teclado", description, 25m, "/images/teclado.jpg");
 
         // Assert
-        Assert.Null(product.Description);
+        Assert.Equal(description, product.Description);
     }
 
+    // 
     [Fact]
-    public void Constructor_WithNullImageUrl_CreatesProduct()
+    public void Constructor_WithDescriptionAtMaximumLength_CreatesProduct()
     {
         // Arrange
-        var name = "Teclado";
-        var description = "Descripción de Teclado";
-        var price = 25m;
-        string? imageUrl = null;
+        var description = new string('A', 500);
 
         // Act
-        var product = new Product(name, description, price, imageUrl);
+        var product = new Product("Teclado", description, 25m, null);
 
         // Assert
-        Assert.Null(product.ImageUrl);
+        Assert.Equal(500, product.Description!.Length);
     }
+
+    // 
+    [Fact]
+    public void Constructor_WithDescriptionExceedingMaximumLength_ThrowsProductDomainException()
+    {
+        // Arrange
+        var description = new string('A', 501);
+
+        // Act & Assert
+        Assert.Throws<ProductDomainException>(
+            () => new Product("Teclado", description, 25m, null));
+    }
+
+    // IMAGE URL
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData("  ")]
+    public void Constructor_WithOptionalImageUrl_CreatesProduct(string? url)
+    {
+        // Act
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, url);
+
+        // Assert
+        Assert.Equal(url, product.ImageUrl);
+    }
+
+    // 
+    [Fact]
+    public void Constructor_WithImageUrlAtMaximumLength_CreatesProduct()
+    {
+        // Arrange
+        var imageUrl = new string('A', 500);
+
+        // Act
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, imageUrl);
+
+        // Assert
+        Assert.Equal(500, product.ImageUrl!.Length);
+    }
+
+    // 
+    [Fact]
+    public void Constructor_WithImageUrlExceedingMaximumLength_ThrowsProductDomainException()
+    {
+        // Arrange
+        var imageUrl = new string('A', 501);
+
+        // Act & Assert
+        Assert.Throws<ProductDomainException>(
+            () => new Product("Teclado", "Descripción de Teclado", 25m, imageUrl));
+    }
+
+    // CATEGORIES
+    // Se declara con: public ICollection<Category> Categories { get; private set; } = [];
+    [Fact]
+    public void Constructor_WithValidData_InitializesCategoriesAsEmptyCollection()
+    {
+        // Arrange & Act
+        var product = new Product("Teclado", null, 25m, null);
+
+        // Assert
+        Assert.NotNull(product.Categories); // comprueba que exista la categoría (no es necesaria esta comprobación en este caso)
+        Assert.Empty(product.Categories); // comprueba que inicia sin ninguna categoría
+    }
+
 
     #endregion
 
     #region Test of Edit Product
 
+    // NAME
     [Theory]
     [InlineData("Test")]
     [InlineData("Test with spaces")]
@@ -116,14 +203,11 @@ public class ProductTests
             "Descripción de Teclado",
             25m,
             "/images/teclado.jpg");
-
         // Act
         product.ChangeName(newName);
-
         // Assert
         Assert.Equal(newName, product.Name);
     }
-
 
     [Theory]
     [InlineData(null)]
@@ -148,6 +232,124 @@ public class ProductTests
         Assert.Equal(originalName, product.Name);
     }
 
+    [Fact]
+    public void ChangeName_WithNameAtMaximumLength_UpdatesProductName()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var newName = new string('A', 100);
+        // Act
+        product.ChangeName(newName);
+        // Assert
+        Assert.Equal(newName, product.Name);
+    }
+    [Fact]
+    public void ChangeName_WithNameExceedingMaximumLength_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var originalName = product.Name;
+        var newName = new string('A', 101);
+
+        // Act & Assert
+        Assert.Throws<ProductDomainException>(
+            () => product.ChangeName(newName));
+
+        Assert.Equal(originalName, product.Name);
+    }
+
+    // DESCRIPTION
+    [Theory]
+    [InlineData("Test")]
+    [InlineData("  ")]
+    [InlineData(null)]
+    public void ChangeDescription_WithOptionalDescription_UpdatesProductDescription(string? newDescription)
+    {
+        // Arrange
+        var product = new Product(
+            "Teclado",
+            "Descripción de Teclado",
+            25m,
+            "/images/teclado.jpg");
+        // Act
+        product.ChangeDescription(newDescription);
+        // Assert
+        Assert.Equal(newDescription, product.Description);
+    }
+
+    [Fact]
+    public void ChangeDescription_WithDescriptionAtMaximumLength_UpdatesProductDescription()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var newDescription = new string('A', 500);
+        // Act
+        product.ChangeDescription(newDescription);
+        // Assert
+        Assert.Equal(newDescription, product.Description);
+    }
+    [Fact]
+    public void ChangeDescription_WithDescriptionExceedingMaximumLength_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var originalDescription = product.Description;
+        var newDescription = new string('A', 501);
+
+        // Act & Assert
+        Assert.Throws<ProductDomainException>(
+            () => product.ChangeDescription(newDescription));
+
+        Assert.Equal(originalDescription, product.Description);
+    }
+
+    // IMAGE URL
+    [Theory]
+    [InlineData("Test")]
+    [InlineData("  ")]
+    [InlineData(null)]
+    public void ChangeImageUrl_WithOptionalImageUrl_UpdatesProductImageUrl(string? newImageUrl)
+    {
+        // Arrange
+        var product = new Product(
+            "Teclado",
+            "Descripción de Teclado",
+            25m,
+            "/images/teclado.jpg");
+        // Act
+        product.ChangeImage(newImageUrl);
+        // Assert
+        Assert.Equal(newImageUrl, product.ImageUrl);
+    }
+
+    [Fact]
+    public void ChangeImageUrl_WithImageUrlAtMaximumLength_UpdatesProductImageUrl()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var newImageUrl = new string('A', 500);
+        // Act
+        product.ChangeImage(newImageUrl);
+        // Assert
+        Assert.Equal(newImageUrl, product.ImageUrl);
+    }
+
+    [Fact]
+    public void ChangeImageUrl_WithImageUrlExceedingMaximumLength_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var originalImageUrl = product.ImageUrl;
+        var newImageUrl = new string('A', 501);
+
+        // Act & Assert
+        Assert.Throws<ProductDomainException>(
+            () => product.ChangeImage(newImageUrl));
+
+        Assert.Equal(originalImageUrl, product.ImageUrl);
+    }
+
+    // PRICE
     [Theory]
     [InlineData(-1)]
     [InlineData(-0.05)]
@@ -169,6 +371,164 @@ public class ProductTests
 
         Assert.Equal(originalPrice, product.Price);
     }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(0.05)]
+    [InlineData(100)]
+    public void ChangePrice_WithValidPrice_UpdatesProductPrice(decimal newPrice)
+    {
+        // Arrange
+        var product = new Product(
+            "Teclado",
+            "Descripción de Teclado",
+            25m,
+            "/images/teclado.jpg");
+        // Act
+        product.ChangePrice(newPrice);
+        // Assert
+        Assert.Equal(newPrice, product.Price);
+    }
+
+    #endregion
+
+    #region Manage Stock of Products
+    
+    // Aumentar stock
+    [Fact]
+    public void IncreaseStock_WithValidQuantity_IncreasesStock()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        var quantity = 10;
+        // Act
+        product.IncreaseStock(quantity);
+        // Assert
+        Assert.Equal(quantity, product.Stock);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void IncreaseStock_WithInvalidQuantity_ThrowsProductDomainException(int quantity)
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+
+        // Act
+        var act = () => product.IncreaseStock(quantity);
+
+        // Assert
+        Assert.Throws<ProductDomainException>(act);
+    }
+
+    // reducir stock
+    [Fact]
+    public void DecreaseStock_WithValidQuantity_DecreasesStock()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        product.IncreaseStock(10);
+        var quantity = 5;
+
+        // Act
+        product.DecreaseStock(quantity);
+
+        // Assert
+        Assert.Equal(5, product.Stock);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(-1)]
+    public void DecreaseStock_WithInvalidQuantity_ThrowsProductDomainException(int quantity)
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        product.IncreaseStock(10);
+
+        // Act
+        var act = () => product.DecreaseStock(quantity);
+
+        // Assert
+        Assert.Throws<ProductDomainException>(act);
+    }
+
+
+    #endregion
+
+    #region Manage Availability of Products
+
+    [Fact]
+    public void Activate_WithStockAndCategories_SetsIsAvailableToTrue()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        product.IncreaseStock(10);
+
+        var category = new Category("Electrónica", "ELEC", "Descripción", "imagen.jpg");
+        product.AssignCategory(category);
+
+        // Act
+        product.Activate();
+
+        // Assert
+        Assert.True(product.IsAvailable);
+    }
+
+    [Fact]
+    public void Activate_WithoutStock_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+
+        var category = new Category("Electrónica", "ELEC", "Descripción", "imagen.jpg");
+        product.AssignCategory(category);
+
+        // Act
+        var act = () => product.Activate();
+
+        // Assert
+        Assert.Throws<ProductDomainException>(act);
+        Assert.False(product.IsAvailable);
+    }
+
+    [Fact]
+    public void Activate_WithoutCategories_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        product.IncreaseStock(10);
+
+        // Act
+        var act = () => product.Activate();
+
+        // Assert
+        Assert.Throws<ProductDomainException>(act);
+        Assert.False(product.IsAvailable);
+    }
+
+    [Fact]
+    public void Deactivate_WhenProductIsActive_SetsIsAvailableToFalse()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        product.IncreaseStock(10);
+
+        var category = new Category("nombre Category", "CAT", "Descripción de Cat", "imagen.jpg");
+        product.AssignCategory(category);
+        product.Activate();
+
+        // Act
+        product.Deactivate();
+
+        // Assert
+        Assert.False(product.IsAvailable);
+    }
+
+    #endregion
+    #region Manage Categories of Products
+
 
     #endregion
 
