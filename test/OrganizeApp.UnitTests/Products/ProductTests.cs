@@ -529,6 +529,144 @@ public class ProductTests
     #endregion
     #region Manage Categories of Products
 
+    [Fact]
+    public void AssignCategory_WithValidCategory_AddsCategoryToProduct()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var category = CreateCategoryWithId(1);
+
+        // Act
+        product.AssignCategory(category);
+
+        // Assert
+        Assert.Single(product.Categories);
+        Assert.Contains(category, product.Categories);
+    }
+
+    [Fact]
+    public void AssignCategory_WithSameCategoryTwice_DoesNotAddDuplicate()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var category = CreateCategoryWithId(1);
+
+        // Act
+        product.AssignCategory(category);
+        product.AssignCategory(category);
+
+        // Assert
+        Assert.Single(product.Categories);
+        Assert.Contains(category, product.Categories);
+    }
+
+    [Fact]
+    public void AssignCategory_WithDifferentCategories_AddsBothCategories()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var firstCategory = CreateCategoryWithId(1);
+        var secondCategory = CreateCategoryWithId(2);
+
+        // Act
+        product.AssignCategory(firstCategory);
+        product.AssignCategory(secondCategory);
+
+        // Assert
+        Assert.Equal(2, product.Categories.Count);
+        Assert.Contains(firstCategory, product.Categories);
+        Assert.Contains(secondCategory, product.Categories);
+    }
+
+    [Fact]
+    public void RemoveCategory_WithExistingCategory_RemovesCategoryFromProduct()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var category = CreateCategoryWithId(1);
+        product.AssignCategory(category);
+
+        // Act
+        product.RemoveCategory(category);
+
+        // Assert
+        Assert.Empty(product.Categories);
+    }
+
+    [Fact]
+    public void RemoveCategory_WithCategoryNotAssigned_DoesNotModifyCategories()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        var assignedCategory = CreateCategoryWithId(1);
+        var otherCategory = CreateCategoryWithId(2);
+
+        product.AssignCategory(assignedCategory);
+
+        // Act
+        product.RemoveCategory(otherCategory);
+
+        // Assert
+        Assert.Single(product.Categories);
+        Assert.Contains(assignedCategory, product.Categories);
+    }
+
+    [Fact]
+    public void RemoveCategory_WhenLastCategoryIsRemoved_SetsIsAvailableToFalse()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        product.IncreaseStock(10);
+
+        var category = CreateCategoryWithId(1);
+        product.AssignCategory(category);
+        product.Activate();
+
+        // Act
+        product.RemoveCategory(category);
+
+        // Assert
+        Assert.Empty(product.Categories);
+        Assert.False(product.IsAvailable);
+    }
+
+    [Fact]
+    public void RemoveCategory_WhenOtherCategoriesRemain_KeepsProductAvailable()
+    {
+        // Arrange
+        var product = new Product("Teclado", null, 25m, null);
+        product.IncreaseStock(10);
+
+        var firstCategory = CreateCategoryWithId(1);
+        var secondCategory = CreateCategoryWithId(2);
+
+        product.AssignCategory(firstCategory);
+        product.AssignCategory(secondCategory);
+        product.Activate();
+
+        // Act
+        product.RemoveCategory(firstCategory);
+
+        // Assert
+        Assert.Single(product.Categories);
+        Assert.Contains(secondCategory, product.Categories);
+        Assert.True(product.IsAvailable);
+    }
+
+    private static Category CreateCategoryWithId(int id)
+    {
+        var category = new Category(
+            $"Categoría {id}",
+            $"CAT{id}",
+            "Descripción",
+            "imagen.jpg");
+
+        typeof(Category)
+            .GetProperty(nameof(Category.Id))!
+            .SetValue(category, id);
+
+        return category;
+    }
 
     #endregion
 
