@@ -40,11 +40,11 @@ Constructor_WithNegativePrice_ThrowsProductDomainException()
   }
 }
 ```
+### - Posible lista de próximos test
 
-## Posible lista de próximos test
 Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 
-### A. Constructor y valores iniciales
+#### A. Constructor y valores iniciales
 - [x] P0 — Crea un producto válido con sus datos correctos e inicializa Stock a 0 e IsAvailable a false.
 - [x] P0 — Rechaza un nombre null, vacío o compuesto únicamente por espacios.
 - [x] P0 — Rechaza un precio negativo.
@@ -59,7 +59,7 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P1 — Rechaza una ImageUrl que supera la longitud máxima (501 caracteres).
 - [ ] P2 — Inicializa Categories como una colección vacía.
 
-### B. Modificación de datos
+#### B. Modificación de datos
 - [x] P0 — ChangeName actualiza el nombre con un valor válido.
 - [x] P0 — ChangeName rechaza un nombre null, vacío o compuesto únicamente por espacios.
 - [x] P0 — ChangeName conserva el nombre anterior si la validación falla.
@@ -74,7 +74,7 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P0 — ChangePrice rechaza un precio negativo y conserva el precio anterior.
 - [x] P1 — ChangePrice actualiza el precio con un valor válido.
 
-### C. Gestión del stock
+#### C. Gestión del stock
 - [x] P0 — IncreaseStock aumenta el stock con una cantidad válida.
 - [x] P0 — IncreaseStock rechaza una cantidad igual a cero.
 - [x] P0 — IncreaseStock rechaza una cantidad negativa.
@@ -85,15 +85,17 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P0 — DecreaseStock permite reducir el stock exactamente a cero.
 - [x] P0 — DecreaseStock desactiva el producto cuando el stock llega a cero.
 
-### D. Disponibilidad
+#### D. Disponibilidad
 - [x] P0 — Activate activa un producto con stock y al menos una categoría.
 - [x] P0 — Activate rechaza un producto sin stock.
 - [x] P0 — Activate rechaza un producto sin categorías.
 - [x] P1 — Deactivate desactiva un producto activo.
 
-### E. Gestión de categorías
-- [ ] P1 — AssignCategory añade una categoría al producto.
-- [ ] P1 — AssignCategory evita asignar dos veces la misma categoría.
-- [ ] P1 — RemoveCategory elimina una categoría asignada.
-- [ ] P1 — RemoveCategory no modifica el producto si la categoría no está asignada.
-- [ ] P0 — RemoveCategory desactiva el producto cuando se elimina su última categoría.
+#### E. Gestión de categorías
+- [x] P1 — AssignCategory añade una categoría al producto.
+- [x] P1 — AssignCategory evita asignar dos veces la misma categoría.
+- [x] P1 — RemoveCategory elimina una categoría asignada.
+- [x] P1 — RemoveCategory no modifica el producto si la categoría no está asignada.
+- [x] P0 — RemoveCategory desactiva el producto cuando se elimina su última categoría.
+
+## Pruebas unitarias de 

@@ -86,19 +86,19 @@ public partial class Category
         Code = code;
     }
 
-    public void ChangeDescription(string description)
+    public void ChangeDescription(string? description)
     {
 
-        if (description.Length > MaxDescriptionLength)
+        if (description?.Length > MaxDescriptionLength)
             throw new CategoryDomainException(
                 $"Category description cannot exceed {MaxDescriptionLength} characters.");
 
         Description = description;
     }
 
-    public void ChangeImage(string imageUrl)
+    public void ChangeImage(string? imageUrl)
     {
-        if (imageUrl.Length > MaxImageUrlLength)
+        if (imageUrl?.Length > MaxImageUrlLength)
             throw new CategoryDomainException(
                 $"Category imageUrl cannot exceed {MaxImageUrlLength} characters.");
 
