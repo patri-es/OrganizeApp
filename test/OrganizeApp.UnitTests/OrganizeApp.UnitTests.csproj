@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\OrganizeApp.Domain\OrganizeApp.Domain.csproj" />
+	<ProjectReference Include="..\..\src\OrganizeApp.Application\OrganizeApp.Application.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 # Test unitarios
 
-## Pruebas unitarias de Dominio
+## 1. Pruebas unitarias de Dominio
 Comprueban reglas concretas de una clase sin depender de la base de datos ni de la API.
 
 Ejemplos: un producto no admite un precio negativo; reducir el stock a cero lo deja no disponible; no se puede activar sin stock o sin categorías.
@@ -57,7 +57,7 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P1 — Rechaza una descripción que supera la longitud máxima (501 caracteres).
 - [x] P1 — Acepta una ImageUrl con la longitud máxima permitida (500 caracteres).
 - [x] P1 — Rechaza una ImageUrl que supera la longitud máxima (501 caracteres).
-- [ ] P2 — Inicializa Categories como una colección vacía.
+- [x] P2 — Inicializa Categories como una colección vacía.
 
 #### B. Modificación de datos
 - [x] P0 — ChangeName actualiza el nombre con un valor válido.
@@ -98,4 +98,60 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P1 — RemoveCategory no modifica el producto si la categoría no está asignada.
 - [x] P0 — RemoveCategory desactiva el producto cuando se elimina su última categoría.
 
-## Pruebas unitarias de 
+
+## 2. Pruebas unitarias para la capa de Application
+
+#### A. Consultas de productos
+- [ ] P0 — Obtiene todos los productos y devuelve sus datos en una lista de `ProductDTO`.
+- [ ] P0 — Mapea correctamente las categorías asociadas a cada producto en su `ProductDTO`.
+- [ ] P0 — Devuelve una lista vacía cuando no existen productos.
+- [ ] P0 — Envía los filtros recibidos al repositorio al consultar productos.
+- [ ] P0 — Obtiene un producto por su identificador y devuelve su `ProductDTO`.
+- [ ] P0 — Devuelve `null` cuando no existe un producto con el identificador solicitado.
+- [ ] P1 — Devuelve correctamente un producto sin categorías asociadas.
+
+#### B. Creación de productos
+- [ ] P0 — Crea un producto con los datos del `CreateProductDTO` y lo envía al repositorio.
+- [ ] P0 — Guarda los cambios después de crear el producto.
+- [ ] P1 — Propaga la excepción de dominio cuando los datos recibidos no son válidos.
+- [ ] P1 — No guarda cambios si falla la creación del producto.
+
+#### C. Eliminación de productos
+- [ ] P0 — Elimina un producto existente y guarda los cambios.
+- [ ] P0 — Lanza una excepción cuando el producto no existe.
+- [ ] P1 — No guarda cambios cuando el producto no existe.
+
+#### D. Actualización de productos
+- [ ] P0 — Actualiza el nombre, la descripción, el precio y la imagen de un producto existente.
+- [ ] P0 — Guarda los cambios después de actualizar el producto.
+- [ ] P0 — Lanza `NotFoundException` cuando el producto no existe.
+- [ ] P1 — Propaga la excepción de dominio cuando alguno de los datos no es válido.
+- [ ] P1 — No guarda cambios cuando la actualización falla por una excepción de dominio.
+
+#### E. Gestión del stock
+- [ ] P0 — Aumenta el stock de un producto existente y guarda los cambios.
+- [ ] P0 — Reduce el stock de un producto existente y guarda los cambios.
+- [ ] P0 — Lanza `NotFoundException` al aumentar el stock de un producto inexistente.
+- [ ] P0 — Lanza `NotFoundException` al reducir el stock de un producto inexistente.
+- [ ] P1 — Propaga la excepción de dominio cuando la cantidad para aumentar el stock no es válida.
+- [ ] P1 — Propaga la excepción de dominio cuando la cantidad para reducir el stock no es válida.
+- [ ] P1 — No guarda cambios cuando una operación de stock falla por una excepción de dominio.
+
+#### F. Disponibilidad de productos
+- [ ] P0 — Activa un producto que tiene stock y categorías asociadas, y guarda los cambios.
+- [ ] P0 — Lanza `NotFoundException` al intentar activar un producto inexistente.
+- [ ] P0 — Desactiva un producto existente y guarda los cambios.
+- [ ] P0 — Lanza `NotFoundException` al intentar desactivar un producto inexistente.
+- [ ] P1 — Propaga la excepción de dominio al activar un producto sin stock.
+- [ ] P1 — Propaga la excepción de dominio al activar un producto sin categorías.
+- [ ] P1 — No guarda cambios cuando la activación falla por una excepción de dominio.
+
+#### G. Asignación y eliminación de categorías
+- [ ] P0 — Asigna una categoría existente a un producto existente y guarda los cambios.
+- [ ] P0 — Lanza `NotFoundException` cuando el producto no existe al asignar una categoría.
+- [ ] P0 — Lanza `NotFoundException` cuando la categoría no existe al asignarla.
+- [ ] P0 — Elimina la asociación entre un producto y una categoría existentes, y guarda los cambios.
+- [ ] P0 — Lanza una excepción cuando el producto no existe al eliminar una categoría.
+- [ ] P0 — Lanza una excepción cuando la categoría no existe al eliminarla del producto.
+- [ ] P1 — Propaga la excepción de dominio si la asignación o eliminación de una categoría incumple una regla de dominio.
+- [ ] P1 — No guarda cambios cuando falla la operación de asignación o eliminación.
