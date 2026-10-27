@@ -122,11 +122,11 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P1 — No guarda cambios cuando el producto no existe.
 
 #### D. Actualización de productos
-- [ ] P0 — Actualiza el nombre, la descripción, el precio y la imagen de un producto existente.
-- [ ] P0 — Guarda los cambios después de actualizar el producto.
-- [ ] P0 — Lanza `NotFoundException` cuando el producto no existe.
-- [ ] P1 — Propaga la excepción de dominio cuando alguno de los datos no es válido.
-- [ ] P1 — No guarda cambios cuando la actualización falla por una excepción de dominio.
+- [x] P0 — Actualiza el nombre, la descripción, el precio y la imagen de un producto existente.
+- [x] P0 — Guarda los cambios después de actualizar el producto.
+- [x] P0 — Lanza `NotFoundException` cuando el producto no existe.
+- [x] P1 — Propaga la excepción de dominio cuando alguno de los datos no es válido.
+- [x] P1 — No guarda cambios cuando la actualización falla por una excepción de dominio.
 
 #### E. Gestión del stock
 - [ ] P0 — Aumenta el stock de un producto existente y guarda los cambios.

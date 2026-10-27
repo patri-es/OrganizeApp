@@ -293,7 +293,7 @@ public class ProductUseCasesTests
         var useCases = CreateUseCases(productRepository);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
             () => useCases.DeleteProduct(99));
 
         // Assert
@@ -308,7 +308,7 @@ public class ProductUseCasesTests
         var useCases = CreateUseCases(productRepository);
 
         // Act
-        await Assert.ThrowsAsync<Exception>(
+        await Assert.ThrowsAsync<NotFoundException>(
             () => useCases.DeleteProduct(99));
 
         // Assert
