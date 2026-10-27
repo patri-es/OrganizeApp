@@ -232,7 +232,7 @@ public class CategoryTests
         var category = new Category("Electrónica", "ELEC", "Descripción", "imagen.jpg");
 
         // Act
-        var act = () => category.ChangeName(name!);
+        void act() => category.ChangeName(name!);
 
         // Assert
         Assert.Throws<CategoryDomainException>(act);
@@ -261,7 +261,7 @@ public class CategoryTests
         var name = new string('A', 101);
 
         // Act
-        var act = () => category.ChangeName(name);
+        void act() => category.ChangeName(name);
 
         // Assert
         Assert.Throws<CategoryDomainException>(act);
@@ -292,7 +292,7 @@ public class CategoryTests
         var category = new Category("Electrónica", "ELEC", "Descripción", "imagen.jpg");
 
         // Act
-        var act = () => category.ChangeCode(code!);
+        void act() => category.ChangeCode(code!);
 
         // Assert
         Assert.Throws<CategoryDomainException>(act);
@@ -321,7 +321,7 @@ public class CategoryTests
         var code = new string('A', 21);
 
         // Act
-        var act = () => category.ChangeCode(code);
+        void act() => category.ChangeCode(code);
 
         // Assert
         Assert.Throws<CategoryDomainException>(act);
@@ -358,7 +358,7 @@ public class CategoryTests
         var category = new Category("Electrónica", "ELEC", "Descripción", "imagen.jpg");
 
         // Act
-        var act = () => category.ChangeCode(code);
+        void act() => category.ChangeCode(code);
 
         // Assert
         Assert.Throws<CategoryDomainException>(act);
@@ -405,7 +405,7 @@ public class CategoryTests
         var description = new string('A', 501);
 
         // Act
-        var act = () => category.ChangeDescription(description);
+        void act() => category.ChangeDescription(description);
 
         // Assert
         Assert.Throws<CategoryDomainException>(act);
@@ -452,7 +452,7 @@ public class CategoryTests
         var imageUrl = new string('A', 501);
 
         // Act
-        var act = () => category.ChangeImage(imageUrl);
+        void act() => category.ChangeImage(imageUrl);
 
         // Assert
         Assert.Throws<CategoryDomainException>(act);

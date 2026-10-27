@@ -416,7 +416,7 @@ public class ProductTests
         var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
 
         // Act
-        var act = () => product.IncreaseStock(quantity);
+        void act() => product.IncreaseStock(quantity);
 
         // Assert
         Assert.Throws<ProductDomainException>(act);
@@ -448,7 +448,7 @@ public class ProductTests
         product.IncreaseStock(10);
 
         // Act
-        var act = () => product.DecreaseStock(quantity);
+        void act() => product.DecreaseStock(quantity);
 
         // Assert
         Assert.Throws<ProductDomainException>(act);
@@ -486,7 +486,7 @@ public class ProductTests
         product.AssignCategory(category);
 
         // Act
-        var act = () => product.Activate();
+        void act() => product.Activate();
 
         // Assert
         Assert.Throws<ProductDomainException>(act);
@@ -501,7 +501,7 @@ public class ProductTests
         product.IncreaseStock(10);
 
         // Act
-        var act = () => product.Activate();
+        void act() => product.Activate();
 
         // Assert
         Assert.Throws<ProductDomainException>(act);
