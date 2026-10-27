@@ -4,8 +4,13 @@ namespace OrganizeApp.Domain.Entities;
 
 public partial class Product
 {
+
+    private const int MaxNameLength = 100;
+    private const int MaxDescriptionLength = 500;
+    private const int MaxImageUrlLength = 500;
+
     /// <summary>
-    /// Constructor of Category
+    /// Constructor of Product
     /// </summary>
     /// <param name="name"></param>
     /// <param name="description"></param>
@@ -18,15 +23,23 @@ public partial class Product
         decimal price,
         string? imageUrl)
     {
+        // Domain validations
         if (string.IsNullOrWhiteSpace(name))
             throw new ProductDomainException("Product name is required.");
+        
+        if (name.Length > MaxNameLength)
+            throw new ProductDomainException($"Product name cannot exceed {MaxNameLength} characters.");
+
+        if (description?.Length > MaxDescriptionLength)
+            throw new ProductDomainException($"Product description cannot exceed {MaxDescriptionLength} characters.");
+
+        if (imageUrl?.Length > MaxImageUrlLength)
+            throw new ProductDomainException($"Product imageUrl cannot exceed {MaxImageUrlLength} characters.");
 
         if (price < 0)
             throw new ProductDomainException("Product price cannot be negative.");
 
-        if (string.IsNullOrWhiteSpace(imageUrl))
-            throw new ProductDomainException("Product image is required.");
-
+        // new product:
         Name = name;
         Description = description;
         Price = price;
@@ -41,12 +54,20 @@ public partial class Product
         if (string.IsNullOrWhiteSpace(name))
             throw new ProductDomainException("Product name is required.");
 
+        if (name.Length > MaxNameLength)
+            throw new ProductDomainException(
+                $"Product name cannot exceed {MaxNameLength} characters.");
+
         Name = name;
     }
 
     // Description
     public void ChangeDescription(string? description)
     {
+        if (description?.Length > MaxDescriptionLength)
+            throw new ProductDomainException(
+                $"Product description cannot exceed {MaxDescriptionLength} characters.");
+
         Description = description;
     }
 
@@ -62,12 +83,12 @@ public partial class Product
     // Image
     public void ChangeImage(string? imageUrl)
     {
+        if (imageUrl?.Length > MaxImageUrlLength)
+            throw new ProductDomainException(
+                $"Product image URL cannot exceed {MaxImageUrlLength} characters.");
+
         ImageUrl = imageUrl;
     }
-
-    //public void UpdateProduct(Product product)
-    //{
-    //}
 
 
     // Stock
