@@ -454,6 +454,53 @@ public class ProductTests
         Assert.Throws<ProductDomainException>(act);
     }
 
+    [Fact]
+    public void DecreaseStock_WithQuantityGreaterThanStock_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        product.IncreaseStock(10);
+        var quantity = 11;
+
+        // Act
+        void act() => product.DecreaseStock(quantity);
+
+        // Assert
+        Assert.Throws<ProductDomainException>(act);
+        Assert.Equal(10, product.Stock);
+    }
+
+    [Fact]
+    public void DecreaseStock_WithQuantityEqualToStock_SetsStockToZero()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        product.IncreaseStock(10);
+        var quantity = 10;
+
+        // Act
+        product.DecreaseStock(quantity);
+
+        // Assert
+        Assert.Equal(0, product.Stock);
+    }
+
+    [Fact]
+    public void DecreaseStock_WhenStockReachesZero_DeactivatesProduct()
+    {
+        // Arrange
+        var product = new Product("Teclado", "Descripción de Teclado", 25m, null);
+        product.IncreaseStock(10);
+        product.AssignCategory(new Category("Electrónica", "ELEC", "Descripción", "imagen.jpg"));
+        product.Activate();
+
+        // Act
+        product.DecreaseStock(10);
+
+        // Assert
+        Assert.Equal(0, product.Stock);
+        Assert.False(product.IsAvailable);
+    }
 
     #endregion
 
@@ -545,15 +592,17 @@ public class ProductTests
     }
 
     [Fact]
-    public void AssignCategory_WithSameCategoryTwice_DoesNotAddDuplicate()
+    public void AssignCategory_WithSameCategoryTwice_ThrowsProductDomainException()
     {
         // Arrange
         var product = new Product("Teclado", null, 25m, null);
         var category = CreateCategoryWithId(1);
 
-        // Act
         product.AssignCategory(category);
-        product.AssignCategory(category);
+
+        // Act & Assert
+        Assert.Throws<ProductDomainException>(
+            () => product.AssignCategory(category));
 
         // Assert
         Assert.Single(product.Categories);
@@ -594,7 +643,7 @@ public class ProductTests
     }
 
     [Fact]
-    public void RemoveCategory_WithCategoryNotAssigned_DoesNotModifyCategories()
+    public void RemoveCategory_WithCategoryNotAssigned_ThrowsProductDomainException()
     {
         // Arrange
         var product = new Product("Teclado", null, 25m, null);
@@ -603,8 +652,9 @@ public class ProductTests
 
         product.AssignCategory(assignedCategory);
 
-        // Act
-        product.RemoveCategory(otherCategory);
+        // Act & Assert
+        Assert.Throws<ProductDomainException>(
+            () => product.RemoveCategory(otherCategory));
 
         // Assert
         Assert.Single(product.Categories);

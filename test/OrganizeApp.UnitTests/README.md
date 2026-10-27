@@ -79,16 +79,16 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P0 — `ChangePrice_WithNegativeValue_ThrowsProductDomainException`: rechaza un precio negativo y conserva el anterior.
 - [x] P1 — `ChangePrice_WithValidPrice_UpdatesProductPrice`: actualiza el precio con un valor válido, incluido cero.
 
+
 ### C. Product — Gestión del stock
 
 - [x] P0 — `IncreaseStock_WithValidQuantity_IncreasesStock`: aumenta el stock con una cantidad válida.
 - [x] P0 — `IncreaseStock_WithInvalidQuantity_ThrowsProductDomainException`: rechaza una cantidad igual a cero o negativa.
 - [x] P0 — `DecreaseStock_WithValidQuantity_DecreasesStock`: reduce el stock con una cantidad válida.
 - [x] P0 — `DecreaseStock_WithInvalidQuantity_ThrowsProductDomainException`: rechaza una cantidad igual a cero o negativa.
-
-- [ ] P0 — Pendiente: comprobar que `DecreaseStock` rechaza una cantidad superior al stock actual.
-- [ ] P0 — Pendiente: comprobar que `DecreaseStock` permite reducir el stock exactamente a cero.
-- [ ] P0 — Pendiente: comprobar que `DecreaseStock` desactiva el producto cuando el stock llega a cero.
+- [x] P0 — `DecreaseStock_WithQuantityGreaterThanStock_ThrowsProductDomainException`: rechaza una cantidad superior al stock disponible y conserva el stock anterior.
+- [x] P0 — `DecreaseStock_WithQuantityEqualToStock_SetsStockToZero`: permite reducir el stock exactamente a cero.
+- [x] P0 — `DecreaseStock_WhenStockReachesZero_DeactivatesProduct`: desactiva automáticamente el producto cuando el stock llega a cero.
 
 ### D. Product — Disponibilidad
 
