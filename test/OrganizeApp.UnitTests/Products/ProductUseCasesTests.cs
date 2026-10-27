@@ -462,6 +462,574 @@ public class ProductUseCasesTests
 
     #endregion
 
+    #region Stock Management
+
+    [Fact]
+    public async Task IncreaseProductStock_WithExistingProduct_IncreasesStockAndSavesChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.IncreaseProductStock(1, 5);
+
+        // Assert
+        Assert.Equal(5, product.Stock);
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task DecreaseProductStock_WithExistingProduct_DecreasesStockAndSavesChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        product.IncreaseStock(10);
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.DecreaseProductStock(1, 3);
+
+        // Assert
+        Assert.Equal(7, product.Stock);
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task IncreaseProductStock_WhenProductDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.IncreaseProductStock(99, 5));
+
+        // Assert
+        Assert.Equal("Product not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task DecreaseProductStock_WhenProductDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.DecreaseProductStock(99, 3));
+
+        // Assert
+        Assert.Equal("Product not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task IncreaseProductStock_WithInvalidQuantity_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.IncreaseProductStock(1, -1));
+
+        // Assert
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public async Task DecreaseProductStock_WithInvalidQuantity_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        product.IncreaseStock(5);
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.DecreaseProductStock(1, 6));
+
+        // Assert
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public async Task IncreaseProductStock_WhenOperationFails_DoesNotSaveChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.IncreaseProductStock(1, -1));
+
+        // Assert
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task DecreaseProductStock_WhenOperationFails_DoesNotSaveChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        product.IncreaseStock(5);
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.DecreaseProductStock(1, 6));
+
+        // Assert
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
+    }
+
+    #endregion
+
+    #region Product Availability
+
+    [Fact]
+    public async Task ActivateProduct_WithStockAndCategories_ActivatesProductAndSavesChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        product.IncreaseStock(5);
+
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+        product.AssignCategory(category);
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.ActivateProduct(1);
+
+        // Assert
+        Assert.True(product.IsAvailable);
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task ActivateProduct_WhenProductDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.ActivateProduct(99));
+
+        // Assert
+        Assert.Equal("Product not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task DeactivateProduct_WithExistingProduct_DeactivatesProductAndSavesChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        product.IncreaseStock(5);
+        product.AssignCategory(CreateCategory(10, "Peripherals", "PERIPHERALS"));
+        product.Activate();
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.DeactivateProduct(1);
+
+        // Assert
+        Assert.False(product.IsAvailable);
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task DeactivateProduct_WhenProductDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.DeactivateProduct(99));
+
+        // Assert
+        Assert.Equal("Product not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task ActivateProduct_WithoutStock_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        product.AssignCategory(CreateCategory(10, "Peripherals", "PERIPHERALS"));
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.ActivateProduct(1));
+
+        // Assert
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public async Task ActivateProduct_WithoutCategories_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        product.IncreaseStock(5);
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.ActivateProduct(1));
+
+        // Assert
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public async Task ActivateProduct_WhenActivationFails_DoesNotSaveChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.ActivateProduct(1));
+
+        // Assert
+        Assert.False(product.IsAvailable);
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
+    }
+
+    #endregion
+
+    #region Product Category Management
+
+    [Fact]
+    public async Task AssignProductCategory_WithExistingProductAndCategory_AssignsCategoryAndSavesChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var categoryRepository = new FakeCategoryRepository
+        {
+            CategoriesById = { [10] = category }
+        };
+
+        var useCases = new ProductUseCases(productRepository, categoryRepository);
+
+        // Act
+        await useCases.AssignProductCategory(1, 10);
+
+        // Assert
+        var assignedCategory = Assert.Single(product.Categories);
+        Assert.Equal(10, assignedCategory.Id);
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task AssignProductCategory_WhenProductDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+
+        var productRepository = new FakeProductRepository();
+        var categoryRepository = new FakeCategoryRepository
+        {
+            CategoriesById = { [10] = category }
+        };
+
+        var useCases = new ProductUseCases(productRepository, categoryRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.AssignProductCategory(99, 10));
+
+        // Assert
+        Assert.Equal("Product not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task AssignProductCategory_WhenCategoryDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.AssignProductCategory(1, 10));
+
+        // Assert
+        Assert.Equal("Category not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task RemoveProductCategory_WithExistingProductAndCategory_RemovesCategoryAndSavesChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+        product.AssignCategory(category);
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var categoryRepository = new FakeCategoryRepository
+        {
+            CategoriesById = { [10] = category }
+        };
+
+        var useCases = new ProductUseCases(productRepository, categoryRepository);
+
+        // Act
+        await useCases.RemoveProductCategory(1, 10);
+
+        // Assert
+        Assert.Empty(product.Categories);
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task RemoveProductCategory_WhenProductDoesNotExist_ThrowsException()
+    {
+        // Arrange
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+
+        var productRepository = new FakeProductRepository();
+        var categoryRepository = new FakeCategoryRepository
+        {
+            CategoriesById = { [10] = category }
+        };
+
+        var useCases = new ProductUseCases(productRepository, categoryRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.RemoveProductCategory(99, 10));
+
+        // Assert
+        Assert.Equal("Product not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task RemoveProductCategory_WhenCategoryDoesNotExist_ThrowsException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.RemoveProductCategory(1, 10));
+
+        // Assert
+        Assert.Equal("Category not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task AssignProductCategory_WhenCategoryIsAlreadyAssigned_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+        product.AssignCategory(category);
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var categoryRepository = new FakeCategoryRepository
+        {
+            CategoriesById = { [10] = category }
+        };
+
+        var useCases = new ProductUseCases(productRepository, categoryRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.AssignProductCategory(1, 10));
+
+        // Assert
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public async Task RemoveProductCategory_WhenCategoryIsNotAssigned_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var categoryRepository = new FakeCategoryRepository
+        {
+            CategoriesById = { [10] = category }
+        };
+
+        var useCases = new ProductUseCases(productRepository, categoryRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.RemoveProductCategory(1, 10));
+
+        // Assert
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public async Task AssignProductCategory_WhenAssignmentFails_DoesNotSaveChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+        product.AssignCategory(category);
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var categoryRepository = new FakeCategoryRepository
+        {
+            CategoriesById = { [10] = category }
+        };
+
+        var useCases = new ProductUseCases(productRepository, categoryRepository);
+
+        // Act
+        await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.AssignProductCategory(1, 10));
+
+        // Assert
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task RemoveProductCategory_WhenRemovalFails_DoesNotSaveChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+        var category = CreateCategory(10, "Peripherals", "PERIPHERALS");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var categoryRepository = new FakeCategoryRepository
+        {
+            CategoriesById = { [10] = category }
+        };
+
+        var useCases = new ProductUseCases(productRepository, categoryRepository);
+
+        // Act
+        await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.RemoveProductCategory(1, 10));
+
+        // Assert
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
+    }
+
+    #endregion
+
     #region Test helpers
 
     private static ProductUseCases CreateUseCases(
@@ -561,14 +1129,17 @@ public class ProductUseCasesTests
 
     private sealed class FakeCategoryRepository : ICategoryRepository
     {
+        public Dictionary<int, Category> CategoriesById { get; } = [];
+
         public Task<List<Category>> GetCategoriesAsync()
         {
-            return Task.FromResult(new List<Category>());
+            return Task.FromResult(CategoriesById.Values.ToList());
         }
 
         public Task<Category?> GetByIdAsync(int categoryId)
         {
-            return Task.FromResult<Category?>(null);
+            CategoriesById.TryGetValue(categoryId, out var category);
+            return Task.FromResult(category);
         }
 
         public Task AddAsync(Category category) => Task.CompletedTask;

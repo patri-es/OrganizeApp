@@ -137,7 +137,7 @@ public partial class Product
     public void AssignCategory(Category category)
     {
         if (Categories.Any(c => c.Id == category.Id))
-            return;
+            throw new ProductDomainException("Category is already assigned to this product");
 
         Categories.Add(category);
     }
@@ -145,11 +145,7 @@ public partial class Product
     public void RemoveCategory(Category category)
     {
         var existingCategory = Categories
-            .FirstOrDefault(c => c.Id == category.Id);
-
-        if (existingCategory is null)
-            return;
-
+            .FirstOrDefault(c => c.Id == category.Id) ?? throw new ProductDomainException("Category is not assigned to this product");
         Categories.Remove(existingCategory);
 
         if (Categories.Count == 0)
