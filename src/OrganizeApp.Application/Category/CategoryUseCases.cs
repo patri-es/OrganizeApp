@@ -81,10 +81,10 @@ public class CategoryUseCases(ICategoryRepository categoryRepository) : ICategor
         await _categoryRepository.SaveChangesAsync();
     }
 
-    public async Task ChangeCategoryDescription(int categoryId, string description)
+    public async Task ChangeCategoryDescription(int categoryId, string? description)
     {
         var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new NotFoundException("Category not found");
-        category.ChangeDescription(description);
+        category.ChangeDescription(description!);
 
         await _categoryRepository.SaveChangesAsync();
     }
@@ -97,10 +97,10 @@ public class CategoryUseCases(ICategoryRepository categoryRepository) : ICategor
         await _categoryRepository.SaveChangesAsync();
     }
 
-    public async Task ChangeCategoryImage(int categoryId, string imageUrl)
+    public async Task ChangeCategoryImage(int categoryId, string? imageUrl)
     {
         var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new NotFoundException("Category not found");
-        category.ChangeImage(imageUrl);
+        category.ChangeImage(imageUrl!);
 
         await _categoryRepository.SaveChangesAsync();
     }

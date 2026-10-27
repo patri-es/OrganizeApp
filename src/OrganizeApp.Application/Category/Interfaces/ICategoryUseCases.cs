@@ -19,11 +19,11 @@ public interface ICategoryUseCases
 
     Task ChangeCategoryName(int categoryId, string name);
 
-    Task ChangeCategoryDescription(int categoryId, string description);
+    Task ChangeCategoryDescription(int categoryId, string? description);
 
     Task ChangeCategoryCode(int categoryId, string code);
 
-    Task ChangeCategoryImage(int categoryId, string imageUrl);
+    Task ChangeCategoryImage(int categoryId, string? imageUrl);
 
     //Task SaveChangesAsync();
 }
