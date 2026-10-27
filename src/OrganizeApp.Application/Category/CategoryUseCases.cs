@@ -11,12 +11,12 @@ public class CategoryUseCases(ICategoryRepository categoryRepository) : ICategor
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
 
     // Queries
-    public async Task<List<CategoryDTO>> GetCategories()
+    public async Task<List<CategorySummaryDTO>> GetCategories()
     {
         var categories = await _categoryRepository.GetCategoriesAsync();
 
         return [.. categories
-            .Select(category => new CategoryDTO
+            .Select(category => new CategorySummaryDTO
             {
                 Id = category.Id,
                 Name = category.Name,
@@ -35,7 +35,9 @@ public class CategoryUseCases(ICategoryRepository categoryRepository) : ICategor
         {
             Id = category.Id,
             Name = category.Name,
-            Code = category.Code
+            Code = category.Code,
+            Description = category.Description!,
+            ImageUrl = category.ImageUrl!
         };
     }
 
@@ -45,8 +47,8 @@ public class CategoryUseCases(ICategoryRepository categoryRepository) : ICategor
         var category = new Domain.Entities.Category(
             dto.Name,
             dto.Code,
-            dto.Description,
-            dto.ImageUrl);
+            dto.Description!,
+            dto.ImageUrl!);
 
         await _categoryRepository.AddAsync(category);
         await _categoryRepository.SaveChangesAsync();
@@ -68,6 +70,7 @@ public class CategoryUseCases(ICategoryRepository categoryRepository) : ICategor
         category.ChangeName(dto.Name);
         category.ChangeDescription(dto.Description);
         category.ChangeImage(dto.ImageUrl);
+        await _categoryRepository.SaveChangesAsync();
     }
     // Edition
     public async Task ChangeCategoryName(int categoryId, string name)

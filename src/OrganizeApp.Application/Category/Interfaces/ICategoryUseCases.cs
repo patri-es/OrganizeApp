@@ -7,7 +7,7 @@ namespace OrganizeApp.Application.Category.Interfaces;
 
 public interface ICategoryUseCases 
 {
-    Task<List<CategoryDTO>> GetCategories();
+    Task<List<CategorySummaryDTO>> GetCategories();
 
     Task<CategoryDTO?> GetCategoryById(int categoryId);
 
