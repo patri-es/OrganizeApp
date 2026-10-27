@@ -550,12 +550,9 @@ public class ProductUseCasesTests
 
         var useCases = CreateUseCases(productRepository);
 
-        // Act
+        // Act & Assert
         var exception = await Assert.ThrowsAsync<ProductDomainException>(
             () => useCases.IncreaseProductStock(1, -1));
-
-        // Assert
-        Assert.NotNull(exception);
     }
 
     [Fact]
@@ -824,6 +821,7 @@ public class ProductUseCasesTests
 
         // Assert
         Assert.Equal("Product not found", exception.Message);
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
     }
 
     [Fact]
@@ -845,6 +843,7 @@ public class ProductUseCasesTests
 
         // Assert
         Assert.Equal("Category not found", exception.Message);
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
     }
 
     [Fact]
