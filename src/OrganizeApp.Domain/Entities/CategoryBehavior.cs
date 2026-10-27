@@ -1,15 +1,18 @@
 ﻿using OrganizeApp.Domain.Exceptions;
-using System.Xml.Linq;
+using System.Text.RegularExpressions;
 
 namespace OrganizeApp.Domain.Entities;
 
 public partial class Category
 {
-
+    
+    private const string CodePattern = @"^[A-Z0-9_-]+$";
     private const int MaxCodeLength = 20;
     private const int MaxNameLength = 100;
     private const int MaxDescriptionLength = 500;
     private const int MaxImageUrlLength = 500;
+
+
     /// <summary>
     /// Constructor of Category
     /// </summary>
@@ -30,18 +33,23 @@ public partial class Category
         if (string.IsNullOrWhiteSpace(code))
             throw new CategoryDomainException("Category Code is required.");
 
+        // Code format
+        if (!Regex.IsMatch(code, CodePattern))
+            throw new CategoryDomainException(
+                "Category code can only contain uppercase letters, numbers, hyphens and underscores.");
+
         // maxLength
         if (code.Length > MaxCodeLength)
-            throw new CategoryDomainException($"Product code cannot exceed {MaxCodeLength} characters.");
+            throw new CategoryDomainException($"Category code cannot exceed {MaxCodeLength} characters.");
 
         if (name.Length > MaxNameLength)
-            throw new CategoryDomainException($"Product name cannot exceed {MaxNameLength} characters.");
+            throw new CategoryDomainException($"Category name cannot exceed {MaxNameLength} characters.");
 
         if (description?.Length > MaxDescriptionLength)
-            throw new CategoryDomainException($"Product description cannot exceed {MaxDescriptionLength} characters.");
+            throw new CategoryDomainException($"Category description cannot exceed {MaxDescriptionLength} characters.");
 
         if (imageUrl?.Length > MaxImageUrlLength)
-            throw new CategoryDomainException($"Product imageUrl cannot exceed {MaxImageUrlLength} characters.");
+            throw new CategoryDomainException($"Category imageUrl cannot exceed {MaxImageUrlLength} characters.");
 
 
         Name = name;
@@ -57,7 +65,7 @@ public partial class Category
 
         if (name.Length > MaxNameLength)
             throw new CategoryDomainException(
-                $"Product name cannot exceed {MaxNameLength} characters.");
+                $"Category name cannot exceed {MaxNameLength} characters.");
 
         Name = name;
     }
@@ -69,7 +77,11 @@ public partial class Category
 
         if (code.Length > MaxCodeLength)
             throw new CategoryDomainException(
-                $"Product code cannot exceed {MaxCodeLength} characters.");
+                $"Category code cannot exceed {MaxCodeLength} characters.");
+
+        if (!Regex.IsMatch(code, CodePattern))
+            throw new CategoryDomainException(
+                "Category code can only contain uppercase letters, numbers, hyphens and underscores.");
 
         Code = code;
     }
@@ -79,7 +91,7 @@ public partial class Category
 
         if (description.Length > MaxDescriptionLength)
             throw new CategoryDomainException(
-                $"Product description cannot exceed {MaxDescriptionLength} characters.");
+                $"Category description cannot exceed {MaxDescriptionLength} characters.");
 
         Description = description;
     }
@@ -88,7 +100,7 @@ public partial class Category
     {
         if (imageUrl.Length > MaxImageUrlLength)
             throw new CategoryDomainException(
-                $"Product imageUrl cannot exceed {MaxImageUrlLength} characters.");
+                $"Category imageUrl cannot exceed {MaxImageUrlLength} characters.");
 
         ImageUrl = imageUrl;
     }
