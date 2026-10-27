@@ -5,8 +5,8 @@ namespace OrganizeApp.Domain.Entities;
 
 public partial class Category
 {
-    
-    private const string CodePattern = @"^[A-Z0-9_-]+$";
+    [GeneratedRegex(@"^[A-Z0-9_-]+$")]
+    private static partial Regex CodeRegex();
     private const int MaxCodeLength = 20;
     private const int MaxNameLength = 100;
     private const int MaxDescriptionLength = 500;
@@ -34,7 +34,7 @@ public partial class Category
             throw new CategoryDomainException("Category Code is required.");
 
         // Code format
-        if (!Regex.IsMatch(code, CodePattern))
+        if (!CodeRegex().IsMatch(code))
             throw new CategoryDomainException(
                 "Category code can only contain uppercase letters, numbers, hyphens and underscores.");
 
@@ -79,7 +79,7 @@ public partial class Category
             throw new CategoryDomainException(
                 $"Category code cannot exceed {MaxCodeLength} characters.");
 
-        if (!Regex.IsMatch(code, CodePattern))
+        if (!CodeRegex().IsMatch(code))
             throw new CategoryDomainException(
                 "Category code can only contain uppercase letters, numbers, hyphens and underscores.");
 
@@ -104,4 +104,5 @@ public partial class Category
 
         ImageUrl = imageUrl;
     }
+
 }
