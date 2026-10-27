@@ -25,6 +25,7 @@ public class CategoryTests
         Assert.Empty(category.Products);
     }
 
+    // NAME
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -36,6 +37,7 @@ public class CategoryTests
             new Category(name!, "ELEC", "Descripción", "imagen.jpg"));
     }
 
+    // CODE
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -45,6 +47,34 @@ public class CategoryTests
         // Arrange, Act & Assert
         Assert.Throws<CategoryDomainException>(() =>
             new Category("Electrónica", code!, "Descripción", "imagen.jpg"));
+    }
+
+    [Theory]
+    [InlineData("ELEC")]
+    [InlineData("HOME_01")]
+    [InlineData("OFFICE-SUPPLIES")]
+    [InlineData("A1_B2-C3")]
+    public void Constructor_WithValidCodeFormat_CreatesCategory(string code)
+    {
+        // Arrange & Act
+        var category = new Category("Electrónica", code, "Descripción", "imagen.jpg");
+
+        // Assert
+        Assert.Equal(code, category.Code);
+    }
+
+    [Theory]
+    [InlineData("Elec")]
+    [InlineData("home")]
+    [InlineData("HOME 01")]
+    [InlineData("HOME.01")]
+    [InlineData("HOME@01")]
+    [InlineData("ÁREA")]
+    public void Constructor_WithInvalidCodeFormat_ThrowsCategoryDomainException(string code)
+    {
+        // Arrange, Act & Assert
+        Assert.Throws<CategoryDomainException>(() =>
+            new Category("Electrónica", code, "Descripción", "imagen.jpg"));
     }
 
     [Fact]
@@ -71,6 +101,7 @@ public class CategoryTests
             new Category("Electrónica", code, "Descripción", "imagen.jpg"));
     }
 
+    // NAME
     [Fact]
     public void Constructor_WithNameAtMaximumLength_CreatesCategory()
     {
@@ -95,6 +126,7 @@ public class CategoryTests
             new Category(name, "ELEC", "Descripción", "imagen.jpg"));
     }
 
+    // DESCRIPTION
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -132,6 +164,7 @@ public class CategoryTests
             new Category("Electrónica", "ELEC", description, "imagen.jpg"));
     }
 
+    // IMAGE URL
     [Theory]
     [InlineData(null)]
     [InlineData("")]
@@ -173,6 +206,7 @@ public class CategoryTests
 
     #region Modification
 
+    // NAME
     [Theory]
     [InlineData("Informática")]
     [InlineData("  Informática  ")]
@@ -234,6 +268,7 @@ public class CategoryTests
         Assert.Equal("Electrónica", category.Name);
     }
 
+    // CODE
     [Fact]
     public void ChangeCode_WithValidCode_UpdatesCategoryCode()
     {
@@ -294,6 +329,44 @@ public class CategoryTests
     }
 
     [Theory]
+    [InlineData("INFOR")]
+    [InlineData("HOME_01")]
+    [InlineData("OFFICE-SUPPLIES")]
+    [InlineData("A1_B2-C3")]
+    public void ChangeCode_WithValidCodeFormat_UpdatesCategoryCode(string code)
+    {
+        // Arrange
+        var category = new Category("Electrónica", "ELEC", "Descripción", "imagen.jpg");
+
+        // Act
+        category.ChangeCode(code);
+
+        // Assert
+        Assert.Equal(code, category.Code);
+    }
+
+    [Theory]
+    [InlineData("Infor")]
+    [InlineData("home")]
+    [InlineData("HOME 01")]
+    [InlineData("HOME.01")]
+    [InlineData("HOME@01")]
+    [InlineData("ÁREA")]
+    public void ChangeCode_WithInvalidCodeFormat_ThrowsCategoryDomainException(string code)
+    {
+        // Arrange
+        var category = new Category("Electrónica", "ELEC", "Descripción", "imagen.jpg");
+
+        // Act
+        var act = () => category.ChangeCode(code);
+
+        // Assert
+        Assert.Throws<CategoryDomainException>(act);
+        Assert.Equal("ELEC", category.Code);
+    }
+
+    // DESCRIPTION
+    [Theory]
     [InlineData("Nueva descripción")]
     [InlineData("")]
     [InlineData("   ")]
@@ -339,6 +412,7 @@ public class CategoryTests
         Assert.Equal("Descripción", category.Description);
     }
 
+    // IMAGE URL
     [Theory]
     [InlineData("nueva-imagen.jpg")]
     [InlineData("")]
