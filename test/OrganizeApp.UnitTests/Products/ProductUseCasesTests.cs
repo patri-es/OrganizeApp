@@ -4,12 +4,14 @@ using OrganizeApp.Application.Product.Interfaces;
 using OrganizeApp.Domain.Entities;
 using ProductEntity = OrganizeApp.Domain.Entities.Product;
 using ProductUseCases = OrganizeApp.Application.Product.ProductUseCases;
+using OrganizeApp.Application.Exceptions;
+using OrganizeApp.Domain.Exceptions;
 
 namespace OrganizeApp.UnitTests.Products;
 
 public class ProductUseCasesTests
 {
-    #region Queries of products
+    #region Product Queries
 
     [Fact]
     public async Task GetProducts_WithProducts_ReturnsMappedProductDTOs()
@@ -159,6 +161,307 @@ public class ProductUseCasesTests
 
     #endregion
 
+    #region Product Creation
+
+    [Fact]
+    public async Task CreateProduct_WithValidData_CreatesAndSendsProductToRepository()
+    {
+        // Arrange
+        var dto = new CreateProductDTO
+        {
+            Name = "Keyboard",
+            Description = "Mechanical keyboard",
+            Price = 59.99m,
+            ImageUrl = "keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.CreateProduct(dto);
+
+        // Assert
+        var product = Assert.IsType<ProductEntity>(productRepository.ReceivedProduct);
+
+        Assert.Equal(dto.Name, product.Name);
+        Assert.Equal(dto.Description, product.Description);
+        Assert.Equal(dto.Price, product.Price);
+        Assert.Equal(dto.ImageUrl, product.ImageUrl);
+    }
+
+    [Fact]
+    public async Task CreateProduct_WithValidData_SavesChanges()
+    {
+        // Arrange
+        var dto = new CreateProductDTO
+        {
+            Name = "Keyboard",
+            Description = "Mechanical keyboard",
+            Price = 59.99m,
+            ImageUrl = "keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.CreateProduct(dto);
+
+        // Assert
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task CreateProduct_WithInvalidData_ThrowsProductDomainException()
+    {
+        // Arrange
+        var dto = new CreateProductDTO
+        {
+            Name = "",
+            Description = "Mechanical keyboard",
+            Price = 59.99m,
+            ImageUrl = "keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.CreateProduct(dto));
+
+        // Assert
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public async Task CreateProduct_WhenCreationFails_DoesNotSaveChanges()
+    {
+        // Arrange
+        var dto = new CreateProductDTO
+        {
+            Name = "",
+            Description = "Mechanical keyboard",
+            Price = 59.99m,
+            ImageUrl = "keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.CreateProduct(dto));
+
+        // Assert
+        Assert.Null(productRepository.ReceivedProduct);
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
+    }
+
+    #endregion
+
+    #region Product Deletion
+
+    [Fact]
+    public async Task DeleteProduct_WhenProductExists_DeletesProductAndSavesChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Mechanical keyboard", 59.99m, "keyboard.jpg");
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.DeleteProduct(1);
+
+        // Assert
+        Assert.Same(product, productRepository.DeletedProduct);
+        Assert.Equal(1, productRepository.DeleteCallCount);
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task DeleteProduct_WhenProductDoesNotExist_ThrowsException()
+    {
+        // Arrange
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<Exception>(
+            () => useCases.DeleteProduct(99));
+
+        // Assert
+        Assert.Equal("Product not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task DeleteProduct_WhenProductDoesNotExist_DoesNotSaveChanges()
+    {
+        // Arrange
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await Assert.ThrowsAsync<Exception>(
+            () => useCases.DeleteProduct(99));
+
+        // Assert
+        Assert.Equal(0, productRepository.DeleteCallCount);
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
+    }
+
+    #endregion
+
+    #region Product Updates
+
+    [Fact]
+    public async Task UpdateProduct_WithValidData_UpdatesAllProductProperties()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Old description", 59.99m, "old.jpg");
+
+        var dto = new UpdateProductDTO
+        {
+            Name = "Gaming Keyboard",
+            Description = "Updated description",
+            Price = 79.99m,
+            ImageUrl = "gaming-keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.UpdateProduct(1, dto);
+
+        // Assert
+        Assert.Equal(dto.Name, product.Name);
+        Assert.Equal(dto.Description, product.Description);
+        Assert.Equal(dto.Price, product.Price);
+        Assert.Equal(dto.ImageUrl, product.ImageUrl);
+    }
+
+    [Fact]
+    public async Task UpdateProduct_WithValidData_SavesChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Old description", 59.99m, "old.jpg");
+
+        var dto = new UpdateProductDTO
+        {
+            Name = "Gaming Keyboard",
+            Description = "Updated description",
+            Price = 79.99m,
+            ImageUrl = "gaming-keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await useCases.UpdateProduct(1, dto);
+
+        // Assert
+        Assert.Equal(1, productRepository.SaveChangesCallCount);
+    }
+
+    [Fact]
+    public async Task UpdateProduct_WhenProductDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        var dto = new UpdateProductDTO
+        {
+            Name = "Gaming Keyboard",
+            Description = "Updated description",
+            Price = 79.99m,
+            ImageUrl = "gaming-keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository();
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<NotFoundException>(
+            () => useCases.UpdateProduct(99, dto));
+
+        // Assert
+        Assert.Equal("Product not found", exception.Message);
+    }
+
+    [Fact]
+    public async Task UpdateProduct_WithInvalidData_ThrowsProductDomainException()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Old description", 59.99m, "old.jpg");
+
+        var dto = new UpdateProductDTO
+        {
+            Name = "Gaming Keyboard",
+            Description = "Updated description",
+            Price = -1m,
+            ImageUrl = "gaming-keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        var exception = await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.UpdateProduct(1, dto));
+
+        // Assert
+        Assert.NotNull(exception);
+    }
+
+    [Fact]
+    public async Task UpdateProduct_WhenUpdateFails_DoesNotSaveChanges()
+    {
+        // Arrange
+        var product = CreateProduct(1, "Keyboard", "Old description", 59.99m, "old.jpg");
+
+        var dto = new UpdateProductDTO
+        {
+            Name = "Gaming Keyboard",
+            Description = "Updated description",
+            Price = -1m,
+            ImageUrl = "gaming-keyboard.jpg"
+        };
+
+        var productRepository = new FakeProductRepository
+        {
+            ProductsById = { [1] = product }
+        };
+
+        var useCases = CreateUseCases(productRepository);
+
+        // Act
+        await Assert.ThrowsAsync<ProductDomainException>(
+            () => useCases.UpdateProduct(1, dto));
+
+        // Assert
+        Assert.Equal(0, productRepository.SaveChangesCallCount);
+    }
+
+    #endregion
+
     #region Test helpers
 
     private static ProductUseCases CreateUseCases(
@@ -201,7 +504,6 @@ public class ProductUseCasesTests
     #endregion
 
     #region Fake repositories
-
     private sealed class FakeProductRepository : IProductRepository
     {
         public List<ProductEntity> Products { get; set; } = [];
@@ -209,6 +511,14 @@ public class ProductUseCasesTests
         public Dictionary<int, ProductEntity> ProductsById { get; } = [];
 
         public FiltersProductDTO? ReceivedFilters { get; private set; }
+
+        public ProductEntity? ReceivedProduct { get; private set; }
+
+        public ProductEntity? DeletedProduct { get; private set; }
+
+        public int DeleteCallCount { get; private set; }
+
+        public int SaveChangesCallCount { get; private set; }
 
         public Task<List<ProductEntity>> GetProductsAsync(FiltersProductDTO? filters)
         {
@@ -229,11 +539,24 @@ public class ProductUseCasesTests
             return GetByIdAsync(id);
         }
 
-        public Task AddAsync(ProductEntity product) => Task.CompletedTask;
+        public Task AddAsync(ProductEntity product)
+        {
+            ReceivedProduct = product;
+            return Task.CompletedTask;
+        }
 
-        public Task DeleteAsync(ProductEntity product) => Task.CompletedTask;
+        public Task DeleteAsync(ProductEntity product)
+        {
+            DeletedProduct = product;
+            DeleteCallCount++;
+            return Task.CompletedTask;
+        }
 
-        public Task SaveChangesAsync() => Task.CompletedTask;
+        public Task SaveChangesAsync()
+        {
+            SaveChangesCallCount++;
+            return Task.CompletedTask;
+        }
     }
 
     private sealed class FakeCategoryRepository : ICategoryRepository
@@ -256,4 +579,5 @@ public class ProductUseCasesTests
     }
 
     #endregion
+
 }
