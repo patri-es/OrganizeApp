@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OrganizeApp.Infrastructure.Persistence;
 
-namespace OrganizeApp.UnitTests.Infrastructure;
+namespace OrganizeApp.Tests.Infrastructure;
 
 public sealed class DatabaseFixture : IAsyncLifetime
 {
