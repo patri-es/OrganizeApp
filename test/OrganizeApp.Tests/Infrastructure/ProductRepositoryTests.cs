@@ -2,14 +2,9 @@
 
 namespace OrganizeApp.Tests.Infrastructure;
 
-public class ProductRepositoryTests : IClassFixture<DatabaseFixture>
+public class ProductRepositoryTests(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
 {
-    private readonly DatabaseFixture _fixture;
-
-    public ProductRepositoryTests(DatabaseFixture fixture)
-    {
-        _fixture = fixture;
-    }
+    private readonly DatabaseFixture _fixture = fixture;
 
     [Fact]
     public async Task GetProducts_WhenNoProductsExist_ReturnsEmptyList()
