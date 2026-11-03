@@ -267,3 +267,78 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 #### Relaciones desde CategoryRepository
 
 - [x] P1 — `DeleteAsync_AndSaveChangesAsync_WithCategoryAssociatedToProduct_RemovesRelationshipWithoutDeletingProduct`: elimina una categoría y comprueba que desaparece su relación con el producto sin eliminarlo.
+
+
+
+## 4. Pruebas de integración para la capa de API
+
+### A. ProductsController (`ProductControllerTests.cs`)
+
+#### Consultas de productos
+
+- [ ] P0 — `GetProducts_WithProducts_ReturnsOkWithProductDTOs`: devuelve HTTP 200 con la lista de productos y sus DTO correctamente serializados.
+- [ ] P0 — `GetProducts_WhenNoProductsExist_ReturnsOkWithEmptyList`: devuelve HTTP 200 con una lista vacía cuando no existen productos.
+- [ ] P0 — `GetProducts_WithFilters_ReturnsMatchingProducts`: recibe los filtros mediante parámetros de consulta y devuelve los productos correspondientes.
+- [ ] P0 — `GetProduct_WhenProductExists_ReturnsOkWithProductDTO`: devuelve HTTP 200 con los datos del producto solicitado.
+- [ ] P0 — `GetProduct_WhenProductDoesNotExist_ReturnsNotFound`: devuelve HTTP 404 cuando el producto no existe.
+
+#### Creación, actualización y eliminación
+
+- [ ] P0 — `CreateProduct_WithValidData_ReturnsOkWithProductDTO`: crea un producto y devuelve HTTP 200 con los datos recibidos.
+- [ ] P1 — `CreateProduct_WithInvalidData_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando los datos incumplen las reglas de dominio.
+- [ ] P0 — `UpdateProduct_WithValidData_ReturnsOkWithUpdatedProductDTO`: actualiza un producto y devuelve HTTP 200.
+- [ ] P0 — `UpdateProduct_WhenProductDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando el producto no existe.
+- [ ] P1 — `UpdateProduct_WithInvalidData_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando los datos de actualización incumplen las reglas de dominio.
+- [ ] P0 — `DeleteProduct_WhenProductExists_ReturnsOk`: elimina un producto y devuelve HTTP 200.
+- [ ] P0 — `DeleteProduct_WhenProductDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando el producto no existe.
+
+#### Gestión del stock
+
+- [ ] P0 — `IncreaseStock_WithValidQuantity_ReturnsOk`: aumenta el stock y devuelve HTTP 200.
+- [ ] P0 — `IncreaseStock_WhenProductDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando el producto no existe.
+- [ ] P1 — `IncreaseStock_WithInvalidQuantity_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando la cantidad no es válida.
+- [ ] P0 — `DecreaseStock_WithValidQuantity_ReturnsOk`: reduce el stock y devuelve HTTP 200.
+- [ ] P0 — `DecreaseStock_WhenProductDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando el producto no existe.
+- [ ] P1 — `DecreaseStock_WithInvalidQuantity_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando la cantidad no es válida o supera el stock disponible.
+
+#### Gestión de disponibilidad
+
+- [ ] P0 — `ActivateProduct_WithStockAndCategories_ReturnsOk`: activa un producto válido y devuelve HTTP 200.
+- [ ] P0 — `ActivateProduct_WhenProductDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando el producto no existe.
+- [ ] P1 — `ActivateProduct_WithoutStockOrCategories_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando no se cumplen las reglas de activación.
+- [ ] P0 — `DeactivateProduct_WithExistingProduct_ReturnsOk`: desactiva un producto existente y devuelve HTTP 200.
+- [ ] P0 — `DeactivateProduct_WhenProductDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando el producto no existe.
+
+#### Asignación y eliminación de categorías
+
+- [ ] P0 — `AssignProductCategory_WithExistingProductAndCategory_ReturnsOk`: asigna una categoría a un producto y devuelve HTTP 200.
+- [ ] P0 — `AssignProductCategory_WhenProductDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando el producto no existe.
+- [ ] P0 — `AssignProductCategory_WhenCategoryDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando la categoría no existe.
+- [ ] P1 — `AssignProductCategory_WhenCategoryIsAlreadyAssigned_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando se intenta asignar una categoría duplicada.
+- [ ] P0 — `RemoveProductCategory_WithExistingAssociation_ReturnsOk`: elimina una asociación entre producto y categoría y devuelve HTTP 200.
+- [ ] P0 — `RemoveProductCategory_WhenProductDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando el producto no existe.
+- [ ] P0 — `RemoveProductCategory_WhenCategoryDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando la categoría no existe.
+- [ ] P1 — `RemoveProductCategory_WhenCategoryIsNotAssigned_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando la categoría no está asociada al producto.
+
+### B. CategoriesController (`CategoryControllerTests.cs`)
+
+#### Consultas de categorías
+
+- [ ] P0 — `GetCategories_WithCategories_ReturnsOkWithCategorySummaryDTOs`: devuelve HTTP 200 con la lista de categorías y sus DTO resumidos.
+- [ ] P0 — `GetCategories_WhenNoCategoriesExist_ReturnsOkWithEmptyList`: devuelve HTTP 200 con una lista vacía cuando no existen categorías.
+- [ ] P0 — `GetCategory_WhenCategoryExists_ReturnsOkWithCategoryDTO`: devuelve HTTP 200 con todos los datos de la categoría solicitada.
+- [ ] P0 — `GetCategory_WhenCategoryDoesNotExist_ReturnsNotFound`: devuelve HTTP 404 cuando la categoría no existe.
+
+#### Creación, actualización y eliminación
+
+- [ ] P0 — `AddCategory_WithValidData_ReturnsOkWithCategoryDTO`: crea una categoría y devuelve HTTP 200 con los datos recibidos.
+- [ ] P1 — `AddCategory_WithInvalidData_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando los datos incumplen las reglas de dominio.
+- [ ] P0 — `UpdateCategory_WithValidData_ReturnsOkWithUpdatedCategoryDTO`: actualiza una categoría y devuelve HTTP 200.
+- [ ] P0 — `UpdateCategory_WhenCategoryDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando la categoría no existe.
+- [ ] P1 — `UpdateCategory_WithInvalidData_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando los datos incumplen las reglas de dominio.
+- [ ] P0 — `DeleteCategory_WhenCategoryExists_ReturnsOk`: elimina una categoría y devuelve HTTP 200.
+- [ ] P0 — `DeleteCategory_WhenCategoryDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando la categoría no existe.
+
+### C. Validación de peticiones HTTP
+
+- [ ] P1 — `GetProducts_WithInvalidCategoryIdsQuery_ReturnsBadRequestValidationProblemDetails`: devuelve HTTP 400 con `ValidationProblemDetails` cuando un parámetro de consulta no puede convertirse al tipo esperado.
