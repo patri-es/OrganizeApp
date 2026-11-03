@@ -1,12 +1,11 @@
-﻿
-using OrganizeApp.Application.Category.DTOs;
+﻿using OrganizeApp.Application.Category.DTOs;
 using OrganizeApp.Application.Category.Interfaces;
 using OrganizeApp.Application.Exceptions;
 using OrganizeApp.Domain.Exceptions;
 using CategoryEntity = OrganizeApp.Domain.Entities.Category;
 using CategoryUseCases = OrganizeApp.Application.Category.CategoryUseCases;
 
-namespace OrganizeApp.Tests.Categories;
+namespace OrganizeApp.Tests.Application.Categories;
 
 public class CategoryUseCasesTests
 {
