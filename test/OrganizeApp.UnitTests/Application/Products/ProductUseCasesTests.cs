@@ -1099,12 +1099,6 @@ public class ProductUseCasesTests
             return Task.FromResult(product);
         }
 
-        public Task<ProductEntity?> GetByIdWithCategoriesAsync(
-            int id,
-            CancellationToken cancellationToken)
-        {
-            return GetByIdAsync(id);
-        }
 
         public Task AddAsync(ProductEntity product)
         {
