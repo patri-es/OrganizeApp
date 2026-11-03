@@ -24,6 +24,7 @@
     <ProjectReference Include="..\..\src\OrganizeApp.Domain\OrganizeApp.Domain.csproj" />
 	<ProjectReference Include="..\..\src\OrganizeApp.Application\OrganizeApp.Application.csproj" />
 	<ProjectReference Include="..\..\src\OrganizeApp.Infrastructure\OrganizeApp.Infrastructure.csproj" />
+	<ProjectReference Include="..\..\src\OrganizeApp.API\OrganizeApp.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

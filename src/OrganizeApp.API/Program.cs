@@ -44,5 +44,3 @@ app.MapControllers();
 
 app.Run();
 
-// Make the Program class public using a partial class declaration by test
-public partial class Program { }
