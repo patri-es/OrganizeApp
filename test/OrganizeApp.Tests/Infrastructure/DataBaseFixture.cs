@@ -7,13 +7,14 @@ namespace OrganizeApp.Tests.Infrastructure;
 public sealed class DatabaseFixture : IAsyncLifetime
 {
     private readonly DbContextOptions<AppDbContext> _options;
+    public string ConnectionString { get; }
 
     public DatabaseFixture()
     {
         // Each fixture uses its own database.
         var databaseName = $"OrganizeApp_IntegrationTests_{Guid.NewGuid():N}";
 
-        var connectionString =
+        ConnectionString =
             $"Server=(localdb)\\MSSQLLocalDB;" +
             $"Database={databaseName};" +
             "Integrated Security=True;" +
@@ -22,7 +23,7 @@ public sealed class DatabaseFixture : IAsyncLifetime
             "Encrypt=False";
 
         _options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseSqlServer(connectionString)
+            .UseSqlServer(ConnectionString)
             .Options;
     }
 
