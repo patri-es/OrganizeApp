@@ -40,7 +40,7 @@ Constructor_WithNegativePrice_ThrowsProductDomainException()
   }
 }
 ```
-### - lista de test
+# - lista de test
 
 ### - Lista de pruebas unitarias
 
@@ -211,58 +211,52 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P1 — `AssignProductCategory_WhenAssignmentFails_DoesNotSaveChanges`: no guarda cambios si falla la asignación por una regla de dominio.
 - [x] P1 — `RemoveProductCategory_WhenRemovalFails_DoesNotSaveChanges`: no guarda cambios si falla la eliminación por una regla de dominio.
 
-## 3. Pruebas unitarias pendientes para la capa de Application
 
-### A. Gestión de categorías (`CategoryUseCasesTests.cs`)
+## 3. Pruebas de integración para la capa de Infrastructure
 
-#### Consultas
+### A. ProductRepository (`ProductRepositoryTests.cs`)
 
-- [x] P0 — `GetCategories_WithCategories_ReturnsMappedSummaryDTOs`: obtiene las categorías y mapea correctamente sus identificadores, nombres y códigos a `CategorySummaryDTO`.
-- [x] P0 — `GetCategories_WhenNoCategoriesExist_ReturnsEmptyList`: devuelve una lista vacía cuando no existen categorías.
-- [x] P0 — `GetCategoryById_WhenCategoryExists_ReturnsMappedCategoryDTO`: obtiene una categoría por identificador y mapea todos los campos de `CategoryDTO`, incluida la descripción y la imagen.
-- [x] P0 — `GetCategoryById_WhenCategoryDoesNotExist_ReturnsNull`: devuelve null cuando no existe la categoría solicitada.
+#### Consultas de productos
 
-#### Creación
+- [ ] P0 — `GetProducts_WithProducts_ReturnsAllProducts`: obtiene todos los productos almacenados en la base de datos.
+- [ ] P0 — `GetProducts_WhenNoProductsExist_ReturnsEmptyList`: devuelve una lista vacía cuando no existen productos.
+- [ ] P0 — `GetProducts_WithAssociatedCategories_IncludesCategories`: carga correctamente las categorías asociadas a cada producto.
+- [ ] P0 — `GetById_WhenProductExists_ReturnsProductWithCategories`: obtiene un producto por su identificador e incluye sus categorías.
+- [ ] P0 — `GetById_WhenProductDoesNotExist_ReturnsNull`: devuelve null cuando no existe el producto solicitado.
 
-- [x] P0 — `CreateCategory_WithValidData_CreatesAndSendsCategoryToRepository`: crea una categoría a partir de `CreateCategoryDTO` y la envía al repositorio con sus propiedades correctamente asignadas.
-- [x] P0 — `CreateCategory_WithValidData_SavesChanges`: guarda los cambios después de crear la categoría.
-- [x] P1 — `CreateCategory_WithInvalidData_ThrowsCategoryDomainException`: propaga `CategoryDomainException` cuando los datos de creación no son válidos.
-- [x] P1 — `CreateCategory_WhenCreationFails_DoesNotSaveChanges`: no añade la categoría ni guarda cambios si falla la creación.
+#### Filtros de productos
 
-#### Actualización
+- [ ] P0 — `GetProducts_WithCategoryIdsFilter_ReturnsProductsMatchingAnyCategoryId`: devuelve los productos asociados a cualquiera de las categorías indicadas.
+- [ ] P0 — `GetProducts_WithHasCategoryTrueFilter_ReturnsOnlyProductsWithCategories`: devuelve únicamente productos que tienen categorías asociadas.
+- [ ] P0 — `GetProducts_WithHasCategoryFalseFilter_ReturnsOnlyProductsWithoutCategories`: devuelve únicamente productos que no tienen categorías asociadas.
+- [ ] P0 — `GetProducts_WithIsAvailableFilter_ReturnsProductsMatchingAvailability`: filtra los productos según su disponibilidad.
+- [ ] P0 — `GetProducts_WithMinStockFilter_ReturnsProductsWithStockAtOrAboveMinimum`: devuelve productos cuyo stock es igual o superior al mínimo indicado.
+- [ ] P0 — `GetProducts_WithMaxStockFilter_ReturnsProductsWithStockAtOrBelowMaximum`: devuelve productos cuyo stock es igual o inferior al máximo indicado.
+- [ ] P0 — `GetProducts_WithCombinedFilters_ReturnsMatchingProducts`: aplica correctamente varios filtros simultáneamente.
+- [ ] P1 — `GetProducts_WithEmptyCategoryIdsFilter_ReturnsAllProducts`: no aplica el filtro de categorías cuando la lista está vacía.
 
-- [x] P0 — `UpdateCategory_WithValidData_UpdatesCategoryProperties`: actualiza el nombre, la descripción y la imagen de una categoría existente.
-- [x] P0 — `UpdateCategory_WithValidData_SavesChanges`: guarda los cambios después de actualizar la categoría.
-- [x] P0 — `UpdateCategory_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` cuando la categoría no existe.
-- [x] P1 — `UpdateCategory_WithInvalidData_ThrowsCategoryDomainException`: propaga `CategoryDomainException` cuando los datos de actualización no son válidos.
-- [x] P1 — `UpdateCategory_WhenUpdateFails_DoesNotSaveChanges`: no guarda cambios cuando falla la actualización por una excepción de dominio.
+#### Persistencia de productos
 
-#### Eliminación
+- [ ] P0 — `AddAsync_AndSaveChangesAsync_WithValidProduct_PersistsProduct`: añade un producto y comprueba que queda almacenado tras guardar los cambios.
+- [ ] P0 — `SaveChangesAsync_WithModifiedProduct_PersistsChanges`: guarda correctamente las modificaciones realizadas sobre un producto existente.
+- [ ] P0 — `DeleteAsync_AndSaveChangesAsync_WithExistingProduct_DeletesProduct`: elimina un producto existente y comprueba que desaparece de la base de datos.
 
-- [x] P0 — `DeleteCategory_WhenCategoryExists_DeletesCategoryAndSavesChanges`: elimina una categoría existente y guarda los cambios.
-- [x] P0 — `DeleteCategory_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` cuando la categoría no existe.
-- [x] P1 — `DeleteCategory_WhenCategoryDoesNotExist_DoesNotSaveChanges`: no elimina ni guarda cambios cuando la categoría no existe.
+### B. CategoryRepository (`CategoryRepositoryTests.cs`)
 
-#### Modificación del nombre
+#### Consultas de categorías
 
-- [x] P0 — `ChangeCategoryName_WithValidName_UpdatesCategoryNameAndSavesChanges`: actualiza el nombre de una categoría y guarda los cambios.
-- [x] P0 — `ChangeCategoryName_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` si la categoría no existe y no guarda cambios.
-- [x] P1 — `ChangeCategoryName_WithInvalidName_ThrowsCategoryDomainException`: rechaza un nombre inválido, conserva el nombre anterior y no guarda cambios.
+- [ ] P0 — `GetCategories_WithCategories_ReturnsAllCategories`: obtiene todas las categorías almacenadas en la base de datos.
+- [ ] P0 — `GetCategories_WhenNoCategoriesExist_ReturnsEmptyList`: devuelve una lista vacía cuando no existen categorías.
+- [ ] P0 — `GetById_WhenCategoryExists_ReturnsCategory`: obtiene una categoría por su identificador.
+- [ ] P0 — `GetById_WhenCategoryDoesNotExist_ReturnsNull`: devuelve null cuando no existe la categoría solicitada.
 
-#### Modificación de la descripción
+#### Persistencia de categorías
 
-- [x] P0 — `ChangeCategoryDescription_WithValidDescription_UpdatesCategoryDescriptionAndSavesChanges`: actualiza la descripción y guarda los cambios.
-- [x] P0 — `ChangeCategoryDescription_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` si la categoría no existe y no guarda cambios.
-- [x] P1 — `ChangeCategoryDescription_WithInvalidDescription_ThrowsCategoryDomainException`: rechaza una descripción superior a 500 caracteres, conserva la anterior y no guarda cambios.
+- [ ] P0 — `AddAsync_AndSaveChangesAsync_WithValidCategory_PersistsCategory`: añade una categoría y comprueba que queda almacenada tras guardar los cambios.
+- [ ] P0 — `SaveChangesAsync_WithModifiedCategory_PersistsChanges`: guarda correctamente las modificaciones realizadas sobre una categoría existente.
+- [ ] P0 — `DeleteAsync_AndSaveChangesAsync_WithExistingCategory_DeletesCategory`: elimina una categoría existente y comprueba que desaparece de la base de datos.
 
-#### Modificación del código
+### C. Relaciones entre productos y categorías
 
-- [x] P0 — `ChangeCategoryCode_WithValidCode_UpdatesCategoryCodeAndSavesChanges`: actualiza el código con un formato válido y guarda los cambios.
-- [x] P0 — `ChangeCategoryCode_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` si la categoría no existe y no guarda cambios.
-- [x] P1 — `ChangeCategoryCode_WithInvalidCode_ThrowsCategoryDomainException`: rechaza un código con minúsculas, conserva el código anterior y no guarda cambios.
-
-#### Modificación de la imagen
-
-- [x] P0 — `ChangeCategoryImage_WithValidImageUrl_UpdatesCategoryImageAndSavesChanges`: actualiza la imagen y guarda los cambios.
-- [x] P0 — `ChangeCategoryImage_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` si la categoría no existe y no guarda cambios.
-- [x] P1 — `ChangeCategoryImage_WithInvalidImageUrl_ThrowsCategoryDomainException`: rechaza una URL de imagen superior a 500 caracteres, conserva la anterior y no guarda cambios.
+- [ ] P0 — `AddAsync_WithAssociatedCategory_PersistsProductCategoryRelationship`: guarda correctamente la relación entre un producto y una categoría existente.
+- [ ] P1 — `GetByIdWithCategories_WhenProductHasMultipleCategories_LoadsAllCategories`: carga todas las categorías asociadas a un producto con varias relaciones.

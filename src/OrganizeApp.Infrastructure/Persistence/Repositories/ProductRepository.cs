@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeApp.Application.Product.DTOs;
 using OrganizeApp.Application.Product.Interfaces;
-using OrganizeApp.Domain.Entities;
-using OrganizeApp.Infrastructure.Persistence;
 using ProductEntity = OrganizeApp.Domain.Entities.Product;
 
 namespace OrganizeApp.Infrastructure.Persistence.Repositories;
