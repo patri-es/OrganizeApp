@@ -29,4 +29,10 @@
     <Using Include="Xunit" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Application\" />
+    <Folder Include="Infraestructure\" />
+    <Folder Include="API\" />
+  </ItemGroup>
+
 </Project>

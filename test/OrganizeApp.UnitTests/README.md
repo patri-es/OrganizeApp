@@ -215,14 +215,54 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 
 ### A. Gestión de categorías (`CategoryUseCasesTests.cs`)
 
-- [ ] P0 — Pendiente: comprobar que se obtienen las categorías y se mapean correctamente a sus DTO.
-- [ ] P0 — Pendiente: comprobar que se devuelve una lista vacía cuando no existen categorías.
-- [ ] P0 — Pendiente: comprobar que se obtiene una categoría por identificador y se devuelve su DTO.
-- [ ] P0 — Pendiente: comprobar el comportamiento cuando la categoría solicitada no existe.
-- [ ] P0 — Pendiente: comprobar la creación de una categoría válida y que se guarda.
-- [ ] P1 — Pendiente: comprobar que la creación propaga `CategoryDomainException` cuando los datos no son válidos y no guarda cambios.
-- [ ] P0 — Pendiente: comprobar la actualización de una categoría existente y que se guarda.
-- [ ] P0 — Pendiente: comprobar que la actualización lanza `NotFoundException` cuando la categoría no existe.
-- [ ] P1 — Pendiente: comprobar que la actualización propaga `CategoryDomainException` cuando los datos no son válidos y no guarda cambios.
-- [ ] P0 — Pendiente: comprobar la eliminación de una categoría existente y que se guarda.
-- [ ] P0 — Pendiente: comprobar que la eliminación lanza `NotFoundException` cuando la categoría no existe.
+#### Consultas
+
+- [x] P0 — `GetCategories_WithCategories_ReturnsMappedSummaryDTOs`: obtiene las categorías y mapea correctamente sus identificadores, nombres y códigos a `CategorySummaryDTO`.
+- [x] P0 — `GetCategories_WhenNoCategoriesExist_ReturnsEmptyList`: devuelve una lista vacía cuando no existen categorías.
+- [x] P0 — `GetCategoryById_WhenCategoryExists_ReturnsMappedCategoryDTO`: obtiene una categoría por identificador y mapea todos los campos de `CategoryDTO`, incluida la descripción y la imagen.
+- [x] P0 — `GetCategoryById_WhenCategoryDoesNotExist_ReturnsNull`: devuelve null cuando no existe la categoría solicitada.
+
+#### Creación
+
+- [x] P0 — `CreateCategory_WithValidData_CreatesAndSendsCategoryToRepository`: crea una categoría a partir de `CreateCategoryDTO` y la envía al repositorio con sus propiedades correctamente asignadas.
+- [x] P0 — `CreateCategory_WithValidData_SavesChanges`: guarda los cambios después de crear la categoría.
+- [x] P1 — `CreateCategory_WithInvalidData_ThrowsCategoryDomainException`: propaga `CategoryDomainException` cuando los datos de creación no son válidos.
+- [x] P1 — `CreateCategory_WhenCreationFails_DoesNotSaveChanges`: no añade la categoría ni guarda cambios si falla la creación.
+
+#### Actualización
+
+- [x] P0 — `UpdateCategory_WithValidData_UpdatesCategoryProperties`: actualiza el nombre, la descripción y la imagen de una categoría existente.
+- [x] P0 — `UpdateCategory_WithValidData_SavesChanges`: guarda los cambios después de actualizar la categoría.
+- [x] P0 — `UpdateCategory_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` cuando la categoría no existe.
+- [x] P1 — `UpdateCategory_WithInvalidData_ThrowsCategoryDomainException`: propaga `CategoryDomainException` cuando los datos de actualización no son válidos.
+- [x] P1 — `UpdateCategory_WhenUpdateFails_DoesNotSaveChanges`: no guarda cambios cuando falla la actualización por una excepción de dominio.
+
+#### Eliminación
+
+- [x] P0 — `DeleteCategory_WhenCategoryExists_DeletesCategoryAndSavesChanges`: elimina una categoría existente y guarda los cambios.
+- [x] P0 — `DeleteCategory_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` cuando la categoría no existe.
+- [x] P1 — `DeleteCategory_WhenCategoryDoesNotExist_DoesNotSaveChanges`: no elimina ni guarda cambios cuando la categoría no existe.
+
+#### Modificación del nombre
+
+- [x] P0 — `ChangeCategoryName_WithValidName_UpdatesCategoryNameAndSavesChanges`: actualiza el nombre de una categoría y guarda los cambios.
+- [x] P0 — `ChangeCategoryName_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` si la categoría no existe y no guarda cambios.
+- [x] P1 — `ChangeCategoryName_WithInvalidName_ThrowsCategoryDomainException`: rechaza un nombre inválido, conserva el nombre anterior y no guarda cambios.
+
+#### Modificación de la descripción
+
+- [x] P0 — `ChangeCategoryDescription_WithValidDescription_UpdatesCategoryDescriptionAndSavesChanges`: actualiza la descripción y guarda los cambios.
+- [x] P0 — `ChangeCategoryDescription_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` si la categoría no existe y no guarda cambios.
+- [x] P1 — `ChangeCategoryDescription_WithInvalidDescription_ThrowsCategoryDomainException`: rechaza una descripción superior a 500 caracteres, conserva la anterior y no guarda cambios.
+
+#### Modificación del código
+
+- [x] P0 — `ChangeCategoryCode_WithValidCode_UpdatesCategoryCodeAndSavesChanges`: actualiza el código con un formato válido y guarda los cambios.
+- [x] P0 — `ChangeCategoryCode_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` si la categoría no existe y no guarda cambios.
+- [x] P1 — `ChangeCategoryCode_WithInvalidCode_ThrowsCategoryDomainException`: rechaza un código con minúsculas, conserva el código anterior y no guarda cambios.
+
+#### Modificación de la imagen
+
+- [x] P0 — `ChangeCategoryImage_WithValidImageUrl_UpdatesCategoryImageAndSavesChanges`: actualiza la imagen y guarda los cambios.
+- [x] P0 — `ChangeCategoryImage_WhenCategoryDoesNotExist_ThrowsNotFoundException`: lanza `NotFoundException` si la categoría no existe y no guarda cambios.
+- [x] P1 — `ChangeCategoryImage_WithInvalidImageUrl_ThrowsCategoryDomainException`: rechaza una URL de imagen superior a 500 caracteres, conserva la anterior y no guarda cambios.
