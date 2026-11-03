@@ -46,42 +46,6 @@ public class GlobalExceptionHandler : IExceptionHandler
             cancellationToken);
 
         return true;
-
-        //var problemDetails = new ProblemDetails
-        //{
-        //    Title = "Ocurrió un error inesperado",
-        //    Instance = httpContext.Request.Path
-        //};
-
-        //switch (exception)
-        //{
-        //    case NotFoundException:
-        //        problemDetails.Status = StatusCodes.Status404NotFound;
-        //        problemDetails.Title = "Error item not found";
-        //        problemDetails.Detail = exception.Message;
-        //        break;
-
-        //    case ProductDomainException:
-        //        problemDetails.Status = StatusCodes.Status400BadRequest;
-        //        problemDetails.Title = "Error from Domain of item";
-        //        problemDetails.Detail = exception.Message;
-        //        break;
-
-        //    case CategoryDomainException:
-        //        problemDetails.Status = StatusCodes.Status400BadRequest;
-        //        problemDetails.Title = "Error from Domain of item";
-        //        problemDetails.Detail = exception.Message;
-        //        break;
-
-        //    default:
-        //        problemDetails.Status = StatusCodes.Status500InternalServerError;
-        //        problemDetails.Title = "Error of item";
-        //        problemDetails.Detail = exception.Message;
-        //        break;
-        //}
-
-        //return true;
     }
-
 
 }
