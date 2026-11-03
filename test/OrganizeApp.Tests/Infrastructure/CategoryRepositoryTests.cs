@@ -19,7 +19,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
         // Arrange
         await _fixture.ResetDatabaseAsync();
 
-        await using (var arrangeContext = _fixture.CreateContext())
+        await using (AppDbContext arrangeContext = _fixture.CreateContext())
         {
             var categories = new[]
             {
@@ -31,7 +31,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
         }
 
         // Act
-        await using var context = _fixture.CreateContext();
+        await using AppDbContext context = _fixture.CreateContext();
         var repository = new CategoryRepository(context);
 
         var result = await repository.GetCategoriesAsync();
@@ -48,7 +48,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
         // Arrange
         await _fixture.ResetDatabaseAsync();
 
-        await using var context = _fixture.CreateContext();
+        await using AppDbContext context = _fixture.CreateContext();
         var repository = new CategoryRepository(context);
 
         // Act
@@ -66,7 +66,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
 
         int categoryId;
 
-        await using (var arrangeContext = _fixture.CreateContext())
+        await using (AppDbContext arrangeContext = _fixture.CreateContext())
         {
             var category = CreateCategory(
                 "Electronics",
@@ -78,7 +78,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
         }
 
         // Act
-        await using var context = _fixture.CreateContext();
+        await using AppDbContext context = _fixture.CreateContext();
         var repository = new CategoryRepository(context);
 
         var result = await repository.GetByIdAsync(categoryId);
@@ -98,7 +98,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
         // Arrange
         await _fixture.ResetDatabaseAsync();
 
-        await using var context = _fixture.CreateContext();
+        await using AppDbContext context = _fixture.CreateContext();
         var repository = new CategoryRepository(context);
 
         // Act
@@ -122,7 +122,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
             "Electronics",
             "ELECTRONICS");
 
-        await using (var context = _fixture.CreateContext())
+        await using (AppDbContext context = _fixture.CreateContext())
         {
             var repository = new CategoryRepository(context);
 
@@ -156,7 +156,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
             "Electronics",
             "ELECTRONICS");
 
-        await using (var arrangeContext = _fixture.CreateContext())
+        await using (AppDbContext arrangeContext = _fixture.CreateContext())
         {
             var repository = new CategoryRepository(arrangeContext);
 
@@ -167,7 +167,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
         int categoryId = category.Id;
 
         // Act
-        await using (var context = _fixture.CreateContext())
+        await using (AppDbContext context = _fixture.CreateContext())
         {
             var repository = new CategoryRepository(context);
 
@@ -206,7 +206,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
 
         int categoryId;
 
-        await using (var arrangeContext = _fixture.CreateContext())
+        await using (AppDbContext arrangeContext = _fixture.CreateContext())
         {
             var category = CreateCategory(
                 "Electronics",
@@ -221,7 +221,7 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
         }
 
         // Act
-        await using (var context = _fixture.CreateContext())
+        await using (AppDbContext context = _fixture.CreateContext())
         {
             var repository = new CategoryRepository(context);
 
@@ -272,5 +272,71 @@ public class CategoryRepositoryTests(DatabaseFixture fixture)
 
     #endregion
 
+    #region Category-Product Relationships
 
+    [Fact]
+    public async Task DeleteAsync_AndSaveChangesAsync_WithCategoryAssociatedToProduct_RemovesRelationshipWithoutDeletingProduct()
+    {
+        // Arrange
+        await _fixture.ResetDatabaseAsync();
+
+        int categoryId;
+        int productId;
+
+        await using (AppDbContext arrangeContext = _fixture.CreateContext())
+        {
+            var category = CreateCategory("Electronics", "ELECTRONICS");
+
+            var product = new Product(
+                "Keyboard",
+                "Mechanical keyboard",
+                25m,
+                "keyboard.jpg");
+
+            product.AssignCategory(category);
+
+            arrangeContext.Categories.Add(category);
+            arrangeContext.Products.Add(product);
+
+            await arrangeContext.SaveChangesAsync(
+                TestContext.Current.CancellationToken);
+
+            categoryId = category.Id;
+            productId = product.Id;
+        }
+
+        // Act
+        await using (AppDbContext context = _fixture.CreateContext())
+        {
+            var repository = new CategoryRepository(context);
+
+            var category = await repository.GetByIdAsync(categoryId);
+
+            Assert.NotNull(category);
+
+            await repository.DeleteAsync(category);
+            await repository.SaveChangesAsync();
+        }
+
+        // Assert
+        await using AppDbContext verificationContext = _fixture.CreateContext();
+
+        var deletedCategory = await verificationContext.Categories
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                c => c.Id == categoryId,
+                cancellationToken: TestContext.Current.CancellationToken);
+
+        var savedProduct = await verificationContext.Products
+            .Include(p => p.Categories)
+            .SingleOrDefaultAsync(
+                p => p.Id == productId,
+                cancellationToken: TestContext.Current.CancellationToken);
+
+        Assert.Null(deletedCategory);
+        Assert.NotNull(savedProduct);
+        Assert.Empty(savedProduct.Categories);
+    }
+
+    #endregion
 }
