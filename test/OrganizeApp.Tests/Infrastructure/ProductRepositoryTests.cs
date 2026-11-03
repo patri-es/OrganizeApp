@@ -738,5 +738,79 @@ public class ProductRepositoryTests(DatabaseFixture fixture) : IClassFixture<Dat
         await context.SaveChangesAsync(TestContext.Current.CancellationToken);
     }
 
+
+    [Fact]
+    public async Task DeleteAsync_AndSaveChangesAsync_WithProductAssociatedToCategories_RemovesRelationshipsWithoutDeletingCategories()
+    {
+        // Arrange
+        await _fixture.ResetDatabaseAsync();
+
+        int productId;
+
+        await using (AppDbContext arrangeContext = _fixture.CreateContext())
+        {
+            var firstCategory = CreateCategory("Electronics", "ELECTRONICS");
+            var secondCategory = CreateCategory("Home", "HOME");
+
+            await AddCategoriesAsync(
+                arrangeContext,
+                firstCategory,
+                secondCategory);
+
+            var product = CreateProduct("Keyboard");
+
+            product.AssignCategory(firstCategory);
+            product.AssignCategory(secondCategory);
+
+            await AddProductsAsync(arrangeContext, product);
+
+            productId = product.Id;
+        }
+
+        // Act
+        await using (AppDbContext context = _fixture.CreateContext())
+        {
+            var repository = new ProductRepository(context);
+
+            var product = await repository.GetByIdAsync(productId);
+
+            Assert.NotNull(product);
+
+            await repository.DeleteAsync(product);
+            await repository.SaveChangesAsync();
+        }
+
+        // Assert
+        await using AppDbContext verificationContext = _fixture.CreateContext();
+
+        var deletedProduct = await verificationContext.Products
+            .AsNoTracking()
+            .FirstOrDefaultAsync(
+                p => p.Id == productId,
+                cancellationToken: TestContext.Current.CancellationToken);
+
+        var remainingCategories = await verificationContext.Categories
+            .Include(c => c.Products)
+            .AsNoTracking()
+            .ToListAsync(TestContext.Current.CancellationToken);
+
+        Assert.Null(deletedProduct);
+
+        Assert.Equal(2, remainingCategories.Count);
+
+        Assert.Contains(
+            remainingCategories,
+            category => category.Code == "ELECTRONICS");
+
+        Assert.Contains(
+            remainingCategories,
+            category => category.Code == "HOME");
+
+        Assert.All(
+            remainingCategories,
+            category => Assert.Empty(category.Products));
+    }
+
+
     #endregion
 }

@@ -218,45 +218,52 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 
 #### Consultas de productos
 
-- [ ] P0 — `GetProducts_WithProducts_ReturnsAllProducts`: obtiene todos los productos almacenados en la base de datos.
-- [ ] P0 — `GetProducts_WhenNoProductsExist_ReturnsEmptyList`: devuelve una lista vacía cuando no existen productos.
-- [ ] P0 — `GetProducts_WithAssociatedCategories_IncludesCategories`: carga correctamente las categorías asociadas a cada producto.
-- [ ] P0 — `GetById_WhenProductExists_ReturnsProductWithCategories`: obtiene un producto por su identificador e incluye sus categorías.
-- [ ] P0 — `GetById_WhenProductDoesNotExist_ReturnsNull`: devuelve null cuando no existe el producto solicitado.
+- [x] P0 — `GetProducts_WithProducts_ReturnsAllProducts`: obtiene todos los productos almacenados en la base de datos.
+- [x] P0 — `GetProducts_WhenNoProductsExist_ReturnsEmptyList`: devuelve una lista vacía cuando no existen productos.
+- [x] P0 — `GetProducts_WithAssociatedCategories_IncludesCategories`: carga correctamente las categorías asociadas a cada producto.
+- [x] P0 — `GetById_WhenProductExists_ReturnsProductWithCategories`: obtiene un producto por su identificador e incluye sus categorías.
+- [x] P0 — `GetById_WhenProductDoesNotExist_ReturnsNull`: devuelve null cuando no existe el producto solicitado.
 
 #### Filtros de productos
 
-- [ ] P0 — `GetProducts_WithCategoryIdsFilter_ReturnsProductsMatchingAnyCategoryId`: devuelve los productos asociados a cualquiera de las categorías indicadas.
-- [ ] P0 — `GetProducts_WithHasCategoryTrueFilter_ReturnsOnlyProductsWithCategories`: devuelve únicamente productos que tienen categorías asociadas.
-- [ ] P0 — `GetProducts_WithHasCategoryFalseFilter_ReturnsOnlyProductsWithoutCategories`: devuelve únicamente productos que no tienen categorías asociadas.
-- [ ] P0 — `GetProducts_WithIsAvailableFilter_ReturnsProductsMatchingAvailability`: filtra los productos según su disponibilidad.
-- [ ] P0 — `GetProducts_WithMinStockFilter_ReturnsProductsWithStockAtOrAboveMinimum`: devuelve productos cuyo stock es igual o superior al mínimo indicado.
-- [ ] P0 — `GetProducts_WithMaxStockFilter_ReturnsProductsWithStockAtOrBelowMaximum`: devuelve productos cuyo stock es igual o inferior al máximo indicado.
-- [ ] P0 — `GetProducts_WithCombinedFilters_ReturnsMatchingProducts`: aplica correctamente varios filtros simultáneamente.
-- [ ] P1 — `GetProducts_WithEmptyCategoryIdsFilter_ReturnsAllProducts`: no aplica el filtro de categorías cuando la lista está vacía.
+- [x] P0 — `GetProducts_WithCategoryIdsFilter_ReturnsProductsMatchingAnyCategoryId`: devuelve los productos asociados a cualquiera de las categorías indicadas.
+- [x] P0 — `GetProducts_WithHasCategoryTrueFilter_ReturnsOnlyProductsWithCategories`: devuelve únicamente productos que tienen categorías asociadas.
+- [x] P0 — `GetProducts_WithHasCategoryFalseFilter_ReturnsOnlyProductsWithoutCategories`: devuelve únicamente productos que no tienen categorías asociadas.
+- [x] P0 — `GetProducts_WithIsAvailableFilter_ReturnsProductsMatchingAvailability`: filtra los productos según su disponibilidad.
+- [x] P0 — `GetProducts_WithMinStockFilter_ReturnsProductsWithStockAtOrAboveMinimum`: devuelve productos cuyo stock es igual o superior al mínimo indicado.
+- [x] P0 — `GetProducts_WithMaxStockFilter_ReturnsProductsWithStockAtOrBelowMaximum`: devuelve productos cuyo stock es igual o inferior al máximo indicado.
+- [x] P0 — `GetProducts_WithCombinedFilters_ReturnsMatchingProducts`: aplica correctamente varios filtros simultáneamente.
+- [x] P1 — `GetProducts_WithEmptyCategoryIdsFilter_ReturnsAllProducts`: no aplica el filtro de categorías cuando la lista está vacía.
 
 #### Persistencia de productos
 
-- [ ] P0 — `AddAsync_AndSaveChangesAsync_WithValidProduct_PersistsProduct`: añade un producto y comprueba que queda almacenado tras guardar los cambios.
-- [ ] P0 — `SaveChangesAsync_WithModifiedProduct_PersistsChanges`: guarda correctamente las modificaciones realizadas sobre un producto existente.
-- [ ] P0 — `DeleteAsync_AndSaveChangesAsync_WithExistingProduct_DeletesProduct`: elimina un producto existente y comprueba que desaparece de la base de datos.
+- [x] P0 — `AddAsync_AndSaveChangesAsync_WithValidProduct_PersistsProduct`: añade un producto y comprueba que queda almacenado tras guardar los cambios.
+- [x] P0 — `SaveChangesAsync_WithModifiedProduct_PersistsChanges`: guarda correctamente las modificaciones realizadas sobre un producto existente.
+- [x] P0 — `DeleteAsync_AndSaveChangesAsync_WithExistingProduct_DeletesProduct`: elimina un producto existente y comprueba que desaparece de la base de datos.
 
 ### B. CategoryRepository (`CategoryRepositoryTests.cs`)
 
 #### Consultas de categorías
 
-- [ ] P0 — `GetCategories_WithCategories_ReturnsAllCategories`: obtiene todas las categorías almacenadas en la base de datos.
-- [ ] P0 — `GetCategories_WhenNoCategoriesExist_ReturnsEmptyList`: devuelve una lista vacía cuando no existen categorías.
-- [ ] P0 — `GetById_WhenCategoryExists_ReturnsCategory`: obtiene una categoría por su identificador.
-- [ ] P0 — `GetById_WhenCategoryDoesNotExist_ReturnsNull`: devuelve null cuando no existe la categoría solicitada.
+- [x] P0 — `GetCategories_WithCategories_ReturnsAllCategories`: obtiene todas las categorías almacenadas en la base de datos.
+- [x] P0 — `GetCategories_WhenNoCategoriesExist_ReturnsEmptyList`: devuelve una lista vacía cuando no existen categorías.
+- [x] P0 — `GetById_WhenCategoryExists_ReturnsCategory`: obtiene una categoría por su identificador.
+- [x] P0 — `GetById_WhenCategoryDoesNotExist_ReturnsNull`: devuelve null cuando no existe la categoría solicitada.
 
 #### Persistencia de categorías
 
-- [ ] P0 — `AddAsync_AndSaveChangesAsync_WithValidCategory_PersistsCategory`: añade una categoría y comprueba que queda almacenada tras guardar los cambios.
-- [ ] P0 — `SaveChangesAsync_WithModifiedCategory_PersistsChanges`: guarda correctamente las modificaciones realizadas sobre una categoría existente.
-- [ ] P0 — `DeleteAsync_AndSaveChangesAsync_WithExistingCategory_DeletesCategory`: elimina una categoría existente y comprueba que desaparece de la base de datos.
+- [x] P0 — `AddAsync_AndSaveChangesAsync_WithValidCategory_PersistsCategory`: añade una categoría y comprueba que queda almacenada tras guardar los cambios.
+- [x] P0 — `SaveChangesAsync_WithModifiedCategory_PersistsChanges`: guarda correctamente las modificaciones realizadas sobre una categoría existente.
+- [x] P0 — `DeleteAsync_AndSaveChangesAsync_WithExistingCategory_DeletesCategory`: elimina una categoría existente y comprueba que desaparece de la base de datos.
 
 ### C. Relaciones entre productos y categorías
 
-- [ ] P0 — `AddAsync_WithAssociatedCategory_PersistsProductCategoryRelationship`: guarda correctamente la relación entre un producto y una categoría existente.
-- [ ] P1 — `GetByIdWithCategories_WhenProductHasMultipleCategories_LoadsAllCategories`: carga todas las categorías asociadas a un producto con varias relaciones.
+#### Relaciones desde ProductRepository
+
+- [x] P0 — `AddAsync_WithAssociatedCategory_PersistsProductCategoryRelationship`: guarda correctamente la relación entre un producto y una categoría existente.
+- [x] P1 — `GetById_WhenProductHasMultipleCategories_LoadsAllCategories`: carga todas las categorías asociadas a un producto con varias relaciones.
+- [x] P1 — `DeleteAsync_AndSaveChangesAsync_WithProductAssociatedToCategories_RemovesRelationshipsWithoutDeletingCategories`: elimina un producto y comprueba que desaparecen sus relaciones con las categorías sin eliminar estas últimas.
+
+#### Relaciones desde CategoryRepository
+
+- [x] P1 — `DeleteAsync_AndSaveChangesAsync_WithCategoryAssociatedToProduct_RemovesRelationshipWithoutDeletingProduct`: elimina una categoría y comprueba que desaparece su relación con el producto sin eliminarlo.
