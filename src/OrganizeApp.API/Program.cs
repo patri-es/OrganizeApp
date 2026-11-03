@@ -31,11 +31,18 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.UseExceptionHandler();
-app.UseHttpsRedirection();
+// Middleware: API uses Https, Tests uses Http
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    app.UseHttpsRedirection();
+}
 // CORS
 app.UseCors("_myAllowSpecificOrigins");
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+// Make the Program class public using a partial class declaration by test
+public partial class Program { }
