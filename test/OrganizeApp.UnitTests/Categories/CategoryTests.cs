@@ -1,7 +1,7 @@
 ﻿using OrganizeApp.Domain.Entities;
 using OrganizeApp.Domain.Exceptions;
 
-namespace OrganizeApp.UnitTests.Categories;
+namespace OrganizeApp.Tests.Categories;
 
 public class CategoryTests
 {

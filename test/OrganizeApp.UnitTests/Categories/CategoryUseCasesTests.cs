@@ -6,7 +6,7 @@ using OrganizeApp.Domain.Exceptions;
 using CategoryEntity = OrganizeApp.Domain.Entities.Category;
 using CategoryUseCases = OrganizeApp.Application.Category.CategoryUseCases;
 
-namespace OrganizeApp.UnitTests.Categories;
+namespace OrganizeApp.Tests.Categories;
 
 public class CategoryUseCasesTests
 {

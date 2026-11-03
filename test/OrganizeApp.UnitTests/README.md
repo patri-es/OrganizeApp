@@ -29,7 +29,7 @@ Constructor_WithNegativePrice_ThrowsProductDomainException()
 ```
 
 ### Para ejecutar las pruebas: 
-```dotnet test test/OrganizeApp.UnitTests/OrganizeApp.UnitTests.csproj```
+```dotnet test test/OrganizeApp.Tests/OrganizeApp.Tests.csproj```
 
 - Al usar el paquete XUnit.v3, es necesario especificar el motor de ejecución para los test (si queremos usarlo por consola)
 

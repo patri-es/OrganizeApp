@@ -2,7 +2,7 @@
 using OrganizeApp.Domain.Entities;
 using OrganizeApp.Domain.Exceptions;
 
-namespace OrganizeApp.UnitTests.Products;
+namespace OrganizeApp.Tests.Domain.Products;
 
 public class ProductTests
 {

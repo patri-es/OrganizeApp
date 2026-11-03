@@ -7,7 +7,7 @@ using ProductUseCases = OrganizeApp.Application.Product.ProductUseCases;
 using OrganizeApp.Application.Exceptions;
 using OrganizeApp.Domain.Exceptions;
 
-namespace OrganizeApp.UnitTests.Products;
+namespace OrganizeApp.Tests.Products;
 
 public class ProductUseCasesTests
 {
