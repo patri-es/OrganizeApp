@@ -528,7 +528,7 @@ public class ProductRepositoryTests(DatabaseFixture fixture) : IClassFixture<Dat
         }
 
         // Assert
-        await using var verificationContext = _fixture.CreateContext();
+        await using AppDbContext verificationContext = _fixture.CreateContext();
 
         var savedProduct = await verificationContext.Products
             .AsNoTracking()
@@ -562,7 +562,7 @@ public class ProductRepositoryTests(DatabaseFixture fixture) : IClassFixture<Dat
         }
 
         // Assert
-        await using var verificationContext = _fixture.CreateContext();
+        await using AppDbContext verificationContext = _fixture.CreateContext();
 
         var savedProduct = await verificationContext.Products
             .AsNoTracking()
@@ -641,7 +641,7 @@ public class ProductRepositoryTests(DatabaseFixture fixture) : IClassFixture<Dat
         }
 
         // Assert
-        await using var verificationContext = _fixture.CreateContext();
+        await using AppDbContext verificationContext = _fixture.CreateContext();
 
         var savedProduct = await verificationContext.Products
             .Include(p => p.Categories)
