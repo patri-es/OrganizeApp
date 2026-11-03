@@ -728,14 +728,14 @@ public class ProductRepositoryTests(DatabaseFixture fixture) : IClassFixture<Dat
 
     private static async Task AddCategoriesAsync(AppDbContext context, params Category[] categories)
     {
-        await context.Categories.AddRangeAsync(categories);
-        await context.SaveChangesAsync();
+        await context.Categories.AddRangeAsync(categories, TestContext.Current.CancellationToken);
+        await context.SaveChangesAsync(TestContext.Current.CancellationToken);
     }
 
     private static async Task AddProductsAsync(AppDbContext context, params Product[] products)
     {
-        await context.Products.AddRangeAsync(products);
-        await context.SaveChangesAsync();
+        await context.Products.AddRangeAsync(products, TestContext.Current.CancellationToken);
+        await context.SaveChangesAsync(TestContext.Current.CancellationToken);
     }
 
     #endregion
