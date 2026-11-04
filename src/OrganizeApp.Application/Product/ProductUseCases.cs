@@ -82,7 +82,7 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
     // Deletion
     public async Task DeleteProduct(int productId)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
         await _productRepository.DeleteAsync(product);
         await _productRepository.SaveChangesAsync();
     }
@@ -158,7 +158,7 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
     public async Task ActivateProduct(int productId)
     {
         // Carga el producto incluyendo sus categorías asociadas
-        var product = await _productRepository.GetByIdWithCategoriesAsync(productId, default)
+        var product = await _productRepository.GetByIdAsync(productId)
             ?? throw new NotFoundException("Product not found");
 
         // Ahora product.Categories no estará vacío y pasará la validación de dominio
@@ -188,8 +188,8 @@ public class ProductUseCases(IProductRepository productRepository, ICategoryRepo
 
     public async Task RemoveProductCategory(int productId, int categoryId)
     {
-        var product = await _productRepository.GetByIdAsync(productId) ?? throw new Exception("Product not found");
-        var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new Exception("Category not found");
+        var product = await _productRepository.GetByIdAsync(productId) ?? throw new NotFoundException("Product not found");
+        var category = await _categoryRepository.GetByIdAsync(categoryId) ?? throw new NotFoundException("Category not found");
         product.RemoveCategory(category);
 
         await _productRepository.SaveChangesAsync();

@@ -15,15 +15,4 @@ public static class DependencyInjection
 
         return services;
     }
-    //public static IServiceCollection AddApplication(
-    //    this IServiceCollection services)
-    //{
-    //    services.AddScoped<IProductUseCases>();
-    //    services.AddScoped<ICategoryUseCases>();
-    //    // Registrar casos de uso para inyección por DI. Scoped para servicios que usan DbContext (por petición HTTP).
-    //    //services.AddScoped<CategoryUseCases>();
-    //    // Aquí podrían registrarse validadores, mappers y otros servicios de la capa Application.
-    //    // ej: services.AddScoped<IProductValidator, ProductValidator>();
-    //    return services;
-    //}
 }

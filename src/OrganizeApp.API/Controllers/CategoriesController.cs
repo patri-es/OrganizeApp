@@ -31,8 +31,8 @@ public class CategoriesController(ICategoryUseCases categoryUseCases) : Controll
     /// <summary>
     /// Obtiene una categoría por id. Devuelve 200 con la categoría o 404 si no existe.
     /// </summary>
-    // GET /api/categories/1
-    [HttpGet("{id}")]
+    // GET /api/categories/id
+    [HttpGet("{id:int}")]
     public async Task<IActionResult> GetCategory(int id)
     {
         var category = await _categoryUseCases.GetCategoryById(id);
@@ -55,10 +55,10 @@ public class CategoriesController(ICategoryUseCases categoryUseCases) : Controll
     }
     
     /// <summary>
-    /// Actualiza una categoría existente. Devuelve 204 si la actualización tuvo éxito.
+    /// Actualiza una categoría existente. Devuelve 200 si la actualización tuvo éxito.
     /// </summary>
     // PUT /api/categories/1
-    [HttpPut("{id}")]
+    [HttpPut("{id:int}")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] UpdateCategoryDTO category)
     {
         await _categoryUseCases.UpdateCategory(id, category);
@@ -66,10 +66,10 @@ public class CategoriesController(ICategoryUseCases categoryUseCases) : Controll
     }
 
     /// <summary>
-    /// Elimina una categoría por su id. Devuelve 204 si se eliminó correctamente.
+    /// Elimina una categoría por su id. Devuelve 200 si se eliminó correctamente.
     /// </summary>
     // Delete /api/categories/1
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
         await _categoryUseCases.DeleteCategory(id);

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrganizeApp.Application.Category.Interfaces;
-using OrganizeApp.Infrastructure.Persistence;
 using CategoryEntity = OrganizeApp.Domain.Entities.Category;
 
 namespace OrganizeApp.Infrastructure.Persistence.Repositories;

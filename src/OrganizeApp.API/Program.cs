@@ -31,11 +31,16 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 app.UseExceptionHandler();
-app.UseHttpsRedirection();
+// Middleware: API uses Https, Tests uses Http
+if (!app.Environment.IsEnvironment("Testing"))
+{
+    app.UseHttpsRedirection();
+}
 // CORS
 app.UseCors("_myAllowSpecificOrigins");
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
