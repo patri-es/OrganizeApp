@@ -340,3 +340,88 @@ Leyenda: P0 = esenciales · P1 = importantes · P2 = complementarios
 - [x] P1 — `UpdateCategory_WithInvalidData_ReturnsBadRequestProblemDetails`: devuelve HTTP 400 con `ProblemDetails` cuando los datos incumplen las reglas de dominio.
 - [x] P0 — `DeleteCategory_WhenCategoryExists_ReturnsOk`: elimina una categoría, devuelve HTTP 200 y comprueba que desaparece de la base de datos.
 - [x] P0 — `DeleteCategory_WhenCategoryDoesNotExist_ReturnsNotFoundProblemDetails`: devuelve HTTP 404 con `ProblemDetails` cuando la categoría no existe.
+
+
+
+# Generar informe con ReportGenerator
+
+Utilizamos `Microsoft.Testing.Extensions.CodeCoverage` para recoger la cobertura de código y `ReportGenerator` para generar un informe HTML.
+
+## 1. Instalar y actualizar el paquete de cobertura
+
+El proyecto `OrganizeApp.Tests.csproj` debe tener instalado el paquete NuGet `Microsoft.Testing.Extensions.CodeCoverage`.
+
+Para instalarlo:
+
+```powershell
+dotnet add .\test\OrganizeApp.Tests\OrganizeApp.Tests.csproj package Microsoft.Testing.Extensions.CodeCoverage
+```
+
+Si ya está instalado y se quiere actualizar:
+
+```powershell
+dotnet add .\test\OrganizeApp.Tests\OrganizeApp.Tests.csproj package Microsoft.Testing.Extensions.CodeCoverage
+```
+
+## 2. Ejecutar los tests y generar el informe XML
+
+Desde la raíz de la solución, ejecutar:
+
+```powershell
+dotnet test .\test\OrganizeApp.Tests\OrganizeApp.Tests.csproj --results-directory .\test\TestResults --coverage --coverage-output-format cobertura
+```
+
+El comando ejecuta todos los tests y genera los resultados de cobertura en formato Cobertura dentro de `test/TestResults`.
+
+## 3. Instalar ReportGenerator
+
+Instalar la herramienta global de .NET:
+
+```powershell
+dotnet tool install --global dotnet-reportgenerator-globaltool
+```
+
+Si ya está instalada y se quiere actualizar:
+
+```powershell
+dotnet tool update --global dotnet-reportgenerator-globaltool
+```
+
+## 4. Generar el informe HTML
+
+Desde la raíz de la solución, ejecutar:
+
+```powershell
+reportgenerator "-reports:.\test\TestResults\*.cobertura.xml" "-targetdir:.\test\CoverageReport" "-reporttypes:Html"
+```
+
+ReportGenerator utiliza los archivos Cobertura generados en el paso anterior y crea el informe HTML navegable dentro de `test/CoverageReport`.
+
+## 5. Consultar el informe
+
+Abrir el siguiente archivo en el navegador:
+
+```text
+test/CoverageReport/index.html
+```
+
+El informe permite consultar la cobertura global y navegar por los ensamblados, clases y métodos para identificar las líneas de código que todavía no están cubiertas.
+
+## 6. Métricas de cobertura
+
+- **Line coverage:** porcentaje de líneas de código ejecutadas.
+- **Branch coverage:** porcentaje de ramas de decisión ejecutadas.
+- **Method coverage:** porcentaje de métodos ejecutados.
+
+La cobertura ayuda a identificar código que necesita más pruebas, pero un porcentaje elevado no garantiza por sí solo que todas las funcionalidades estén correctamente verificadas.
+
+## 7. Localizar los archivos de cobertura
+
+Para localizar los archivos XML generados, ejecutar:
+
+```powershell
+Get-ChildItem .\test\TestResults -Recurse -File |
+    Where-Object { $_.Name -like "*.cobertura.xml" } |
+    Select-Object FullName
+```
+
