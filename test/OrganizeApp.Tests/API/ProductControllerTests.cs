@@ -1070,6 +1070,8 @@ public class ProductControllerTests(DatabaseFixture databaseFixture) : IClassFix
 
     #region Test Helpers
 
+    // Creates a product with default test values and an optional initial stock.
+    // Uses the domain method to initialize stock when a positive quantity is provided.
     private static Product CreateProduct(string name, int stock = 0)
     {
         var product = new Product(
@@ -1084,6 +1086,7 @@ public class ProductControllerTests(DatabaseFixture databaseFixture) : IClassFix
         return product;
     }
 
+    // Creates a category with default description and image values for test scenarios.
     private static Category CreateCategory(string name, string code)
     {
         return new Category(
@@ -1093,23 +1096,30 @@ public class ProductControllerTests(DatabaseFixture databaseFixture) : IClassFix
             "category.jpg");
     }
 
+    // Saves products using a separate DbContext to persist test data.
+    // This allows the test to verify the results through another context.
     private async Task SaveProductsAsync(params Product[] products)
     {
         await using AppDbContext context = _databaseFixture.CreateContext();
+
         await context.Products.AddRangeAsync(products,TestContext.Current.CancellationToken);
         await context.SaveChangesAsync(TestContext.Current.CancellationToken);
     }
 
+    // Saves categories using a separate DbContext to persist test data.
+    // This is useful when categories must exist before sending an API request.
     private async Task SaveCategoriesAsync(params Category[] categories)
     {
         await using AppDbContext context = _databaseFixture.CreateContext();
-        
-        await context.Categories.AddRangeAsync(categories,TestContext.Current.CancellationToken);
-        await context.SaveChangesAsync(TestContext.Current.CancellationToken);
+
+        await context.Categories.AddRangeAsync( categories, TestContext.Current.CancellationToken);
+
+        await context.SaveChangesAsync( TestContext.Current.CancellationToken);
     }
 
-    // Helper to check the response code HTTP, status and title, verify than the response was properly and classifying any exceptions.
-    private static async Task AssertProblemDetailsAsync(HttpResponseMessage response, HttpStatusCode expectedStatus, string expectedTitle)
+    // Verifies the HTTP status code and the main properties of a ProblemDetails response.
+    // Centralizes error response assertions to avoid repeating the same checks in multiple tests.
+    private static async Task AssertProblemDetailsAsync( HttpResponseMessage response, HttpStatusCode expectedStatus, string expectedTitle)
     {
         Assert.Equal(expectedStatus, response.StatusCode);
 
