@@ -10,8 +10,7 @@ using OrganizeApp.Tests.Infrastructure;
 
 namespace OrganizeApp.Tests.API;
 
-public class CategoryControllerTests(DatabaseFixture databaseFixture)
-    : IClassFixture<DatabaseFixture>
+public class CategoryControllerTests(DatabaseFixture databaseFixture) : IClassFixture<DatabaseFixture>
 {
     private readonly DatabaseFixture _databaseFixture = databaseFixture;
 
@@ -31,8 +30,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
 
         await SaveCategoriesAsync(categories);
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
 
@@ -65,8 +63,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
         // Arrange
         await _databaseFixture.ResetDatabaseAsync();
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
 
@@ -99,8 +96,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
 
         await SaveCategoriesAsync(category);
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
 
@@ -129,8 +125,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
         // Arrange
         await _databaseFixture.ResetDatabaseAsync();
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
 
@@ -161,8 +156,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
             ImageUrl = "electronics.jpg"
         };
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
         using var content = JsonContent.Create(dto);
@@ -185,8 +179,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
         Assert.Equal(dto.Description, returnedCategory.Description);
         Assert.Equal(dto.ImageUrl, returnedCategory.ImageUrl);
 
-        await using AppDbContext verificationContext =
-            _databaseFixture.CreateContext();
+        await using AppDbContext verificationContext = _databaseFixture.CreateContext();
 
         var savedCategory = await verificationContext.Categories
             .AsNoTracking()
@@ -213,8 +206,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
             ImageUrl = "electronics.jpg"
         };
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
         using var content = JsonContent.Create(dto);
@@ -257,8 +249,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
             ImageUrl = "computers.jpg"
         };
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
         using var content = JsonContent.Create(dto);
@@ -280,8 +271,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
         Assert.Equal(dto.Description, returnedCategory.Description);
         Assert.Equal(dto.ImageUrl, returnedCategory.ImageUrl);
 
-        await using AppDbContext verificationContext =
-            _databaseFixture.CreateContext();
+        await using AppDbContext verificationContext = _databaseFixture.CreateContext();
 
         var savedCategory = await verificationContext.Categories
             .AsNoTracking()
@@ -310,8 +300,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
             ImageUrl = "computers.jpg"
         };
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
         using var content = JsonContent.Create(dto);
@@ -345,8 +334,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
             ImageUrl = "updated.jpg"
         };
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
         using var content = JsonContent.Create(dto);
@@ -377,8 +365,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
         var category = CreateCategory("Electronics", "ELECTRONICS");
         await SaveCategoriesAsync(category);
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
 
@@ -390,8 +377,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
         // Assert
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
-        await using AppDbContext verificationContext =
-            _databaseFixture.CreateContext();
+        await using AppDbContext verificationContext = _databaseFixture.CreateContext();
 
         var deletedCategory = await verificationContext.Categories
             .AsNoTracking()
@@ -408,8 +394,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
         // Arrange
         await _databaseFixture.ResetDatabaseAsync();
 
-        using var factory = new CustomWebApplicationFactory(
-            _databaseFixture.ConnectionString);
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
 
         using var client = factory.CreateClient();
 
@@ -460,10 +445,7 @@ public class CategoryControllerTests(DatabaseFixture databaseFixture)
 
     // Verifies the HTTP status code and the main properties of a ProblemDetails response.
     // Centralizes error response assertions to avoid repeating the same checks in multiple tests.
-    private static async Task AssertProblemDetailsAsync(
-        HttpResponseMessage response,
-        HttpStatusCode expectedStatus,
-        string expectedTitle)
+    private static async Task AssertProblemDetailsAsync(HttpResponseMessage response, HttpStatusCode expectedStatus, string expectedTitle)
     {
         Assert.Equal(expectedStatus, response.StatusCode);
 
