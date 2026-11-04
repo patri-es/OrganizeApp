@@ -1,16 +1,19 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrganizeApp.Application.Exceptions;
 using OrganizeApp.Domain.Exceptions;
 
 namespace OrganizeApp.API.Exceptions;
 
-public class GlobalExceptionHandler : IExceptionHandler
+public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService) : IExceptionHandler
 {
-    // TryHandleAsync permite acceder a la petición y construir la respuesta:
+    private readonly IProblemDetailsService _problemDetailsService = problemDetailsService;
+
     public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
     {
-        // Identify the type of exception
+        // Identify the exception type and determine the HTTP status code.
         var statusCode = exception switch
         {
             NotFoundException => StatusCodes.Status404NotFound,
@@ -18,7 +21,8 @@ public class GlobalExceptionHandler : IExceptionHandler
             CategoryDomainException => StatusCodes.Status400BadRequest,
             _ => StatusCodes.Status500InternalServerError
         };
-        // define title of each exception
+
+        // Define the title for each exception type.
         var title = exception switch
         {
             NotFoundException => "Resource not found",
@@ -26,12 +30,13 @@ public class GlobalExceptionHandler : IExceptionHandler
             CategoryDomainException => "Business rule violation",
             _ => "Internal server error"
         };
-        // define code
+
+        // Avoid exposing internal exception details for unexpected errors.
         var detail = statusCode == StatusCodes.Status500InternalServerError
             ? "An unexpected error occurred."
             : exception.Message;
 
-        // format usign ProblemDetails
+        // Create the ProblemDetails response.
         var problemDetails = new ProblemDetails
         {
             Status = statusCode,
@@ -40,48 +45,26 @@ public class GlobalExceptionHandler : IExceptionHandler
         };
 
         httpContext.Response.StatusCode = statusCode;
-        // response with cancelation
-        await httpContext.Response.WriteAsJsonAsync(
-            problemDetails,
-            cancellationToken);
+
+        // Provide the ProblemDetails response to the registered service.
+        var problemDetailsContext = new ProblemDetailsContext
+        {
+            HttpContext = httpContext,
+            Exception = exception,
+            ProblemDetails = problemDetails
+        };
+
+        // Try to write the response using the registered ProblemDetails writers.
+        var written = await _problemDetailsService.TryWriteAsync(problemDetailsContext);
+
+        // Fallback if no registered writer supports the current request.
+        if (!written)
+        {
+            await httpContext.Response.WriteAsJsonAsync(
+                problemDetails,
+                cancellationToken);
+        }
 
         return true;
-
-        //var problemDetails = new ProblemDetails
-        //{
-        //    Title = "Ocurrió un error inesperado",
-        //    Instance = httpContext.Request.Path
-        //};
-
-        //switch (exception)
-        //{
-        //    case NotFoundException:
-        //        problemDetails.Status = StatusCodes.Status404NotFound;
-        //        problemDetails.Title = "Error item not found";
-        //        problemDetails.Detail = exception.Message;
-        //        break;
-
-        //    case ProductDomainException:
-        //        problemDetails.Status = StatusCodes.Status400BadRequest;
-        //        problemDetails.Title = "Error from Domain of item";
-        //        problemDetails.Detail = exception.Message;
-        //        break;
-
-        //    case CategoryDomainException:
-        //        problemDetails.Status = StatusCodes.Status400BadRequest;
-        //        problemDetails.Title = "Error from Domain of item";
-        //        problemDetails.Detail = exception.Message;
-        //        break;
-
-        //    default:
-        //        problemDetails.Status = StatusCodes.Status500InternalServerError;
-        //        problemDetails.Title = "Error of item";
-        //        problemDetails.Detail = exception.Message;
-        //        break;
-        //}
-
-        //return true;
     }
-
-
 }
