@@ -24,8 +24,8 @@ public partial class Category
     public Category(
         string name,
         string code,
-        string description,
-        string imageUrl)
+        string? description,
+        string? imageUrl)
     {
         if (string.IsNullOrWhiteSpace(name))
             throw new CategoryDomainException("Category name is required.");
