@@ -198,6 +198,32 @@ public class ProductControllerTests(DatabaseFixture databaseFixture) : IClassFix
         Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
     }
 
+    [Fact]
+    public async Task GetProducts_WithInvalidCategoryIdsQuery_ReturnsBadRequestValidationProblemDetails()
+    {
+        // Arrange
+        await _databaseFixture.ResetDatabaseAsync();
+
+        using var factory = new CustomWebApplicationFactory(_databaseFixture.ConnectionString);
+
+        using var client = factory.CreateClient();
+
+        // Act
+        using var response = await client.GetAsync(
+            "/api/products?CategoryIds=invalid",
+            TestContext.Current.CancellationToken);
+
+        // Assert
+        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
+
+        var validationProblem = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>(
+            cancellationToken: TestContext.Current.CancellationToken);
+
+        Assert.NotNull(validationProblem);
+        Assert.Equal((int)HttpStatusCode.BadRequest, validationProblem.Status);
+        Assert.NotEmpty(validationProblem.Errors);
+    }
+
     #endregion
 
     #region Product Creation
