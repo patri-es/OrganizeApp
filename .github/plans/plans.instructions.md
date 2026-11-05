@@ -15,7 +15,7 @@ description: Formato y estructura de los planes de trabajo del proyecto
 
 ## Formato de los pasos
 - Lista numerada (`1.`, `2.`, `3.`...), nunca con guiones. Un paso por línea.
-- Cada paso: `N. **Título breve** — descripción`.
+- Cada paso: `N. [ ] **Título breve** — descripción`. Al completarlo, `[ ]` pasa a `[x]`.
 - Solo el título (2-20 palabras) va en negrita, y la negrita termina antes del guion largo `—`.
 - La descripción va en texto normal, sin negrita. El código en línea va entre backticks.
 - Ordenar los pasos de forma que cada uno se pueda ejecutar y validar antes del siguiente.
@@ -23,7 +23,7 @@ description: Formato y estructura de los planes de trabajo del proyecto
 Correcto:
 
 ```markdown
-1. **Obtener la línea base** — ejecutar `dotnet build` y registrar errores y duración.
+1. [ ] **Obtener la línea base** — ejecutar `dotnet build` y registrar errores y duración.
 ```
 
 Incorrecto (guion simple y todo en negrita):

@@ -18,6 +18,13 @@ el código de producción está bajo `src/` y las pruebas bajo `test/`.
 - En Application organizar el código por feature (`Product`, `Category`).
 - Preferir cambios pequeños, coherentes con los patrones existentes y sin introducir arquitecturas paralelas.
 - Los planes se guardan en `.github/plans/` y siguen el formato de `.github/instructions/plans.instructions.md`.
+- Implementación de planes (`.github/plans/`): un paso cada vez.
+  1. Implementar solo el primer paso sin completar (sin `[x]`).
+  2. Marcarlo en el plan (`[ ]` → `[x]`).
+  3. Resumir en pocas líneas qué se ha cambiado y por qué; omitir el resumen si el cambio es trivial.
+  4. Preguntar si continuar con el siguiente paso y detenerse hasta recibir respuesta. No adelantar trabajo del siguiente paso.
+  - Si un paso es demasiado grande para completarlo de una vez, proponer dividirlo en subpasos y esperar confirmación antes de empezar.
+  - Si un paso falla o se bloquea, detenerse e informar; no reintentar en bucle.
 
 ## Comandos
 - Backend: `dotnet restore`, `dotnet build`, `dotnet test`.
