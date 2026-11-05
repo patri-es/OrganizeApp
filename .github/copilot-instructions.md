@@ -12,7 +12,7 @@ el código de producción está bajo `src/` y las pruebas bajo `test/`.
 - Si un cambio cruza Backend y Frontend, leer ambos archivos y mantener el contrato HTTP sincronizado.
 
 ### Convenciones globales
-- Identificadores, nombres de tipos, endpoints y propiedades nuevas deben estar en inglés.
+- Identificadores, nombres de tipos, endpoints, propiedades nuevas y comentarios en archivos de código deben estar en inglés.
 - Responder siempre en español.
 - Mantener Clean Architecture: `API -> Application + Infrastructure`, `Infrastructure -> Application`, `Application -> Domain`; Domain no depende de otras capas.
 - En Application organizar el código por feature (`Product`, `Category`).

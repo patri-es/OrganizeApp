@@ -368,7 +368,7 @@ dotnet add .\test\OrganizeApp.Tests\OrganizeApp.Tests.csproj package Microsoft.T
 Desde la raíz de la solución, ejecutar:
 
 ```powershell
-dotnet test .\test\OrganizeApp.Tests\OrganizeApp.Tests.csproj --results-directory .\test\TestResults --coverage --coverage-output-format cobertura
+dotnet test .\test\OrganizeApp.Tests\OrganizeApp.Tests.csproj --results-directory .\test\TestResults --coverage --coverage-output-format coverage
 ```
 
 El comando ejecuta todos los tests y genera los resultados de cobertura en formato Cobertura dentro de `test/TestResults`.
@@ -392,10 +392,10 @@ dotnet tool update --global dotnet-reportgenerator-globaltool
 Desde la raíz de la solución, ejecutar:
 
 ```powershell
-reportgenerator "-reports:.\test\TestResults\*.cobertura.xml" "-targetdir:.\test\CoverageReport" "-reporttypes:Html"
+reportgenerator "-reports:.\test\TestResults\*.coverage.xml" "-targetdir:.\test\CoverageReport" "-reporttypes:Html"
 ```
 
-ReportGenerator utiliza los archivos Cobertura generados en el paso anterior y crea el informe HTML navegable dentro de `test/CoverageReport`.
+ReportGenerator utiliza los archivos coverage generados en el paso anterior y crea el informe HTML navegable dentro de `test/CoverageReport`.
 
 ## 5. Consultar el informe
 
@@ -421,7 +421,7 @@ Para localizar los archivos XML generados, ejecutar:
 
 ```powershell
 Get-ChildItem .\test\TestResults -Recurse -File |
-    Where-Object { $_.Name -like "*.cobertura.xml" } |
+    Where-Object { $_.Name -like "*.coverage.xml" } |
     Select-Object FullName
 ```
 
