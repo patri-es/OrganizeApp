@@ -17,7 +17,7 @@ el código de producción está bajo `src/` y las pruebas bajo `test/`.
 - Mantener Clean Architecture: `API -> Application + Infrastructure`, `Infrastructure -> Application`, `Application -> Domain`; Domain no depende de otras capas.
 - En Application organizar el código por feature (`Product`, `Category`).
 - Preferir cambios pequeños, coherentes con los patrones existentes y sin introducir arquitecturas paralelas.
-- Para cambios o nuevos archivos de plan, utilizar el directorio de la raíz ddel proyecto `.github/plans`
+- Los planes se guardan en `.github/plans/` y siguen el formato de `.github/instructions/plans.instructions.md`.
 
 ## Comandos
 - Backend: `dotnet restore`, `dotnet build`, `dotnet test`.

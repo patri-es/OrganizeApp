@@ -1,3 +1,7 @@
+---
+applyTo: "src/OrganizeApp.Frontend/**"
+description: Instrucciones de trabajo: Frontend
+---
 # Instrucciones de trabajo: Frontend
 
 ## Alcance

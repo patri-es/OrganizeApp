@@ -1,3 +1,7 @@
+---
+applyTo: "**/*.cs"
+description: Instrucciones de trabajo: Backend
+---
 # Instrucciones de trabajo: Backend
 
 ## Alcance
