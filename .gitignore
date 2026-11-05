@@ -161,6 +161,12 @@ coverage*.info
 *.coverage
 *.coveragexml
 
+/test/TestResult
+/test/TestResult/*
+# Coverage report generated
+/test/CoverageReport/
+/test/CoverageReport/*
+
 # NCrunch
 _NCrunch_*
 .*crunch*.local.xml
@@ -507,6 +513,5 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sw?
-/test/CoverageReport/
 
 /src/OrganizeApp.API/OrganizeApp.API.http
