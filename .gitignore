@@ -507,8 +507,6 @@ dist-ssr
 *.ntvs*
 *.njsproj
 *.sw?
+/test/CoverageReport/
 
-/.github/
-/.github/*
-/.github/PROJECT_CONTEXT.md
 /src/OrganizeApp.API/OrganizeApp.API.http
