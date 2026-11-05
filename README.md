@@ -125,8 +125,8 @@ dotnet test test/OrganizeApp.Tests/OrganizeApp.Tests.csproj --verbosity detailed
 1. **Ejecutar tests con cobertura:**
 
    ```powershell
-   dotnet test test/OrganizeApp.Tests/OrganizeApp.Tests.csproj --results-directory test/TestResults --coverage --coverage-output-format coverage
-   dotnet test test/OrganizeApp.Tests/OrganizeApp.Tests.csproj --coverage --coverage-output-format coverage
+   dotnet test test/OrganizeApp.Tests/OrganizeApp.Tests.csproj --results-directory test/TestResults --coverage --coverage-output-format xml
+   dotnet test test/OrganizeApp.Tests/OrganizeApp.Tests.csproj --coverage --coverage-output-format xml
 
    ```
 
@@ -139,7 +139,7 @@ dotnet test test/OrganizeApp.Tests/OrganizeApp.Tests.csproj --verbosity detailed
 3. **Generar informe HTML:**
 
    ```powershell
-   reportgenerator "-reports:test/TestResults/*.coverage.xml" "-targetdir:test/CoverageReport" "-reporttypes:Html"
+   reportgenerator "-reports:test/TestResults/*.xml" "-targetdir:test/CoverageReport" "-reporttypes:Html"
    ```
 
 4. **Ver el informe:**
@@ -295,3 +295,4 @@ OrganizeApp/
 
 - Documentación del frontend: `src/OrganizeApp.Frontend/README.md`
 - Documentación de tests: `test/OrganizeApp.Tests/README.md`
+
