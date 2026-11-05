@@ -421,6 +421,6 @@ Para localizar los archivos XML generados, ejecutar:
 
 ```powershell
 Get-ChildItem .\test\TestResults -Recurse -File |
-    Where-Object { $_.Name -like "*.coverage.xml" } |
+    Where-Object { $_.Name -like "*.xml" } |
     Select-Object FullName
 ```

@@ -7,8 +7,8 @@ La solución completa está en `OrganizeApp.sln`;
 el código de producción está bajo `src/` y las pruebas bajo `test/`.
 
 ### Instrucciones específicas por capa
-- Para cambios en Domain, Application, Infrastructure, API o pruebas .NET, leer `.github/backend-instructions.md`.
-- Para cambios en `src/OrganizeApp.Frontend`, leer `.github/frontend-instructions.md`.
+- Para cambios en Domain, Application, Infrastructure, API o pruebas .NET, leer `C:\Users\tpmancilla\source\repos\OrganizeApp\.github\backend-instructions.md`.
+- Para cambios en `src/OrganizeApp.Frontend`, leer `C:\Users\tpmancilla\source\repos\OrganizeApp\.github\frontend-instructions.md`.
 - Si un cambio cruza Backend y Frontend, leer ambos archivos y mantener el contrato HTTP sincronizado.
 
 ### Convenciones globales
@@ -17,6 +17,7 @@ el código de producción está bajo `src/` y las pruebas bajo `test/`.
 - Mantener Clean Architecture: `API -> Application + Infrastructure`, `Infrastructure -> Application`, `Application -> Domain`; Domain no depende de otras capas.
 - En Application organizar el código por feature (`Product`, `Category`).
 - Preferir cambios pequeños, coherentes con los patrones existentes y sin introducir arquitecturas paralelas.
+- Para cambios o nuevos archivos de plan, utilizar el directorio de la raíz ddel proyecto `.github/plans`
 
 ## Comandos
 - Backend: `dotnet restore`, `dotnet build`, `dotnet test`.
