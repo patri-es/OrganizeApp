@@ -15,7 +15,8 @@ Aplica a `src/OrganizeApp.Domain`, `src/OrganizeApp.Application`, `src/OrganizeA
 - No asumir que la autorización está activa: `UseAuthorization` está comentado.
 
 ## Comandos y validación
-- Comandos: `dotnet restore`, `dotnet build`, `dotnet test`.
+- Comandos: `dotnet restore`, `dotnet build`, `dotnet test --solution OrganizeApp.sln`.
+- Cobertura: `dotnet test --solution OrganizeApp.sln --coverage --coverage-output-format cobertura --results-directory test/TestResults`
 - Migración: `dotnet ef migrations add <Name> --project src/OrganizeApp.Infrastructure --startup-project src/OrganizeApp.API`
 - Validar con build y los tests afectados; `dotnet test` completo solo si el cambio cruza capas.
 - Si cambia el contrato HTTP, actualizar en el mismo cambio los tests de controlador y de casos de uso, y los servicios del frontend.

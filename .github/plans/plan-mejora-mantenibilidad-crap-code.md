@@ -6,7 +6,7 @@
 
 1. [x] **Restaurar y compilar backend** — ejecutar `dotnet restore` y `dotnet build`. Ambos comandos finalizaron correctamente.
 
-2. [x] **Ejecutar pruebas backend** — Visual Studio Test Explorer ejecutó 276 pruebas: 276 superadas y 0 fallidas. También se intentó `dotnet test`; terminó con código 5 y 0 pruebas ejecutadas. No se generaron resultados `.trx` ni cobertura en `test/TestResults`.
+2. [ ] **Ejecutar pruebas backend** — , guardando los resultados en `test/TestResults`; en frontend, ejecutar `npm ci`, `npm run lint` y `npm run build`. Registrar errores, duración y entorno. No se encontraron informes ejecutados `.trx` ni de cobertura en las rutas revisadas; no se asumirán resultados previos.
 
 3. [ ] **Completar línea base frontend** — `npm ci` finalizó correctamente. La ejecución de `npm run lint` fue cancelada y `npm run build` aún está pendiente; ejecutar ambos y registrar sus resultados.
 
