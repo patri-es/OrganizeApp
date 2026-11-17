@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <RunConfiguration>
+    <!-- Directory for test results -->
+    <ResultsDirectory>.\test\TestResults</ResultsDirectory>
+  </RunConfiguration>
+</RunSettings>
